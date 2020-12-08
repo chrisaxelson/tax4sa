@@ -1,0 +1,5 @@
+export(pit_manual)
+export(pit)
+export(tax_calculation)
+importFrom(Rcpp, evalCpp)
+useDynLib(tax4sa, .registration = TRUE)
