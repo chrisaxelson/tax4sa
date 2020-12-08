@@ -128,8 +128,5 @@ system.time({
   df$Simulated_tax <- pit(df$Taxable_income, df$Age, df$MTC, df$Tax_year)
 })
 #>    user  system elapsed 
-#>   1.838   0.143   2.030
+#>   1.920   0.151   2.119
 ```
-
-In that case, don’t forget to commit and push the resulting figure
-files, so they display on GitHub\!

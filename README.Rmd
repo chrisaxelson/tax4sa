@@ -87,5 +87,3 @@ system.time({
   df$Simulated_tax <- pit(df$Taxable_income, df$Age, df$MTC, df$Tax_year)
 })
 ```
-
-In that case, don't forget to commit and push the resulting figure files, so they display on GitHub!
