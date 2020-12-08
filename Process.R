@@ -33,7 +33,12 @@ load(file = "data-raw/SARB/SARB_descriptions.rda")
 usethis::use_data(SARB_descriptions, overwrite = TRUE)
 
 load(file = "data-raw/SARB/SARB.rda")
+SARB <- SARB %>%
+  arrange(Code)
 usethis::use_data(SARB, overwrite = TRUE)
+
+## Readme
+usethis::use_readme_rmd(open = rlang::is_interactive())
 
 ## Update version number by changing it in the DESCRIPTION file
 

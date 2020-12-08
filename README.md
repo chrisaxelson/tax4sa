@@ -1,0 +1,135 @@
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+# tax4sa
+
+<!-- badges: start -->
+
+<!-- badges: end -->
+
+This is a minimal package to help with the compilation and analysis of
+tax data in South Africa. The package only contains two main sets of
+data and three functions.
+
+The data includes monthly tax revenue collections of the South African
+Revenue Service (SARS) as published by the [National Treasury of South
+Africa](http://www.treasury.gov.za/comm_media/press/monthly/default.aspx)
+in a dataframe named `SARS` and data from the Quarterly Bulletin
+published by the [South African Reserve
+Bank](https://www.resbank.co.za/en/home/publications/quarterly-bulletin1/download-information-from-xlsx-data-files).
+
+The functions are intended to help with calculating tax liabilities,
+particularly when used with the [administrative data from
+SARS](https://sa-tied.wider.unu.edu/sites/default/files/pdf/SATIED_WP36_Ebrahim_Axelson_March_2019.pdf).
+
+## Installation
+
+You can install the package from [GitHub](https://github.com/) with:
+
+``` r
+# install.packages("devtools")
+devtools::install_github("chrisaxelson/tax4sa")
+```
+
+## Example
+
+The data can be accessed by directly entering either `SARS` or `SARB`
+and is in a tidy format to ease analysis within R. `SARB_descriptions`
+is also available to help with the Quarterly Bulletin codes,
+
+``` r
+library(tax4sa)
+library(knitr)
+
+# Check data
+kable(SARS[1:5,])
+```
+
+| Tax                                        | Year | Fiscal\_year | Month  |  Revenue |
+| :----------------------------------------- | ---: | -----------: | :----- | -------: |
+| Taxes on income, profits and capital gains | 2006 |         2007 | April  | 12849090 |
+| Taxes on income, profits and capital gains | 2006 |         2007 | May    | 13165371 |
+| Taxes on income, profits and capital gains | 2006 |         2007 | June   | 35278939 |
+| Taxes on income, profits and capital gains | 2006 |         2007 | July   | 15200816 |
+| Taxes on income, profits and capital gains | 2006 |         2007 | August | 18437264 |
+
+``` r
+kable(SARB[1:5,])
+```
+
+| Code     |     Date | Frequency | Value |
+| :------- | -------: | :-------- | ----: |
+| KBP1437D | 19980228 | D6        |     0 |
+| KBP1437D | 19980302 | D6        |     0 |
+| KBP1437D | 19980303 | D6        |     0 |
+| KBP1437D | 19980304 | D6        |     0 |
+| KBP1437D | 19980305 | D6        |     0 |
+
+``` r
+kable(SARB_descriptions[1:3,])
+```
+
+| Time\_series\_code | Description                                                           | Frequency | Unit\_of\_measure | Version\_description |
+| :----------------- | :-------------------------------------------------------------------- | :-------- | :---------------- | :------------------- |
+| KBP1000J           | South African Reserve Bank liabilities: Notes and coin in circulation | J1        | RMILL             | NA                   |
+| KBP1000M           | South African Reserve Bank liabilities: Notes and coin in circulation | M1        | RMILL             | NA                   |
+| KBP1005J           | South African Reserve Bank liabilities: Deposits: Other Balances      | J1        | RMILL             | NA                   |
+
+The SARS data tries to use the underlying data names as far as possible,
+and the names of the same revenue items are adjusted to be consistent
+across previous years. For example, total tax revenue is stated as
+“Total tax revenue (gross)”.
+
+``` r
+library(dplyr)
+library(tsibble)
+library(ggplot2)
+library(scales)
+
+Total_revenue <- SARS %>% 
+  filter(Tax == "Total tax revenue (gross)") %>% 
+  mutate(Year_month = yearmonth(paste(Year, Month)))
+
+
+ggplot(Total_revenue, aes(x = Year_month, y = Revenue)) +
+  geom_line(color = "darkblue") + 
+  scale_y_continuous(labels = comma) +
+  theme_minimal() +
+  theme(axis.title.x = element_blank())
+```
+
+<img src="man/figures/README-revenue-1.png" width="100%" />
+
+The three functions are `tax_calculation`, `pit` and `pit_manual`. The
+first is a generic function to apply a tax table to a value, while the
+latter two specifically calculate the personal income tax liability in
+South Africa. `pit_manual` allows for a custom tax table to be applied
+to cater for modelling the impacts of changes in the personal income tax
+tables. The package includes a list of historical tax tables to be used
+in the calculations.
+
+``` r
+# Accessing tax tables
+tax_calculation(100000, Tax_tables$PIT_brackets_2021)
+#> [1] 18000
+
+# Calculate personal income tax
+pit(income = 1000000, age = 53, mtc = 2550, taxyear = 2021)
+#> [1] 305263
+
+# Same calculation in a relatively large dataframe with differing variables
+individuals <- 1e6
+df <- data.frame(Taxable_income = round(runif(individuals, 0, 3000000),0),
+                 Age = round(runif(individuals, 18, 80),0),
+                 MTC = round(runif(individuals, 0, 6000), 0),
+                 Tax_year = round(runif(individuals, 2014, 2020), 0))
+
+system.time({
+  df$Simulated_tax <- pit(df$Taxable_income, df$Age, df$MTC, df$Tax_year)
+})
+#>    user  system elapsed 
+#>   1.838   0.143   2.030
+```
+
+In that case, don’t forget to commit and push the resulting figure
+files, so they display on GitHub\!
