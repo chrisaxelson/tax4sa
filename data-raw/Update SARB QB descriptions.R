@@ -78,7 +78,7 @@ SARB_descriptions <- SARB_descriptions %>%
   left_join(Frequency_description, by = "Frequency") %>%
   select(Code = Time_series_code, Description, Frequency, Frequency_description, Unit_of_measure, Version_description)
 
-save(SARB_descriptions, file = "data-raw/SARB/SARB_descriptions.rda")
+save(SARB_descriptions, file = "data-raw/SARB/SARB_descriptions.rda", version = 2)
 
 usethis::use_data(SARB_descriptions, overwrite = TRUE)
 

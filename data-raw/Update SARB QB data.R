@@ -131,7 +131,7 @@ rm(QB_data2, QB_data_next, QB_data_next2, i, j, SARB_download_url, SARB_links, S
    sheets, tmp, tmp2, QB_data)
 
 # Save data
-save(SARB, file = "data-raw/SARB/SARB.rda")
+save(SARB, file = "data-raw/SARB/SARB.rda", version = 2)
 load(file = "data-raw/SARB/SARB.rda")
 
 usethis::use_data(SARB, overwrite = TRUE)

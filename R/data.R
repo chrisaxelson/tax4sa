@@ -50,6 +50,32 @@
 #' @source \url{https://www.resbank.co.za/Publications/QuarterlyBulletins/Pages/ListOfDesciptionsOfAllQuarterlyBulletinTimeSeries.aspx}
 "SARB_descriptions"
 
+#' Data from Statistics South Africa
+#'
+#' Covers a variety of variables, from inflation to electricity generation
+#'
+#' @format A data frame with 703,779 rows and 4 variables:
+#' \describe{
+#'   \item{Publication}{Publication or report number}
+#'   \item{Code}{H03 from publication}
+#'   \item{Date}{Monthly, quarterly or annual date}
+#'   \item{Value}{}
+#' }
+#' @source \url{http://www.statssa.gov.za/?page_id=1847}
+"STATSSA"
+
+#' Descriptions of Statistics South Africa (STATSSA) variables
+#'
+#' A dataset containing information on the variables that are published by the STATSSA
+#'
+#' @format A data frame with 3,495 rows and 17 variables:
+#' \describe{
+#'   \item{H01}{Publication or report}
+#'   \item{...}{...}
+#'   \item{H25}{Time period}
+#' }
+#' @source \url{http://www.statssa.gov.za/?page_id=1847}
+"STATSSA_descriptions"
 
 #' South African tax tables from 2010/11 to 2020/21
 #'

@@ -14,12 +14,15 @@ data and three functions.
 The data includes monthly tax revenue collections of the South African
 Revenue Service (SARS) as published by the [National Treasury of South
 Africa](http://www.treasury.gov.za/comm_media/press/monthly/default.aspx)
-in a dataframe named `SARS` and data from the Quarterly Bulletin
-published by the [South African Reserve
-Bank](https://www.resbank.co.za/en/home/publications/quarterly-bulletin1/download-information-from-xlsx-data-files).
+in a dataframe named `SARS`, data from the Quarterly Bulletin published
+by the [South African Reserve
+Bank](https://www.resbank.co.za/en/home/publications/quarterly-bulletin1/download-information-from-xlsx-data-files)
+in a dataframe named `SARB` and regularly updated statistics from
+[Statistics South Africa](http://www.statssa.gov.za/?page_id=1847) in a
+dataframe named `STATSSA`.
 
-The functions are intended to help with calculating tax liabilities,
-particularly when used with the [administrative data from
+The three functions are intended to help with calculating tax
+liabilities, particularly when used with the [administrative data from
 SARS](https://sa-tied.wider.unu.edu/sites/default/files/pdf/SATIED_WP36_Ebrahim_Axelson_March_2019.pdf).
 
 ## Installation
@@ -33,52 +36,104 @@ devtools::install_github("chrisaxelson/tax4sa")
 
 ## Example
 
-The data can be accessed by directly entering either `SARS` or `SARB`
-and is in a tidy format to ease analysis within R. `SARB_descriptions`
-is also available to help with the Quarterly Bulletin codes,
+The data can be accessed by directly entering either `SARS`, `SARB` or
+`STATSSA` and is in a tidy format to ease analysis within R.
+`SARB_descriptions` and `STATSSA_descriptions` are also available to
+help with the details of each variable in those two sets of data.
 
 ``` r
 library(tax4sa)
+library(dplyr)
 library(knitr)
 
-# Check data
-kable(SARS[1:5,])
+# Check revenue data
+SARS %>% 
+  filter(Tax == "Total tax revenue (gross)") %>% 
+  tail(5) %>% 
+  kable()
 ```
 
-| Tax                                        | Year | Fiscal\_year | Month  |  Revenue |
-| :----------------------------------------- | ---: | -----------: | :----- | -------: |
-| Taxes on income, profits and capital gains | 2006 |         2007 | April  | 12849090 |
-| Taxes on income, profits and capital gains | 2006 |         2007 | May    | 13165371 |
-| Taxes on income, profits and capital gains | 2006 |         2007 | June   | 35278939 |
-| Taxes on income, profits and capital gains | 2006 |         2007 | July   | 15200816 |
-| Taxes on income, profits and capital gains | 2006 |         2007 | August | 18437264 |
+| Tax                       | Year | Fiscal\_year | Month     |   Revenue |
+| :------------------------ | ---: | -----------: | :-------- | --------: |
+| Total tax revenue (gross) | 2020 |         2021 | June      | 100222434 |
+| Total tax revenue (gross) | 2020 |         2021 | July      |  75750002 |
+| Total tax revenue (gross) | 2020 |         2021 | August    |  97558043 |
+| Total tax revenue (gross) | 2020 |         2021 | September | 102987035 |
+| Total tax revenue (gross) | 2020 |         2021 | October   |  96085039 |
 
 ``` r
-kable(SARB[1:5,])
+
+# Look for SARB economic data on GDP
+SARB_descriptions %>% 
+  filter(grepl("Gross domestic product at market prices", Description), Frequency == "K1") %>%
+  kable()
 ```
 
-| Code     |     Date | Frequency | Value |
-| :------- | -------: | :-------- | ----: |
-| KBP1437D | 19980228 | D6        |     0 |
-| KBP1437D | 19980302 | D6        |     0 |
-| KBP1437D | 19980303 | D6        |     0 |
-| KBP1437D | 19980304 | D6        |     0 |
-| KBP1437D | 19980305 | D6        |     0 |
+| Time\_series\_code | Description                             | Frequency | Unit\_of\_measure | Version\_description                                     |
+| :----------------- | :-------------------------------------- | :-------- | :---------------- | :------------------------------------------------------- |
+| KBP6006C           | Gross domestic product at market prices | K1        | RMILL             | Constant 2010 prices                                     |
+| KBP6006D           | Gross domestic product at market prices | K1        | RMILL             | Constant 2010 prices. Seasonally adjusted at annual rate |
+| KBP6006K           | Gross domestic product at market prices | K1        | RMILL             | Current prices                                           |
+| KBP6006L           | Gross domestic product at market prices | K1        | RMILL             | Current prices. Seasonally adjusted at annual rate       |
+| KBP6006S           | Gross domestic product at market prices | K1        | PERC              | 1-Term % change                                          |
 
 ``` r
-kable(SARB_descriptions[1:3,])
+
+SARB %>% 
+  filter(Code == "KBP6006K") %>% 
+  tail(5) %>% 
+  kable()
 ```
 
-| Time\_series\_code | Description                                                           | Frequency | Unit\_of\_measure | Version\_description |
-| :----------------- | :-------------------------------------------------------------------- | :-------- | :---------------- | :------------------- |
-| KBP1000J           | South African Reserve Bank liabilities: Notes and coin in circulation | J1        | RMILL             | NA                   |
-| KBP1000M           | South African Reserve Bank liabilities: Notes and coin in circulation | M1        | RMILL             | NA                   |
-| KBP1005J           | South African Reserve Bank liabilities: Deposits: Other Balances      | J1        | RMILL             | NA                   |
+| Code     |     Date | Frequency |   Value |
+| :------- | -------: | :-------- | ------: |
+| KBP6006K | 20190200 | K1        | 1263022 |
+| KBP6006K | 20190300 | K1        | 1294510 |
+| KBP6006K | 20190400 | K1        | 1313452 |
+| KBP6006K | 20200100 | K1        | 1277318 |
+| KBP6006K | 20200200 | K1        | 1075965 |
 
-The SARS data tries to use the underlying data names as far as possible,
-and the names of the same revenue items are adjusted to be consistent
-across previous years. For example, total tax revenue is stated as
-“Total tax revenue (gross)”.
+``` r
+
+# Look for STATSSA inflation data
+STATSSA_descriptions %>% 
+  filter(grepl("Consumer Price Index", H02), H04 == "All Items") %>%
+  select(H01, H03, H13) %>% 
+  kable()
+```
+
+| H01   | H03      | H13           |
+| :---- | :------- | :------------ |
+| P0141 | CPA00000 | Western Cape  |
+| P0141 | CPB00000 | Eastern Cape  |
+| P0141 | CPC00000 | Northern Cape |
+| P0141 | CPD00000 | Free State    |
+| P0141 | CPE00000 | Kwazulu-Natal |
+| P0141 | CPF00000 | North-West    |
+| P0141 | CPG00000 | Gauteng       |
+| P0141 | CPH00000 | Mpumalanga    |
+| P0141 | CPJ00000 | Limpopo       |
+| P0141 | CPR00000 | Rural Areas   |
+| P0141 | CPT00000 | Total country |
+
+``` r
+
+STATSSA %>% 
+  filter(Code == "CPT00000") %>% 
+  tail(5) %>% 
+  kable()
+```
+
+|     | Publication | Code     | Date    | Value |
+| :-- | :---------- | :------- | :------ | :---- |
+| 151 | P0141       | CPT00000 | 2020 07 | 116.1 |
+| 152 | P0141       | CPT00000 | 2020 08 | 116.2 |
+| 153 | P0141       | CPT00000 | 2020 09 | 116.4 |
+| 154 | P0141       | CPT00000 | 2020 10 | 116.8 |
+| 155 | P0141       | CPT00000 | 2020 11 | 116.8 |
+
+The aim is to update the data monthly and the data structure should
+hopefully stay the same to allow for automated updates.
 
 ``` r
 library(dplyr)
@@ -89,7 +144,6 @@ library(scales)
 Total_revenue <- SARS %>% 
   filter(Tax == "Total tax revenue (gross)") %>% 
   mutate(Year_month = yearmonth(paste(Year, Month)))
-
 
 ggplot(Total_revenue, aes(x = Year_month, y = Revenue)) +
   geom_line(color = "darkblue") + 
@@ -128,5 +182,5 @@ system.time({
   df$Simulated_tax <- pit(df$Taxable_income, df$Age, df$MTC, df$Tax_year)
 })
 #>    user  system elapsed 
-#>   1.920   0.151   2.119
+#>   2.214   0.168   2.434
 ```

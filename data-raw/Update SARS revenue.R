@@ -121,7 +121,7 @@ SARS_monthly %>%
 
 
 # If seems ok, save
-save(SARS_monthly, file = "data-raw/SARS/SARS_monthly.rda")
+save(SARS_monthly, file = "data-raw/SARS/SARS_monthly.rda", version = 2)
 
 SARS <- SARS_monthly %>%
   pivot_longer(c(-Revenue, -Category_number)) %>%
@@ -130,9 +130,6 @@ SARS <- SARS_monthly %>%
   mutate(Year = as.numeric(Year),
          Fiscal_year = if_else(Month %in% c("January", "February", "March"), Year, Year + 1)) %>%
   select(Tax = Revenue, Year, Fiscal_year, Month, Revenue = value)
-
-SARS <- SARS %>%
-  select(-Category_number)
 
 usethis::use_data(SARS, overwrite = TRUE)
 

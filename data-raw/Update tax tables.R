@@ -47,7 +47,7 @@ Tax_tables <- list(PIT_brackets_2011 = matrix(c(0,140000,221000,305000,431000,55
                    PIT_rebates_2021 = matrix(c(0,65,75,
                                            14958, 8199, 2736), ncol = 2))
 
-save(Tax_tables, file = "data-raw/SARS/Tax_tables.rda")
+save(Tax_tables, file = "data-raw/SARS/Tax_tables.rda", version = 2)
 
 usethis::use_data(Tax_tables, overwrite = TRUE)
 
