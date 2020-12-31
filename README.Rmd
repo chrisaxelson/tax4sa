@@ -60,7 +60,7 @@ SARB %>%
 # Look for STATSSA inflation data
 STATSSA_descriptions %>% 
   filter(grepl("Consumer Price Index", H02), H04 == "All Items") %>%
-  select(H01, H03, H13) %>% 
+  select(H01, H02, H03, H04, H13) %>% 
   kable()
 
 STATSSA %>% 

@@ -55,11 +55,11 @@ SARS %>%
 
 | Tax                       | Year | Fiscal\_year | Month     |   Revenue |
 | :------------------------ | ---: | -----------: | :-------- | --------: |
-| Total tax revenue (gross) | 2020 |         2021 | June      | 100222434 |
 | Total tax revenue (gross) | 2020 |         2021 | July      |  75750002 |
 | Total tax revenue (gross) | 2020 |         2021 | August    |  97558043 |
 | Total tax revenue (gross) | 2020 |         2021 | September | 102987035 |
 | Total tax revenue (gross) | 2020 |         2021 | October   |  96085039 |
+| Total tax revenue (gross) | 2020 |         2021 | November  |  97377290 |
 
 ``` r
 
@@ -87,34 +87,34 @@ SARB %>%
 
 | Code     |     Date | Frequency |   Value |
 | :------- | -------: | :-------- | ------: |
-| KBP6006K | 20190200 | K1        | 1263022 |
 | KBP6006K | 20190300 | K1        | 1294510 |
 | KBP6006K | 20190400 | K1        | 1313452 |
-| KBP6006K | 20200100 | K1        | 1277318 |
-| KBP6006K | 20200200 | K1        | 1075965 |
+| KBP6006K | 20200100 | K1        | 1277868 |
+| KBP6006K | 20200200 | K1        | 1075641 |
+| KBP6006K | 20200300 | K1        | 1272000 |
 
 ``` r
 
 # Look for STATSSA inflation data
 STATSSA_descriptions %>% 
   filter(grepl("Consumer Price Index", H02), H04 == "All Items") %>%
-  select(H01, H03, H13) %>% 
+  select(H01, H02, H03, H04, H13) %>% 
   kable()
 ```
 
-| H01   | H03      | H13           |
-| :---- | :------- | :------------ |
-| P0141 | CPA00000 | Western Cape  |
-| P0141 | CPB00000 | Eastern Cape  |
-| P0141 | CPC00000 | Northern Cape |
-| P0141 | CPD00000 | Free State    |
-| P0141 | CPE00000 | Kwazulu-Natal |
-| P0141 | CPF00000 | North-West    |
-| P0141 | CPG00000 | Gauteng       |
-| P0141 | CPH00000 | Mpumalanga    |
-| P0141 | CPJ00000 | Limpopo       |
-| P0141 | CPR00000 | Rural Areas   |
-| P0141 | CPT00000 | Total country |
+| H01   | H02                  | H03      | H04       | H13           |
+| :---- | :------------------- | :------- | :-------- | :------------ |
+| P0141 | Consumer Price Index | CPA00000 | All Items | Western Cape  |
+| P0141 | Consumer Price Index | CPB00000 | All Items | Eastern Cape  |
+| P0141 | Consumer Price Index | CPC00000 | All Items | Northern Cape |
+| P0141 | Consumer Price Index | CPD00000 | All Items | Free State    |
+| P0141 | Consumer Price Index | CPE00000 | All Items | Kwazulu-Natal |
+| P0141 | Consumer Price Index | CPF00000 | All Items | North-West    |
+| P0141 | Consumer Price Index | CPG00000 | All Items | Gauteng       |
+| P0141 | Consumer Price Index | CPH00000 | All Items | Mpumalanga    |
+| P0141 | Consumer Price Index | CPJ00000 | All Items | Limpopo       |
+| P0141 | Consumer Price Index | CPR00000 | All Items | Rural Areas   |
+| P0141 | Consumer Price Index | CPT00000 | All Items | Total country |
 
 ``` r
 
@@ -182,5 +182,5 @@ system.time({
   df$Simulated_tax <- pit(df$Taxable_income, df$Age, df$MTC, df$Tax_year)
 })
 #>    user  system elapsed 
-#>   2.214   0.168   2.434
+#>   2.006   0.162   2.332
 ```

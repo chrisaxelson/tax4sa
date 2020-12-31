@@ -13,7 +13,7 @@ usethis::use_data(SARB, overwrite = TRUE)
 
 
 # URL of page to download xlsx data
-SARB_download_url <- "https://www.resbank.co.za/en/home/publications/publication-detail-pages/download-information-from-xlsx-data-files/2020/10273"
+SARB_download_url <- "https://www.resbank.co.za/en/home/publications/publication-detail-pages/quarterly-bulletins/download-information-from-xlsx-data-files/2020/10291"
 
 # Packages
 library(rvest)
@@ -29,7 +29,7 @@ SARB_links <- SARB_page %>%
   html_nodes("a") %>%
   html_attr('href')
 
-SARB_links <- SARB_links[grepl("Kbp", SARB_links)]
+SARB_links <- SARB_links[grepl("\\.zip", SARB_links)]
 SARB_links <- unique(SARB_links)
 SARB_links <- paste0("https://www.resbank.co.za", SARB_links)
 
@@ -129,6 +129,13 @@ SARB <- SARB %>%
 # Remove remaining data
 rm(QB_data2, QB_data_next, QB_data_next2, i, j, SARB_download_url, SARB_links, SARB_page,
    sheets, tmp, tmp2, QB_data)
+
+SARB <- SARB %>%
+  arrange(Code)
+
+# Get rid of incorrect entry
+SARB <- SARB %>%
+  filter(!grepl("\\.\\.\\.", Code))
 
 # Save data
 save(SARB, file = "data-raw/SARB/SARB.rda", version = 2)
