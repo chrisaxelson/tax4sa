@@ -3,11 +3,9 @@
 
 
 # Latest information - UPDATE THIS EACH MONTH
-Latest_link <- "http://www.treasury.gov.za/comm_media/press/monthly/2012/HARDCODED%20OCTOBER%202020.xls"
-Latest_month <- "October"
+Latest_link <- "http://www.treasury.gov.za/comm_media/press/monthly/2101/HARDCODED%20NOVEMBER%202020.xlsx"
+Latest_month <- "November"
 Latest_year <- "2020"
-
-# NB CHANGE THE EXTENSION in "GET" IF CHANGES TO XLSX or vice versa
 
 # This should run the same way each month ---------------------------------
 
@@ -17,17 +15,18 @@ library(dplyr)
 library(readxl)
 library(stringr)
 library(httr)
+library(tidyr)
 
 # Download and import data - NB CHANGE THE EXTENSION IF CHANGES TO XLSX or vice versa
 GET(Latest_link, write_disk(S32 <- tempfile(fileext = sub('.*\\.', '', Latest_link))))
-SARS_temp <- read_excel(S32, sheet = "Table1", range = "A4:T146")
+SARS_temp <- read_excel(S32, sheet = "Table1", range = "A4:T148")
 
-# SARS_temp <- SARS_temp %>%
-#   mutate(Tax_category = case_when(
-#     !is.na(`...2`) ~ 1,
-#     !is.na(`...3`) ~ 2,
-#     !is.na(`...5`) ~ 3,
-#     TRUE ~ 0))
+SARS_temp <- SARS_temp %>%
+  mutate(Tax_category = case_when(
+    !is.na(`...2`) ~ 1,
+    !is.na(`...3`) ~ 2,
+    !is.na(`...5`) ~ 3,
+    TRUE ~ 0))
 
 SARS_temp <- SARS_temp %>%
   mutate(Revenue = coalesce(`...1`, `...2`, `...3`, `...4`, `...5`)) %>%
@@ -117,13 +116,14 @@ SARS_monthly <- SARS_monthly %>%
 
 # Check if any are missing compared to previous month
 SARS_monthly %>%
-  select(1, tail(names(.), 2))
+  select(1, tail(names(.), 3))
 
 
 # If seems ok, save
 save(SARS_monthly, file = "data-raw/SARS/SARS_monthly.rda", version = 2)
 
 SARS <- SARS_monthly %>%
+  select(-Tax_category) %>%
   pivot_longer(c(-Revenue, -Category_number)) %>%
   filter(!is.na(value)) %>%
   separate(name, into = c("Month", "Year"), sep = "_") %>%
