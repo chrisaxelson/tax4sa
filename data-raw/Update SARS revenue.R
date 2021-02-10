@@ -3,8 +3,8 @@
 
 
 # Latest information - UPDATE THIS EACH MONTH
-Latest_link <- "http://www.treasury.gov.za/comm_media/press/monthly/2101/HARDCODED%20NOVEMBER%202020.xlsx"
-Latest_month <- "November"
+Latest_link <- "http://www.treasury.gov.za/comm_media/press/monthly/2102/HARDCODED%20DECEMBER%202020.xlsx"
+Latest_month <- "December"
 Latest_year <- "2020"
 
 # This should run the same way each month ---------------------------------

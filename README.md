@@ -8,7 +8,7 @@
 <!-- badges: end -->
 
 This is a minimal package to help with the compilation and analysis of
-tax data in South Africa. The package only contains two main sets of
+tax data in South Africa. The package only contains three main sets of
 data and three functions.
 
 The data includes monthly tax revenue collections of the South African
@@ -55,11 +55,11 @@ SARS %>%
 
 | Tax                       | Year | Fiscal\_year | Month     |   Revenue |
 | :------------------------ | ---: | -----------: | :-------- | --------: |
-| Total tax revenue (gross) | 2020 |         2021 | July      |  75750002 |
 | Total tax revenue (gross) | 2020 |         2021 | August    |  97558043 |
 | Total tax revenue (gross) | 2020 |         2021 | September | 102987035 |
 | Total tax revenue (gross) | 2020 |         2021 | October   |  96085039 |
 | Total tax revenue (gross) | 2020 |         2021 | November  |  97377290 |
+| Total tax revenue (gross) | 2020 |         2021 | December  | 163683330 |
 
 ``` r
 
@@ -182,5 +182,5 @@ system.time({
   df$Simulated_tax <- pit(df$Taxable_income, df$Age, df$MTC, df$Tax_year)
 })
 #>    user  system elapsed 
-#>   2.006   0.162   2.332
+#>   1.771   0.114   1.896
 ```
