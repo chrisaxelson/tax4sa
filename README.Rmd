@@ -1,0 +1,104 @@
+---
+output: github_document
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/README-",
+  out.width = "100%"
+)
+```
+
+# tax4sa
+
+<!-- badges: start -->
+<!-- badges: end -->
+
+This is a minimal package to help with the compilation and analysis of tax data in South Africa. The package only contains two main sets of data and three functions. 
+
+The data includes monthly tax revenue collections of the South African Revenue Service (SARS) as published by the [National Treasury of South Africa](http://www.treasury.gov.za/comm_media/press/monthly/default.aspx) in a dataframe named `SARS` and regularly updated statistics from [Statistics South Africa](http://www.statssa.gov.za/?page_id=1847) in a dataframe named `STATSSA`.
+
+The three functions are intended to help with calculating tax liabilities, particularly when used with the [administrative data from SARS](https://sa-tied.wider.unu.edu/sites/default/files/pdf/SATIED_WP36_Ebrahim_Axelson_March_2019.pdf).
+
+## Installation
+
+You can install the package from [GitHub](https://github.com/) with:
+
+``` r
+# install.packages("devtools")
+devtools::install_github("chrisaxelson/tax4sa")
+```
+## Example
+
+The data can be accessed by directly entering either `SARS` or `STATSSA` and is in a tidy format to ease analysis within R. `SARB_descriptions` and `STATSSA_descriptions` are also available to help with the details of each variable in those two sets of data.  
+
+```{r example, message = FALSE}
+library(tax4sa)
+library(dplyr)
+library(knitr)
+
+# Check revenue data
+SARS %>% 
+  filter(Tax == "Total tax revenue (gross)") %>% 
+  tail(5) %>% 
+  kable()
+
+# Look for STATSSA inflation data
+STATSSA_descriptions %>% 
+  filter(grepl("Consumer Price Index", H02), H04 == "All Items") %>%
+  select(H01, H02, H03, H04, H13) %>% 
+  kable()
+
+STATSSA %>% 
+  filter(Code == "CPT00000") %>% 
+  tail(5) %>% 
+  kable()
+
+
+```
+
+The aim is to update the data monthly and the data structure should hopefully stay the same to allow for automated updates. 
+
+```{r revenue, message = FALSE}
+library(dplyr)
+library(tsibble)
+library(ggplot2)
+library(scales)
+
+Total_revenue <- SARS %>% 
+  filter(Tax == "Total tax revenue (gross)") %>% 
+  mutate(Year_month = yearmonth(paste(Year, Month)))
+
+ggplot(Total_revenue, aes(x = Year_month, y = Revenue)) +
+  geom_line(color = "darkblue") + 
+  scale_y_continuous(labels = comma) +
+  theme_minimal() +
+  theme(axis.title.x = element_blank())
+  
+```
+
+The three functions are `tax_calculation`, `pit` and `pit_manual`. The first is a generic function to apply a tax table to a value, while the latter two specifically calculate the personal income tax liability in South Africa. `pit_manual` allows for a custom tax table to be applied to cater for modelling the impacts of changes in the personal income tax tables. The package includes a list of historical tax tables to be used in the calculations. 
+
+```{r tax, message = FALSE}
+# Accessing tax tables
+tax_calculation(100000, Tax_tables$PIT_brackets_2021)
+
+# Calculate personal income tax
+pit(income = 1000000, age = 53, mtc = 2550, tax_year = 2021)
+
+# Same calculation in a relatively large dataframe with differing variables
+individuals <- 1e6
+df <- data.frame(Taxable_income = round(runif(individuals, 0, 3000000),0),
+                 Age = round(runif(individuals, 18, 80),0),
+                 MTC = round(runif(individuals, 0, 6000), 0),
+                 Tax_year = round(runif(individuals, 2014, 2020), 0))
+
+system.time({
+  df <- df %>% 
+    mutate(Simulated_tax = pit(Taxable_income, Age, MTC, Tax_year))
+})
+```
