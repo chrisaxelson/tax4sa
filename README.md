@@ -8,18 +8,23 @@
 <!-- badges: end -->
 
 This is a minimal package to help with the compilation and analysis of
-tax data in South Africa. The package only contains two main sets of
-data and three functions.
+tax data in South Africa. The package only contains three main sets of
+data, three functions and the personal income tax tables from 2001 to
+2021.
 
 The data includes monthly tax revenue collections of the South African
 Revenue Service (SARS) as published by the [National Treasury of South
 Africa](http://www.treasury.gov.za/comm_media/press/monthly/default.aspx)
-in a dataframe named `SARS` and regularly updated statistics from
+in a dataframe named `SARS`, data from the Quarterly Bulletin published
+by the [South African Reserve
+Bank](https://www.resbank.co.za/en/home/publications/quarterly-bulletin1/download-information-from-xlsx-data-files)
+in a dataframe named `SARB` and regularly updated statistics from
 [Statistics South Africa](http://www.statssa.gov.za/?page_id=1847) in a
 dataframe named `STATSSA`.
 
-The three functions are intended to help with calculating tax
-liabilities, particularly when used with the [administrative data from
+The three functions and the personal income tax tables are intended to
+help with calculating tax liabilities, particularly when used with the
+[administrative data from
 SARS](https://sa-tied.wider.unu.edu/sites/default/files/pdf/SATIED_WP36_Ebrahim_Axelson_March_2019.pdf).
 
 ## Installation
@@ -57,6 +62,38 @@ SARS %>%
 | Total tax revenue (gross) | 2021 |         2021 | January  | 101388476 |
 | Total tax revenue (gross) | 2021 |         2021 | February | 130843297 |
 | Total tax revenue (gross) | 2021 |         2021 | March    | 141965716 |
+
+``` r
+
+# Look for SARB economic data on GDP
+SARB_descriptions %>% 
+  filter(grepl("Gross domestic product at market prices", Description), Frequency == "K1") %>%
+  kable()
+```
+
+| Code     | Description                             | Frequency | Frequency\_description | Unit\_of\_measure | Version\_description                                     |
+| :------- | :-------------------------------------- | :-------- | :--------------------- | :---------------- | :------------------------------------------------------- |
+| KBP6006C | Gross domestic product at market prices | K1        | Quarterly              | RMILL             | Constant 2010 prices                                     |
+| KBP6006D | Gross domestic product at market prices | K1        | Quarterly              | RMILL             | Constant 2010 prices. Seasonally adjusted at annual rate |
+| KBP6006K | Gross domestic product at market prices | K1        | Quarterly              | RMILL             | Current prices                                           |
+| KBP6006L | Gross domestic product at market prices | K1        | Quarterly              | RMILL             | Current prices. Seasonally adjusted at annual rate       |
+| KBP6006S | Gross domestic product at market prices | K1        | Quarterly              | PERC              | 1-Term % change                                          |
+
+``` r
+
+SARB %>% 
+  filter(Code == "KBP6006K") %>% 
+  tail(5) %>% 
+  kable()
+```
+
+| Code     |     Date | Frequency |   Value |
+| :------- | -------: | :-------- | ------: |
+| KBP6006K | 20190400 | K1        | 1313452 |
+| KBP6006K | 20200100 | K1        | 1281361 |
+| KBP6006K | 20200200 | K1        | 1073725 |
+| KBP6006K | 20200300 | K1        | 1266238 |
+| KBP6006K | 20200400 | K1        | 1352651 |
 
 ``` r
 
@@ -148,5 +185,5 @@ system.time({
     mutate(Simulated_tax = pit(Taxable_income, Age, MTC, Tax_year))
 })
 #>    user  system elapsed 
-#>   0.626   0.112   0.774
+#>   0.534   0.111   0.691
 ```

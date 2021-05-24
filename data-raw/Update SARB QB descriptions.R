@@ -13,10 +13,10 @@ library(janitor)
 library(Hmisc)
 
 # Get excel spreadsheet
-SARB_descriptions_url <- "https://www.resbank.co.za/Publications/QuarterlyBulletins/Documents/QB%20Time%20Series%20Descriptions%20%E2%80%93%20%20March%202020.zip"
+SARB_descriptions_url <- "https://www.resbank.co.za/content/dam/sarb/publications/quarterly-bulletins/qb-time-series-descriptions/2021/QB%20Time%20Series%20Descriptions%20-%20March%202021.zip"
 
 # QB xlsx site again for frequency descriptions
-webpage <- read_html("https://www.resbank.co.za/Publications/Detail-Item-View/Pages/Publications.aspx?sarbweb=3b6aa07d-92ab-441f-b7bf-bb7dfb1bedb4&sarblist=21b5222e-7125-4e55-bb65-56fd3333371e&sarbitem=9800")
+webpage <- read_html("https://www.resbank.co.za/en/home/publications/publication-detail-pages/quarterly-bulletins/download-information-from-xlsx-data-files/2021/download-information-from-xlsx-data-files")
 
 
 # Download
@@ -24,11 +24,11 @@ download.file(SARB_descriptions_url, destfile = "data-raw/SARB/SARB_description.
 
 # Unzip
 unzip(zipfile="data-raw/SARB/SARB_description.zip",
-      files = "QB Time Series Descriptions - March 2020.xlsx",
+      files = "QB Time Series Descriptions - March 2021.xlsx",
       exdir="data-raw/SARB")
 
 # Import and clean
-SARB_descriptions <- read_excel("data-raw/SARB/QB Time Series Descriptions - March 2020.xlsx")
+SARB_descriptions <- read_excel("data-raw/SARB/QB Time Series Descriptions - March 2021.xlsx")
 SARB_descriptions <- clean_names(SARB_descriptions)
 colnames(SARB_descriptions) <- capitalize(colnames(SARB_descriptions))
 
@@ -67,7 +67,7 @@ tbls <- html_nodes(webpage, "table")
 
 Frequency_description <- webpage %>%
   html_nodes("table") %>%
-  .[11] %>%
+  # .[11] %>%
   html_table(header = TRUE)
 
 Frequency_description <- as.data.frame(Frequency_description[[1]])

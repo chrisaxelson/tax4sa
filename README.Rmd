@@ -18,11 +18,11 @@ knitr::opts_chunk$set(
 <!-- badges: start -->
 <!-- badges: end -->
 
-This is a minimal package to help with the compilation and analysis of tax data in South Africa. The package only contains two main sets of data and three functions. 
+This is a minimal package to help with the compilation and analysis of tax data in South Africa. The package only contains three main sets of data, three functions and the personal income tax tables from 2001 to 2021. 
 
-The data includes monthly tax revenue collections of the South African Revenue Service (SARS) as published by the [National Treasury of South Africa](http://www.treasury.gov.za/comm_media/press/monthly/default.aspx) in a dataframe named `SARS` and regularly updated statistics from [Statistics South Africa](http://www.statssa.gov.za/?page_id=1847) in a dataframe named `STATSSA`.
+The data includes monthly tax revenue collections of the South African Revenue Service (SARS) as published by the [National Treasury of South Africa](http://www.treasury.gov.za/comm_media/press/monthly/default.aspx) in a dataframe named `SARS`, data from the Quarterly Bulletin published by the [South African Reserve Bank](https://www.resbank.co.za/en/home/publications/quarterly-bulletin1/download-information-from-xlsx-data-files) in a dataframe named `SARB` and regularly updated statistics from [Statistics South Africa](http://www.statssa.gov.za/?page_id=1847) in a dataframe named `STATSSA`.
 
-The three functions are intended to help with calculating tax liabilities, particularly when used with the [administrative data from SARS](https://sa-tied.wider.unu.edu/sites/default/files/pdf/SATIED_WP36_Ebrahim_Axelson_March_2019.pdf).
+The three functions and the personal income tax tables are intended to help with calculating tax liabilities, particularly when used with the [administrative data from SARS](https://sa-tied.wider.unu.edu/sites/default/files/pdf/SATIED_WP36_Ebrahim_Axelson_March_2019.pdf).
 
 ## Installation
 
@@ -44,6 +44,16 @@ library(knitr)
 # Check revenue data
 SARS %>% 
   filter(Tax == "Total tax revenue (gross)") %>% 
+  tail(5) %>% 
+  kable()
+
+# Look for SARB economic data on GDP
+SARB_descriptions %>% 
+  filter(grepl("Gross domestic product at market prices", Description), Frequency == "K1") %>%
+  kable()
+
+SARB %>% 
+  filter(Code == "KBP6006K") %>% 
   tail(5) %>% 
   kable()
 
