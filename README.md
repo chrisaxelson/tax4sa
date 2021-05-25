@@ -9,8 +9,8 @@
 
 This is a minimal package to help with the compilation and analysis of
 tax data in South Africa. The package only contains three main sets of
-data, three functions and the personal income tax tables from 2001 to
-2021.
+data, three functions and the personal income tax tables from 1995/96 to
+2021/22.
 
 The data includes monthly tax revenue collections of the South African
 Revenue Service (SARS) as published by the [National Treasury of South
@@ -185,5 +185,5 @@ system.time({
     mutate(Simulated_tax = pit(Taxable_income, Age, MTC, Tax_year))
 })
 #>    user  system elapsed 
-#>   0.534   0.111   0.691
+#>   0.630   0.093   0.750
 ```
