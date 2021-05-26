@@ -12,13 +12,14 @@ tax data in South Africa. The package only contains three main sets of
 data, three functions and the personal income tax tables from 1995/96 to
 2021/22.
 
-The data includes monthly tax revenue collections of the South African
-Revenue Service (SARS) as published by the [National Treasury of South
-Africa](http://www.treasury.gov.za/comm_media/press/monthly/default.aspx)
-in a dataframe named `SARS`, data from the Quarterly Bulletin published
-by the [South African Reserve
+The data includes: annual tax revenue collections of the South African
+Revenue Service (SARS) from 1989/90 and monthly tax revenue collections
+from April 2006, as published by the [National Treasury of South
+Africa](http://www.treasury.gov.za/comm_media/press/monthly/default.aspx),
+in dataframes named `SARS_annual` and `SARS_monthly`; data from the
+Quarterly Bulletin published by the [South African Reserve
 Bank](https://www.resbank.co.za/en/home/publications/quarterly-bulletin1/download-information-from-xlsx-data-files)
-in a dataframe named `SARB` and regularly updated statistics from
+in a dataframe named `SARB`; and regularly updated statistics from
 [Statistics South Africa](http://www.statssa.gov.za/?page_id=1847) in a
 dataframe named `STATSSA`.
 
@@ -32,16 +33,19 @@ SARS](https://sa-tied.wider.unu.edu/sites/default/files/pdf/SATIED_WP36_Ebrahim_
 You can install the package from [GitHub](https://github.com/) with:
 
 ``` r
-# install.packages("devtools")
-devtools::install_github("chrisaxelson/tax4sa")
+# install.packages("remotes")
+remotes::install_github("chrisaxelson/tax4sa")
 ```
 
 ## Example
 
-The data can be accessed by directly entering either `SARS` or `STATSSA`
-and is in a tidy format to ease analysis within R. `SARB_descriptions`
-and `STATSSA_descriptions` are also available to help with the details
-of each variable in those two sets of data.
+The data can be accessed by directly entering either `SARS_annual`,
+`SARS_monthly`, `STATSSA` or `SARB` and is in a tidy format to ease
+analysis within R. The revenue data is split by three revenue
+classifications in columns `T1`, `T2` and `T3` and all figures are in
+ZAR 000’s. The dataframes `SARB_descriptions` and `STATSSA_descriptions`
+are also available to help with the details of each variable in those
+two sets of data.
 
 ``` r
 library(tax4sa)
@@ -49,19 +53,38 @@ library(dplyr)
 library(knitr)
 
 # Check revenue data
-SARS %>% 
-  filter(Tax == "Total tax revenue (gross)") %>% 
+SARS_annual %>% 
+  filter(T3 == "Total tax revenue (gross)") %>% 
+  select(Tax = T3, Year, Revenue) %>% 
   tail(5) %>% 
-  kable()
+  kable(format.args = list(big.mark = ","))
 ```
 
-| Tax                       | Year | Fiscal\_year | Month    |   Revenue |
-| :------------------------ | ---: | -----------: | :------- | --------: |
-| Total tax revenue (gross) | 2020 |         2021 | November |  97377290 |
-| Total tax revenue (gross) | 2020 |         2021 | December | 163683330 |
-| Total tax revenue (gross) | 2021 |         2021 | January  | 101388476 |
-| Total tax revenue (gross) | 2021 |         2021 | February | 130843297 |
-| Total tax revenue (gross) | 2021 |         2021 | March    | 141965716 |
+| Tax                       | Year    |       Revenue |
+| :------------------------ | :------ | ------------: |
+| Total tax revenue (gross) | 2016/17 | 1,144,080,988 |
+| Total tax revenue (gross) | 2017/18 | 1,216,463,874 |
+| Total tax revenue (gross) | 2018/19 | 1,287,690,241 |
+| Total tax revenue (gross) | 2019/20 | 1,355,748,955 |
+| Total tax revenue (gross) | 2020/21 | 1,249,896,191 |
+
+``` r
+
+# And monthly
+SARS_monthly %>% 
+  filter(T3 == "Health promotion levy") %>% 
+  select(Tax = T3, Month_year, Revenue) %>% 
+  tail(5) %>% 
+  kable(format.args = list(big.mark = ","))
+```
+
+| Tax                   | Month\_year    | Revenue |
+| :-------------------- | :------------- | ------: |
+| Health promotion levy | November\_2020 | 217,916 |
+| Health promotion levy | December\_2020 | 210,652 |
+| Health promotion levy | January\_2021  | 234,444 |
+| Health promotion levy | February\_2021 | 188,848 |
+| Health promotion levy | March\_2021    | 182,444 |
 
 ``` r
 
@@ -134,8 +157,8 @@ STATSSA %>%
 | P0141       | CPT00000 | 2021 03 | 119   |
 | P0141       | CPT00000 | 2021 04 | 119.8 |
 
-The aim is to update the data monthly and the data structure should
-hopefully stay the same to allow for automated updates.
+The data is probably most useful when combined, such as in creating
+charts such as that below.
 
 ``` r
 library(dplyr)
@@ -143,15 +166,35 @@ library(tsibble)
 library(ggplot2)
 library(scales)
 
-Total_revenue <- SARS %>% 
-  filter(Tax == "Total tax revenue (gross)") %>% 
-  mutate(Year_month = yearmonth(paste(Year, Month)))
+# Create a tax to GDP chart - revenue per year first
+Total_revenue <- SARS_annual %>% 
+  filter(T3 == "Total tax revenue (gross)") %>% 
+  select(Fiscal_year, Revenue)
 
-ggplot(Total_revenue, aes(x = Year_month, y = Revenue)) +
+# Get Nominal GDP across fiscal year by summing per quarter
+GDP_fiscal <- SARB %>% 
+  filter(Code == "KBP6006K") %>% 
+  mutate(Fiscal_year = if_else(substr(Date, 6, 6) == "1",
+                               as.numeric(substr(Date, 1, 4)),
+                               as.numeric(substr(Date, 1, 4)) + 1)) %>% 
+  group_by(Fiscal_year) %>% 
+  summarise(GDP = sum(Value)) %>% 
+  filter(Fiscal_year < 2021)
+
+# Join together and create tax to GDP
+Tax_to_GDP <- GDP_fiscal %>% 
+  inner_join(Total_revenue, by = "Fiscal_year") %>% 
+  mutate(Revenue = Revenue / 1000,
+         Tax_to_GDP = Revenue / GDP)
+
+# Chart
+ggplot(Tax_to_GDP, aes(x = Fiscal_year, y = Tax_to_GDP)) +
   geom_line(color = "darkblue") + 
-  scale_y_continuous(labels = comma) +
+  geom_point(color = "darkblue") +
+  scale_y_continuous(labels = scales::percent_format(accuracy = 1L)) +
   theme_minimal() +
-  theme(axis.title.x = element_blank())
+  theme(axis.title.x = element_blank()) +
+  ylab("Tax to GDP") 
 ```
 
 <img src="man/figures/README-revenue-1.png" width="100%" />
@@ -185,5 +228,5 @@ system.time({
     mutate(Simulated_tax = pit(Taxable_income, Age, MTC, Tax_year))
 })
 #>    user  system elapsed 
-#>   0.630   0.093   0.750
+#>   0.533   0.095   0.692
 ```
