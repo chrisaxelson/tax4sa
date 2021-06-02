@@ -8,18 +8,18 @@
 <!-- badges: end -->
 
 This is a minimal package to help with the compilation and analysis of
-tax data in South Africa. The package only contains four main sets of
-data, three functions and the personal income tax tables from 1995/96 to
-2021/22.
+tax and economic data in South Africa. The package only contains four
+main sets of data, three functions and the personal income tax tables
+from 1995/96 to 2021/22.
 
 The data includes:
 
   - Annual tax revenue collections from 1983/84, as published in the
-    [Budget Review each
-    year](http://www.treasury.gov.za/documents/national%20budget/default.aspx)
-  - Monthly tax revenue collections from April 2002, as published [in
-    the monthly financing
-    statements](http://www.treasury.gov.za/comm_media/press/monthly/default.aspx)
+    [Budget Reviews of the National
+    Treasury](http://www.treasury.gov.za/documents/national%20budget/default.aspx)
+  - Monthly tax revenue collections from April 2002, as published in the
+    [monthly financing statements of the National
+    Treasury](http://www.treasury.gov.za/comm_media/press/monthly/default.aspx)
   - Quarterly Bulletin data from the [South African Reserve
     Bank](https://www.resbank.co.za/en/home/publications/quarterly-bulletin1/download-information-from-xlsx-data-files)
   - Economic statistics from [Statistics South
@@ -62,14 +62,14 @@ SARS_annual %>%
   kable(format.args = list(big.mark = ","))
 ```
 
-| T1                          | T2                          | T3                                                  |       Revenue |
-| :-------------------------- | :-------------------------- | :-------------------------------------------------- | ------------: |
-| Taxes on income and profits | Taxes on income and profits | Taxes on income and profits                         | 718,180,499.0 |
-| Taxes on income and profits | Personal income tax         | Personal income tax                                 | 487,006,277.5 |
-| Taxes on income and profits | Tax on corporate income     | Tax on corporate income                             | 227,434,992.5 |
-| Taxes on income and profits | Tax on corporate income     | Corporate income tax                                | 202,099,325.8 |
-| Taxes on income and profits | Tax on corporate income     | Secondary tax on companies/dividend withholding tax |  24,845,362.0 |
-| Taxes on income and profits | Tax on corporate income     | Interest withholding tax                            |     490,304.6 |
+| T1                          | T2                          | T3                          |     Revenue |
+| :-------------------------- | :-------------------------- | :-------------------------- | ----------: |
+| Taxes on income and profits | Taxes on income and profits | Taxes on income and profits | 718,180,499 |
+| Taxes on income and profits | Personal income tax         | Personal income tax         | 487,006,278 |
+| Taxes on income and profits | Tax on corporate income     | Tax on corporate income     | 227,434,993 |
+| Taxes on income and profits | Tax on corporate income     | Gold mines                  |          NA |
+| Taxes on income and profits | Tax on corporate income     | Diamond mines               |          NA |
+| Taxes on income and profits | Tax on corporate income     | Other mines                 |          NA |
 
 ``` r
 
@@ -83,11 +83,11 @@ SARS_monthly %>%
 
 | Tax                   | Month\_year    | Revenue |
 | :-------------------- | :------------- | ------: |
-| Health promotion levy | November\_2020 | 217,916 |
 | Health promotion levy | December\_2020 | 210,652 |
 | Health promotion levy | January\_2021  | 234,444 |
 | Health promotion levy | February\_2021 | 188,848 |
 | Health promotion levy | March\_2021    | 182,444 |
+| Health promotion levy | April\_2021    | 217,617 |
 
 ``` r
 
@@ -232,5 +232,5 @@ system.time({
     mutate(Simulated_tax = pit(Taxable_income, Age, MTC, Tax_year))
 })
 #>    user  system elapsed 
-#>   0.453   0.094   0.686
+#>   0.569   0.103   0.711
 ```

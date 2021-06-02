@@ -18,12 +18,12 @@ knitr::opts_chunk$set(
 <!-- badges: start -->
 <!-- badges: end -->
 
-This is a minimal package to help with the compilation and analysis of tax data in South Africa. The package only contains four main sets of data, three functions and the personal income tax tables from 1995/96 to 2021/22. 
+This is a minimal package to help with the compilation and analysis of tax and economic data in South Africa. The package only contains four main sets of data, three functions and the personal income tax tables from 1995/96 to 2021/22. 
 
 The data includes: 
 
-  + Annual tax revenue collections from 1983/84, as published in the [Budget Review each year](http://www.treasury.gov.za/documents/national%20budget/default.aspx) 
-  + Monthly tax revenue collections from April 2002, as published [in the monthly financing statements](http://www.treasury.gov.za/comm_media/press/monthly/default.aspx)
+  + Annual tax revenue collections from 1983/84, as published in the [Budget Reviews of the National Treasury](http://www.treasury.gov.za/documents/national%20budget/default.aspx) 
+  + Monthly tax revenue collections from April 2002, as published in the [monthly financing statements of the National Treasury](http://www.treasury.gov.za/comm_media/press/monthly/default.aspx)
   + Quarterly Bulletin data from the [South African Reserve Bank](https://www.resbank.co.za/en/home/publications/quarterly-bulletin1/download-information-from-xlsx-data-files)
   + Economic statistics from [Statistics South Africa](http://www.statssa.gov.za/?page_id=1847)
 
