@@ -8,20 +8,22 @@
 <!-- badges: end -->
 
 This is a minimal package to help with the compilation and analysis of
-tax data in South Africa. The package only contains three main sets of
+tax data in South Africa. The package only contains four main sets of
 data, three functions and the personal income tax tables from 1995/96 to
 2021/22.
 
-The data includes: annual tax revenue collections of the South African
-Revenue Service (SARS) from 1989/90 and monthly tax revenue collections
-from April 2006, as published by the [National Treasury of South
-Africa](http://www.treasury.gov.za/comm_media/press/monthly/default.aspx),
-in dataframes named `SARS_annual` and `SARS_monthly`; data from the
-Quarterly Bulletin published by the [South African Reserve
-Bank](https://www.resbank.co.za/en/home/publications/quarterly-bulletin1/download-information-from-xlsx-data-files)
-in a dataframe named `SARB`; and regularly updated statistics from
-[Statistics South Africa](http://www.statssa.gov.za/?page_id=1847) in a
-dataframe named `STATSSA`.
+The data includes:
+
+  - Annual tax revenue collections from 1983/84, as published in the
+    [Budget Review each
+    year](http://www.treasury.gov.za/documents/national%20budget/default.aspx)
+  - Monthly tax revenue collections from April 2002, as published [in
+    the monthly financing
+    statements](http://www.treasury.gov.za/comm_media/press/monthly/default.aspx)
+  - Quarterly Bulletin data from the [South African Reserve
+    Bank](https://www.resbank.co.za/en/home/publications/quarterly-bulletin1/download-information-from-xlsx-data-files)
+  - Economic statistics from [Statistics South
+    Africa](http://www.statssa.gov.za/?page_id=1847)
 
 The three functions and the personal income tax tables are intended to
 help with calculating tax liabilities, particularly when used with the
@@ -54,19 +56,20 @@ library(knitr)
 
 # Check revenue data
 SARS_annual %>% 
-  filter(T3 == "Total tax revenue (gross)") %>% 
-  select(Tax = T3, Year, Revenue) %>% 
-  tail(5) %>% 
+  filter(Fiscal_year == 2021) %>%  
+  select(T1:T3, Revenue) %>% 
+  head() %>% 
   kable(format.args = list(big.mark = ","))
 ```
 
-| Tax                       | Year    |       Revenue |
-| :------------------------ | :------ | ------------: |
-| Total tax revenue (gross) | 2016/17 | 1,144,080,988 |
-| Total tax revenue (gross) | 2017/18 | 1,216,463,874 |
-| Total tax revenue (gross) | 2018/19 | 1,287,690,241 |
-| Total tax revenue (gross) | 2019/20 | 1,355,748,955 |
-| Total tax revenue (gross) | 2020/21 | 1,249,896,191 |
+| T1                          | T2                          | T3                                                  |       Revenue |
+| :-------------------------- | :-------------------------- | :-------------------------------------------------- | ------------: |
+| Taxes on income and profits | Taxes on income and profits | Taxes on income and profits                         | 718,180,499.0 |
+| Taxes on income and profits | Personal income tax         | Personal income tax                                 | 487,006,277.5 |
+| Taxes on income and profits | Tax on corporate income     | Tax on corporate income                             | 227,434,992.5 |
+| Taxes on income and profits | Tax on corporate income     | Corporate income tax                                | 202,099,325.8 |
+| Taxes on income and profits | Tax on corporate income     | Secondary tax on companies/dividend withholding tax |  24,845,362.0 |
+| Taxes on income and profits | Tax on corporate income     | Interest withholding tax                            |     490,304.6 |
 
 ``` r
 
@@ -194,7 +197,8 @@ ggplot(Tax_to_GDP, aes(x = Fiscal_year, y = Tax_to_GDP)) +
   scale_y_continuous(labels = scales::percent_format(accuracy = 1L)) +
   theme_minimal() +
   theme(axis.title.x = element_blank()) +
-  ylab("Tax to GDP") 
+  ylab("Tax to GDP") +
+  ggtitle("Total tax revenue to GDP")
 ```
 
 <img src="man/figures/README-revenue-1.png" width="100%" />
@@ -228,5 +232,5 @@ system.time({
     mutate(Simulated_tax = pit(Taxable_income, Age, MTC, Tax_year))
 })
 #>    user  system elapsed 
-#>   0.533   0.095   0.692
+#>   0.453   0.094   0.686
 ```

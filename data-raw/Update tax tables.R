@@ -189,8 +189,8 @@ PIT_rebates <- setnames(PIT_rebates,
 # Cumulative rebate
 PIT_rebates[, Cumulative_rebate := cumsum(Rebate), by = Tax_year]
 
-save(PIT_brackets, file = "data-raw/SARS/PIT_brackets.rda")
-save(PIT_rebates, file = "data-raw/SARS/PIT_rebates.rda")
+save(PIT_brackets, file = "data-raw/SARS/PIT_brackets.rda", version = 2)
+save(PIT_rebates, file = "data-raw/SARS/PIT_rebates.rda", version = 2)
 
 usethis::use_data(PIT_brackets, overwrite = TRUE)
 usethis::use_data(PIT_rebates, overwrite = TRUE)

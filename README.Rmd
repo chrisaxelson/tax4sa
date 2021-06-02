@@ -18,9 +18,14 @@ knitr::opts_chunk$set(
 <!-- badges: start -->
 <!-- badges: end -->
 
-This is a minimal package to help with the compilation and analysis of tax data in South Africa. The package only contains three main sets of data, three functions and the personal income tax tables from 1995/96 to 2021/22. 
+This is a minimal package to help with the compilation and analysis of tax data in South Africa. The package only contains four main sets of data, three functions and the personal income tax tables from 1995/96 to 2021/22. 
 
-The data includes: annual tax revenue collections of the South African Revenue Service (SARS) from 1989/90 and monthly tax revenue collections from April 2006, as published by the [National Treasury of South Africa](http://www.treasury.gov.za/comm_media/press/monthly/default.aspx), in dataframes named `SARS_annual` and `SARS_monthly`; data from the Quarterly Bulletin published by the [South African Reserve Bank](https://www.resbank.co.za/en/home/publications/quarterly-bulletin1/download-information-from-xlsx-data-files) in a dataframe named `SARB`; and regularly updated statistics from [Statistics South Africa](http://www.statssa.gov.za/?page_id=1847) in a dataframe named `STATSSA`.
+The data includes: 
+
+  + Annual tax revenue collections from 1983/84, as published in the [Budget Review each year](http://www.treasury.gov.za/documents/national%20budget/default.aspx) 
+  + Monthly tax revenue collections from April 2002, as published [in the monthly financing statements](http://www.treasury.gov.za/comm_media/press/monthly/default.aspx)
+  + Quarterly Bulletin data from the [South African Reserve Bank](https://www.resbank.co.za/en/home/publications/quarterly-bulletin1/download-information-from-xlsx-data-files)
+  + Economic statistics from [Statistics South Africa](http://www.statssa.gov.za/?page_id=1847)
 
 The three functions and the personal income tax tables are intended to help with calculating tax liabilities, particularly when used with the [administrative data from SARS](https://sa-tied.wider.unu.edu/sites/default/files/pdf/SATIED_WP36_Ebrahim_Axelson_March_2019.pdf).
 
@@ -43,9 +48,9 @@ library(knitr)
 
 # Check revenue data
 SARS_annual %>% 
-  filter(T3 == "Total tax revenue (gross)") %>% 
-  select(Tax = T3, Year, Revenue) %>% 
-  tail(5) %>% 
+  filter(Fiscal_year == 2021) %>%  
+  select(T1:T3, Revenue) %>% 
+  head() %>% 
   kable(format.args = list(big.mark = ","))
 
 # And monthly
@@ -115,7 +120,8 @@ ggplot(Tax_to_GDP, aes(x = Fiscal_year, y = Tax_to_GDP)) +
   scale_y_continuous(labels = scales::percent_format(accuracy = 1L)) +
   theme_minimal() +
   theme(axis.title.x = element_blank()) +
-  ylab("Tax to GDP") 
+  ylab("Tax to GDP") +
+  ggtitle("Total tax revenue to GDP")
   
 ```
 
