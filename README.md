@@ -62,14 +62,14 @@ SARS_annual %>%
   kable(format.args = list(big.mark = ","))
 ```
 
-| T1                          | T2                          | T3                          |     Revenue |
-| :-------------------------- | :-------------------------- | :-------------------------- | ----------: |
-| Taxes on income and profits | Taxes on income and profits | Taxes on income and profits | 718,180,499 |
-| Taxes on income and profits | Personal income tax         | Personal income tax         | 487,006,278 |
-| Taxes on income and profits | Tax on corporate income     | Tax on corporate income     | 227,434,993 |
-| Taxes on income and profits | Tax on corporate income     | Gold mines                  |          NA |
-| Taxes on income and profits | Tax on corporate income     | Diamond mines               |          NA |
-| Taxes on income and profits | Tax on corporate income     | Other mines                 |          NA |
+| T1                          | T2                          | T3                                                  |       Revenue |
+| :-------------------------- | :-------------------------- | :-------------------------------------------------- | ------------: |
+| Taxes on income and profits | Taxes on income and profits | Taxes on income and profits                         | 718,180,499.0 |
+| Taxes on income and profits | Personal income tax         | Personal income tax                                 | 487,006,277.5 |
+| Taxes on income and profits | Tax on corporate income     | Tax on corporate income                             | 227,434,992.5 |
+| Taxes on income and profits | Tax on corporate income     | Corporate income tax                                | 202,099,325.8 |
+| Taxes on income and profits | Tax on corporate income     | Secondary tax on companies/dividend withholding tax |  24,845,362.0 |
+| Taxes on income and profits | Tax on corporate income     | Interest withholding tax                            |     490,304.6 |
 
 ``` r
 
@@ -90,6 +90,11 @@ SARS_monthly %>%
 | Health promotion levy | April\_2021    | 217,617 |
 
 ``` r
+
+# Or you can download the annual and monthly data in one spreadsheet
+# This saves it in your current working directory
+download.file("https://raw.githubusercontent.com/chrisaxelson/tax4sa/master/data-raw/SARS/Revenue.xlsx",
+              "Revenue.xlsx")
 
 # Look for SARB economic data on GDP
 SARB_descriptions %>% 
@@ -113,13 +118,13 @@ SARB %>%
   kable()
 ```
 
-| Code     |     Date | Frequency |   Value |
-| :------- | -------: | :-------- | ------: |
-| KBP6006K | 20190400 | K1        | 1313452 |
-| KBP6006K | 20200100 | K1        | 1281361 |
-| KBP6006K | 20200200 | K1        | 1073725 |
-| KBP6006K | 20200300 | K1        | 1266238 |
-| KBP6006K | 20200400 | K1        | 1352651 |
+| Code     |     Date | Frequency |   Value | Month | Quarter | Year | Fiscal\_year |
+| :------- | -------: | :-------- | ------: | :---- | ------: | ---: | -----------: |
+| KBP6006K | 20190400 | K1        | 1313452 | NA    |       4 | 2019 |         2020 |
+| KBP6006K | 20200100 | K1        | 1281361 | NA    |       1 | 2020 |         2020 |
+| KBP6006K | 20200200 | K1        | 1073725 | NA    |       2 | 2020 |         2021 |
+| KBP6006K | 20200300 | K1        | 1266238 | NA    |       3 | 2020 |         2021 |
+| KBP6006K | 20200400 | K1        | 1352651 | NA    |       4 | 2020 |         2021 |
 
 ``` r
 
@@ -232,5 +237,5 @@ system.time({
     mutate(Simulated_tax = pit(Taxable_income, Age, MTC, Tax_year))
 })
 #>    user  system elapsed 
-#>   0.569   0.103   0.711
+#>    0.45    0.10    0.75
 ```

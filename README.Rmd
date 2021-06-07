@@ -60,6 +60,11 @@ SARS_monthly %>%
   tail(5) %>% 
   kable(format.args = list(big.mark = ","))
 
+# Or you can download the annual and monthly data in one spreadsheet
+# This saves it in your current working directory
+download.file("https://raw.githubusercontent.com/chrisaxelson/tax4sa/master/data-raw/SARS/Revenue.xlsx",
+              "Revenue.xlsx")
+
 # Look for SARB economic data on GDP
 SARB_descriptions %>% 
   filter(grepl("Gross domestic product at market prices", Description), Frequency == "K1") %>%
