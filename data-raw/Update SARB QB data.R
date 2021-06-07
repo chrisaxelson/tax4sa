@@ -137,6 +137,31 @@ SARB <- SARB %>%
 SARB <- SARB %>%
   filter(!grepl("\\.\\.\\.", Code))
 
+# Create month, quarter, year and fiscal year columns
+SARB <- SARB %>%
+  mutate(Month = ifelse(Frequency == "M1",
+                        as.numeric(substr(Date, 5, 6)), NA),
+         Month = month.name[Month],
+         Month = factor(Month, levels = month.name),
+         Quarter = ifelse(Frequency == "K1",
+                          as.numeric(substr(Date, 5, 6)),
+                   ifelse(Frequency == "M1",
+                          ifelse(as.numeric(substr(Date, 5, 6)) <= 3, 1,
+                          ifelse(as.numeric(substr(Date, 5, 6)) <= 6, 2,
+                          ifelse(as.numeric(substr(Date, 5, 6)) <= 9, 3, 4))), NA)),
+         Year = ifelse(Frequency %in% c("J1", "K1", "M1"),
+                       as.numeric(substr(Date, 1, 4)), NA),
+         Fiscal_year = ifelse(Frequency == "J2",
+                              as.numeric(substr(Date, 1, 4)),
+                       ifelse(Frequency == "K1",
+                               ifelse(substr(Date, 6, 6) == "1",
+                                       as.numeric(substr(Date, 1, 4)),
+                                       as.numeric(substr(Date, 1, 4)) + 1),
+                       ifelse(Frequency == "M1",
+                              ifelse(as.numeric(substr(Date, 5, 6)) < 4,
+                                     as.numeric(substr(Date, 1, 4)),
+                                     as.numeric(substr(Date, 1, 4)) + 1), NA))))
+
 # Save data
 save(SARB, file = "data-raw/SARB/SARB.rda", version = 2)
 load(file = "data-raw/SARB/SARB.rda")

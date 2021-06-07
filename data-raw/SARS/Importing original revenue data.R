@@ -30,5 +30,9 @@ SARS_monthly <- SARS_monthly %>%
   relocate(Revenue, .after = "Fiscal_year") %>%
   filter(!is.na(Revenue))
 
+SARS_monthly <- SARS_monthly %>%
+  mutate(Month = factor(Month, levels = c("April", "May", "June", "July", "August", "September",
+                                          "October", "November", "December", "January", "February")))
+
 save(SARS_monthly, file = "data-raw/SARS/SARS_monthly.rda", version = 2)
 usethis::use_data(SARS_monthly, overwrite = TRUE)
