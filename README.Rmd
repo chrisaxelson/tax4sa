@@ -49,7 +49,7 @@ library(knitr)
 # Check revenue data
 SARS_annual %>% 
   filter(Fiscal_year == 2021) %>%  
-  select(T1:T3, Revenue) %>% 
+  select(T1:T3, Year, Revenue) %>% 
   head() %>% 
   kable(format.args = list(big.mark = ","))
 
@@ -62,8 +62,8 @@ SARS_monthly %>%
 
 # Or you can download the annual and monthly data in one spreadsheet
 # This saves it in your current working directory
-download.file("https://raw.githubusercontent.com/chrisaxelson/tax4sa/master/data-raw/SARS/Revenue.xlsx",
-              "Revenue.xlsx")
+# download.file("https://raw.githubusercontent.com/chrisaxelson/tax4sa/master/data-raw/SARS/Revenue.xlsx",
+#               "Revenue.xlsx")
 
 # Look for SARB economic data on GDP
 SARB_descriptions %>% 
@@ -89,11 +89,10 @@ STATSSA %>%
 
 ```
 
-The data is probably most useful when combined, such as in creating charts such as that below. 
+The data is probably most useful when combined, such as in the chart below. 
 
 ```{r revenue, message = FALSE}
 library(dplyr)
-library(tsibble)
 library(ggplot2)
 library(scales)
 
@@ -105,9 +104,6 @@ Total_revenue <- SARS_annual %>%
 # Get Nominal GDP across fiscal year by summing per quarter
 GDP_fiscal <- SARB %>% 
   filter(Code == "KBP6006K") %>% 
-  mutate(Fiscal_year = if_else(substr(Date, 6, 6) == "1",
-                               as.numeric(substr(Date, 1, 4)),
-                               as.numeric(substr(Date, 1, 4)) + 1)) %>% 
   group_by(Fiscal_year) %>% 
   summarise(GDP = sum(Value)) %>% 
   filter(Fiscal_year < 2021)

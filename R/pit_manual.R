@@ -21,29 +21,31 @@
 pit_manual <- function(income, age, mtc, tax_table, rebate_table) {
 
   # Adjust tax and rebate tables for cumulative amounts
-  Brackets <- data.table::as.data.table(tax_table)
-  data.table::setnames(Brackets,
-                       new = c("Bracket", "Tax_rate"))
-  Brackets[, Cumulative_tax := data.table::fifelse(Bracket == 0, 0,
-                                                   round((Bracket - data.table::shift(Bracket)) *
-                                                           data.table::shift(Tax_rate), 0))
-  ][, Cumulative_tax := cumsum(Cumulative_tax)]
+  Brackets <- as.data.frame(tax_table)
+  colnames(Brackets) <- c("Bracket", "Tax_rate")
+  # Easier to create lagged columns for the calculation
+  Brackets$Lagged_bracket <- c(NA, head(Brackets$Bracket, -1))
+  Brackets$Lagged_rate <- c(NA, head(Brackets$Tax_rate, -1))
+  # Calculate cumulative tax
+  Brackets$Cumulative_tax <- ifelse(Brackets$Bracket == 0, 0,
+                                    round((Brackets$Bracket - Brackets$Lagged_bracket) *
+                                            Brackets$Lagged_rate, 0))
+  Brackets$Cumulative_tax <- cumsum(Brackets$Cumulative_tax)
 
-  Rebates <- data.table::as.data.table(rebate_table)
-  data.table::setnames(Rebates,
-                       new = c("Age", "Rebate"))
-  Rebates[, Cumulative_rebate := cumsum(Rebate)]
+  # Also do cumulative amount for rebates
+  Rebates <- as.data.frame(rebate_table)
+  colnames(Rebates) <- c("Age", "Rebate")
+  Rebates$Cumulative_rebate <- cumsum(Rebates$Rebate)
 
   # Now get the rebates and bracket per person
-  Rebate_i <- findInterval(age, Rebates[, Age])
-  Rebate <- Rebates[Rebate_i, Cumulative_rebate]
-
-  Bracket_i <- findInterval(income, Brackets[, Bracket])
+  Rebate_i <- findInterval(age, Rebates[, "Age"])
+  Rebate <- Rebates[Rebate_i, "Cumulative_rebate"]
+  Bracket_i <- findInterval(income, Brackets[, "Bracket"])
 
   # And do the tax calculation
-  Simulated_tax <- Brackets[Bracket_i, Cumulative_tax] +
-    (income -  Brackets[Bracket_i, Bracket]) *
-    Brackets[Bracket_i, Tax_rate] - Rebate - mtc
+  Simulated_tax <- Brackets[Bracket_i, "Cumulative_tax"] +
+    (income -  Brackets[Bracket_i, "Bracket"]) *
+    Brackets[Bracket_i, "Tax_rate"] - Rebate - mtc
 
   Simulated_tax[Simulated_tax < 0] <- 0
 

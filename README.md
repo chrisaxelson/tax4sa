@@ -57,19 +57,19 @@ library(knitr)
 # Check revenue data
 SARS_annual %>% 
   filter(Fiscal_year == 2021) %>%  
-  select(T1:T3, Revenue) %>% 
+  select(T1:T3, Year, Revenue) %>% 
   head() %>% 
   kable(format.args = list(big.mark = ","))
 ```
 
-| T1                          | T2                          | T3                                                  |       Revenue |
-| :-------------------------- | :-------------------------- | :-------------------------------------------------- | ------------: |
-| Taxes on income and profits | Taxes on income and profits | Taxes on income and profits                         | 718,180,499.0 |
-| Taxes on income and profits | Personal income tax         | Personal income tax                                 | 487,006,277.5 |
-| Taxes on income and profits | Tax on corporate income     | Tax on corporate income                             | 227,434,992.5 |
-| Taxes on income and profits | Tax on corporate income     | Corporate income tax                                | 202,099,325.8 |
-| Taxes on income and profits | Tax on corporate income     | Secondary tax on companies/dividend withholding tax |  24,845,362.0 |
-| Taxes on income and profits | Tax on corporate income     | Interest withholding tax                            |     490,304.6 |
+| T1                          | T2                          | T3                                                  | Year    |       Revenue |
+| :-------------------------- | :-------------------------- | :-------------------------------------------------- | :------ | ------------: |
+| Taxes on income and profits | Taxes on income and profits | Taxes on income and profits                         | 2020/21 | 718,180,499.0 |
+| Taxes on income and profits | Personal income tax         | Personal income tax                                 | 2020/21 | 487,006,277.5 |
+| Taxes on income and profits | Tax on corporate income     | Tax on corporate income                             | 2020/21 | 227,434,992.5 |
+| Taxes on income and profits | Tax on corporate income     | Corporate income tax                                | 2020/21 | 202,099,325.8 |
+| Taxes on income and profits | Tax on corporate income     | Secondary tax on companies/dividend withholding tax | 2020/21 |  24,845,362.0 |
+| Taxes on income and profits | Tax on corporate income     | Interest withholding tax                            | 2020/21 |     490,304.6 |
 
 ``` r
 
@@ -93,8 +93,8 @@ SARS_monthly %>%
 
 # Or you can download the annual and monthly data in one spreadsheet
 # This saves it in your current working directory
-download.file("https://raw.githubusercontent.com/chrisaxelson/tax4sa/master/data-raw/SARS/Revenue.xlsx",
-              "Revenue.xlsx")
+# download.file("https://raw.githubusercontent.com/chrisaxelson/tax4sa/master/data-raw/SARS/Revenue.xlsx",
+#               "Revenue.xlsx")
 
 # Look for SARB economic data on GDP
 SARB_descriptions %>% 
@@ -157,20 +157,19 @@ STATSSA %>%
   kable()
 ```
 
-| Publication | Code     | Date    | Value |
-| :---------- | :------- | :------ | :---- |
-| P0141       | CPT00000 | 2020 12 | 117   |
-| P0141       | CPT00000 | 2021 01 | 117.4 |
-| P0141       | CPT00000 | 2021 02 | 118.2 |
-| P0141       | CPT00000 | 2021 03 | 119   |
-| P0141       | CPT00000 | 2021 04 | 119.8 |
+|     | Publication | Code     | Date    | Value |
+| :-- | :---------- | :------- | :------ | :---- |
+| 156 | P0141       | CPT00000 | 2020 12 | 117   |
+| 157 | P0141       | CPT00000 | 2021 01 | 117.4 |
+| 158 | P0141       | CPT00000 | 2021 02 | 118.2 |
+| 159 | P0141       | CPT00000 | 2021 03 | 119   |
+| 160 | P0141       | CPT00000 | 2021 04 | 119.8 |
 
-The data is probably most useful when combined, such as in creating
-charts such as that below.
+The data is probably most useful when combined, such as in the chart
+below.
 
 ``` r
 library(dplyr)
-library(tsibble)
 library(ggplot2)
 library(scales)
 
@@ -182,9 +181,6 @@ Total_revenue <- SARS_annual %>%
 # Get Nominal GDP across fiscal year by summing per quarter
 GDP_fiscal <- SARB %>% 
   filter(Code == "KBP6006K") %>% 
-  mutate(Fiscal_year = if_else(substr(Date, 6, 6) == "1",
-                               as.numeric(substr(Date, 1, 4)),
-                               as.numeric(substr(Date, 1, 4)) + 1)) %>% 
   group_by(Fiscal_year) %>% 
   summarise(GDP = sum(Value)) %>% 
   filter(Fiscal_year < 2021)
@@ -237,5 +233,5 @@ system.time({
     mutate(Simulated_tax = pit(Taxable_income, Age, MTC, Tax_year))
 })
 #>    user  system elapsed 
-#>    0.45    0.10    0.75
+#>   0.387   0.104   0.566
 ```

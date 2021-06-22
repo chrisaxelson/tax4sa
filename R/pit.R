@@ -42,27 +42,31 @@ pit <- function(income, age, mtc, tax_year) {
   if (length(Years_in_data) == 1) {
 
     # Get tax tables for that year - use data from package
-    Brackets <- PIT_brackets[Tax_year == Years_in_data, .(Bracket, Tax_rate)]
-    Rebates <- PIT_rebates[Tax_year == Years_in_data, .(Age, Rebate)]
+    Brackets <- PIT_brackets[PIT_brackets$Tax_year == Years_in_data, c("Bracket", "Tax_rate")]
+    Rebates <- PIT_rebates[PIT_rebates$Tax_year == Years_in_data, c("Age", "Rebate")]
 
-    # Calculate cumulative tax and cumulative rebate for each bracket and age
-    Brackets[, Cumulative_tax := data.table::fifelse(Bracket == 0, 0,
-                                                     round((Bracket - data.table::shift(Bracket)) *
-                                                             data.table::shift(Tax_rate), 0))
-    ][, Cumulative_tax := cumsum(Cumulative_tax)]
-    Rebates[, Cumulative_rebate := cumsum(Rebate)]
+    # Easier to create lagged columns for the cumulative calculation
+    Brackets$Lagged_bracket <- c(NA, head(Brackets$Bracket, -1))
+    Brackets$Lagged_rate <- c(NA, head(Brackets$Tax_rate, -1))
+    # Calculate cumulative tax
+    Brackets$Cumulative_tax <- ifelse(Brackets$Bracket == 0, 0,
+                                      round((Brackets$Bracket - Brackets$Lagged_bracket) *
+                                              Brackets$Lagged_rate, 0))
+    Brackets$Cumulative_tax <- cumsum(Brackets$Cumulative_tax)
+
+    Rebates$Cumulative_rebate <- cumsum(Rebates$Rebate)
 
     # Find rebate for each entry
-    Rebate_i <- findInterval(age, Rebates[, Age])
-    Rebate <- Rebates[Rebate_i, Cumulative_rebate]
+    Rebate_i <- findInterval(age, Rebates[, "Age"])
+    Rebate <- Rebates[Rebate_i, "Cumulative_rebate"]
 
     # Find bracket for each entry
-    Bracket_i <- findInterval(income, Brackets[, Bracket])
+    Bracket_i <- findInterval(income, Brackets[, "Bracket"])
 
     # And do the tax calculation
-    Simulated_tax <- Brackets[Bracket_i, Cumulative_tax] +
-      (income -  Brackets[Bracket_i, Bracket]) *
-      Brackets[Bracket_i, Tax_rate] - Rebate - mtc
+    Simulated_tax <- Brackets[Bracket_i, "Cumulative_tax"] +
+      (income -  Brackets[Bracket_i, "Bracket"]) *
+      Brackets[Bracket_i, "Tax_rate"] - Rebate - mtc
 
     Simulated_tax[Simulated_tax < 0] <- 0
 
@@ -80,27 +84,31 @@ pit <- function(income, age, mtc, tax_year) {
       out_index <- tax_year == i
 
       # Get tax tables for that year - use data from package
-      Brackets <- PIT_brackets[Tax_year == i, .(Bracket, Tax_rate)]
-      Rebates <- PIT_rebates[Tax_year == i, .(Age, Rebate)]
+      Brackets <- PIT_brackets[PIT_brackets$Tax_year == i, c("Bracket", "Tax_rate")]
+      Rebates <- PIT_rebates[PIT_rebates$Tax_year == i, c("Age", "Rebate")]
 
-      # Calculate cumulative tax and cumulative rebate for each bracket and age
-      Brackets[, Cumulative_tax := data.table::fifelse(Bracket == 0, 0,
-                                                       round((Bracket - data.table::shift(Bracket)) *
-                                                               data.table::shift(Tax_rate), 0))
-      ][, Cumulative_tax := cumsum(Cumulative_tax)]
-      Rebates[, Cumulative_rebate := cumsum(Rebate)]
+      # Easier to create lagged columns for the cumulative calculation
+      Brackets$Lagged_bracket <- c(NA, head(Brackets$Bracket, -1))
+      Brackets$Lagged_rate <- c(NA, head(Brackets$Tax_rate, -1))
+      # Calculate cumulative tax
+      Brackets$Cumulative_tax <- ifelse(Brackets$Bracket == 0, 0,
+                                        round((Brackets$Bracket - Brackets$Lagged_bracket) *
+                                                Brackets$Lagged_rate, 0))
+      Brackets$Cumulative_tax <- cumsum(Brackets$Cumulative_tax)
+
+      Rebates$Cumulative_rebate <- cumsum(Rebates$Rebate)
 
       # Find rebate for each record
-      Rebate_i <- findInterval(age[out_index], Rebates[,Age])
-      Rebate <- Rebates[Rebate_i, Cumulative_rebate]
+      Rebate_i <- findInterval(age[out_index], Rebates[, "Age"])
+      Rebate <- Rebates[Rebate_i, "Cumulative_rebate"]
 
       # Find bracket for each record
-      Bracket_i <- findInterval(income[out_index], Brackets[, Bracket])
+      Bracket_i <- findInterval(income[out_index], Brackets[, "Bracket"])
 
       # And do the tax calculation
-      Simulated_tax <- Brackets[Bracket_i, Cumulative_tax] +
-        (income[out_index] -  Brackets[Bracket_i, Bracket]) *
-        Brackets[Bracket_i, Tax_rate] - Rebate - mtc[out_index]
+      Simulated_tax <- Brackets[Bracket_i, "Cumulative_tax"] +
+        (income[out_index] -  Brackets[Bracket_i, "Bracket"]) *
+        Brackets[Bracket_i, "Tax_rate"] - Rebate - mtc[out_index]
 
       # Put the result back into the original vector at each position
       out[out_index] <- Simulated_tax

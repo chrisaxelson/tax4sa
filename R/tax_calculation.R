@@ -10,21 +10,25 @@
 #' @export
 
 tax_calculation <- function(income, tax_table) {
-  # Adjust tax and rebate tables for cumulative amounts
-  Brackets <- data.table::as.data.table(tax_table)
-  data.table::setnames(Brackets,
-                       new = c("Bracket", "Tax_rate"))
-  Brackets[, Cumulative_tax := data.table::fifelse(Bracket == 0, 0,
-                                                   round((Bracket - data.table::shift(Bracket)) *
-                                                           data.table::shift(Tax_rate), 0))
-  ][, Cumulative_tax := cumsum(Cumulative_tax)]
 
-  Bracket_i <- findInterval(income, Brackets[, Bracket])
+  # Adjust tax and rebate tables for cumulative amounts
+  Brackets <- as.data.frame(tax_table)
+  colnames(Brackets) <- c("Bracket", "Tax_rate")
+  # Easier to create lagged columns for the calculation
+  Brackets$Lagged_bracket <- c(NA, head(Brackets$Bracket, -1))
+  Brackets$Lagged_rate <- c(NA, head(Brackets$Tax_rate, -1))
+  # Calculate cumulative tax
+  Brackets$Cumulative_tax <- ifelse(Brackets$Bracket == 0, 0,
+                                    round((Brackets$Bracket - Brackets$Lagged_bracket) *
+                                            Brackets$Lagged_rate, 0))
+  Brackets$Cumulative_tax <- cumsum(Brackets$Cumulative_tax)
+
+  Bracket_i <- findInterval(income, Brackets[, "Bracket"])
 
   # And do the tax calculation
-  Simulated_tax <- Brackets[Bracket_i, Cumulative_tax] +
-    (income -  Brackets[Bracket_i, Bracket]) *
-    Brackets[Bracket_i, Tax_rate]
+  Simulated_tax <- Brackets[Bracket_i, "Cumulative_tax"] +
+    (income -  Brackets[Bracket_i, "Bracket"]) *
+    Brackets[Bracket_i, "Tax_rate"]
 
   Simulated_tax
 }

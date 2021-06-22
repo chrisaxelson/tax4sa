@@ -116,9 +116,7 @@ save(Tax_tables, file = "data-raw/SARS/Tax_tables.rda", version = 2)
 usethis::use_data(Tax_tables, overwrite = TRUE)
 
 # Changing the data into a dataframe to make it easier to work with
-library(data.table)
-#
-PIT_brackets <- data.table(rbind(cbind(1996, Tax_tables$PIT_brackets_1996),
+PIT_brackets <- data.frame(rbind(cbind(1996, Tax_tables$PIT_brackets_1996),
                                  cbind(1997, Tax_tables$PIT_brackets_1997),
                                  cbind(1998, Tax_tables$PIT_brackets_1998),
                                  cbind(1999, Tax_tables$PIT_brackets_1999),
@@ -146,16 +144,10 @@ PIT_brackets <- data.table(rbind(cbind(1996, Tax_tables$PIT_brackets_1996),
                                  cbind(2021, Tax_tables$PIT_brackets_2021),
                                  cbind(2022, Tax_tables$PIT_brackets_2022)))
 
-PIT_brackets <- setnames(PIT_brackets,
-                         new = c("Tax_year", "Bracket", "Tax_rate"))
+colnames(PIT_brackets) <- c("Tax_year", "Bracket", "Tax_rate")
 
-# Create cumulative tax paid column
-PIT_brackets[, Cumulative_tax := data.table::fifelse(Bracket == 0, 0,
-                                                 round((Bracket - data.table::shift(Bracket)) *
-                                                         data.table::shift(Tax_rate), 0)),
-             by = Tax_year][, Cumulative_tax := cumsum(Cumulative_tax), by = Tax_year]
 
-PIT_rebates <- data.table(rbind(cbind(1996, Tax_tables$PIT_rebates_1996),
+PIT_rebates <- data.frame(rbind(cbind(1996, Tax_tables$PIT_rebates_1996),
                                 cbind(1997, Tax_tables$PIT_rebates_1997),
                                 cbind(1998, Tax_tables$PIT_rebates_1998),
                                 cbind(1999, Tax_tables$PIT_rebates_1999),
@@ -183,11 +175,7 @@ PIT_rebates <- data.table(rbind(cbind(1996, Tax_tables$PIT_rebates_1996),
                                 cbind(2021, Tax_tables$PIT_rebates_2021),
                                 cbind(2022, Tax_tables$PIT_rebates_2022)))
 
-PIT_rebates <- setnames(PIT_rebates,
-                        new = c("Tax_year", "Age", "Rebate"))
-
-# Cumulative rebate
-PIT_rebates[, Cumulative_rebate := cumsum(Rebate), by = Tax_year]
+colnames(PIT_rebates) <- c("Tax_year", "Age", "Rebate")
 
 save(PIT_brackets, file = "data-raw/SARS/PIT_brackets.rda", version = 2)
 save(PIT_rebates, file = "data-raw/SARS/PIT_rebates.rda", version = 2)

@@ -3,4 +3,3 @@
 export(pit)
 export(pit_manual)
 export(tax_calculation)
-import(data.table)
