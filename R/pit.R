@@ -35,8 +35,9 @@
 
 pit <- function(income, age, mtc, tax_year) {
 
-  # Negative values don't pay tax
+  # Negative values don't pay tax and cant have negative age
   income <- pmax(income, 0)
+  age <- pmax(age, 0)
 
   # Get unique years
   Years_in_data <- unique(tax_year)
