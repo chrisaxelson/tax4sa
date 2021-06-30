@@ -20,6 +20,9 @@
 
 pit_manual <- function(income, age, mtc, tax_table, rebate_table) {
 
+  # Negative values don't pay tax
+  income <- pmax(income, 0)
+
   # Adjust tax and rebate tables for cumulative amounts
   Brackets <- as.data.frame(tax_table)
   colnames(Brackets) <- c("Bracket", "Tax_rate")
