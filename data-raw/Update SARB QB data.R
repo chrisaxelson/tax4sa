@@ -162,6 +162,10 @@ SARB <- SARB %>%
                                      as.numeric(substr(Date, 1, 4)),
                                      as.numeric(substr(Date, 1, 4)) + 1), NA))))
 
+# One correction
+SARB <- SARB %>%
+  mutate(Fiscal_year = if_else(Fiscal_year == 2, 2000, Fiscal_year))
+
 # Save data
 save(SARB, file = "data-raw/SARB/SARB.rda", version = 2)
 load(file = "data-raw/SARB/SARB.rda")

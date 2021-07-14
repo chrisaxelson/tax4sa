@@ -11,7 +11,8 @@ SARS_annual <- read_excel(path = "data-raw/SARS/Revenue.xlsx", sheet = "Annual")
 
 SARS_annual <- SARS_annual %>%
   pivot_longer(cols = !(T1:T3), names_to = "Year", values_to = "Revenue") %>%
-  mutate(Fiscal_year = as.numeric(paste0(str_sub(Year, 1, 2), str_sub(Year, 6, 7)))) %>%
+  mutate(Fiscal_year = as.numeric(paste0(str_sub(Year, 1, 2), str_sub(Year, 6, 7))),
+         Fiscal_year = if_else(Fiscal_year == 1900, 2000, Fiscal_year)) %>%
   filter(!is.na(Revenue)) %>%
   relocate(Revenue, .after = "Fiscal_year")
 

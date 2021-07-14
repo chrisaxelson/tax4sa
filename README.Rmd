@@ -126,7 +126,7 @@ ggplot(Tax_to_GDP, aes(x = Fiscal_year, y = Tax_to_GDP)) +
   
 ```
 
-The three functions are `tax_calculation`, `pit` and `pit_manual`. The first is a generic function to apply a tax table to a value, while the latter two specifically calculate the personal income tax liability in South Africa. `pit_manual` allows for a custom tax table to be applied to cater for modelling the impacts of changes in the personal income tax tables. The package includes a list of historical tax tables to be used in the calculations. 
+The three functions are `tax_calculation`, `pit` and `pit_manual`. The first is a generic function to apply a tax table to a value, while the latter two specifically calculate the personal income tax liability in South Africa. `pit_manual` allows for a custom tax table to be applied to cater for modelling the impacts of changes in the personal income tax tables. The package includes a list of historical tax tables to be used in the calculations.  
 
 ```{r tax, message = FALSE}
 # Accessing tax tables

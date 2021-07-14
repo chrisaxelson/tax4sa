@@ -4,7 +4,6 @@
 # tax4sa
 
 <!-- badges: start -->
-
 <!-- badges: end -->
 
 This is a minimal package to help with the compilation and analysis of
@@ -14,15 +13,15 @@ from 1995/96 to 2021/22.
 
 The data includes:
 
-  - Annual tax revenue collections from 1983/84, as published in the
+-   Annual tax revenue collections from 1983/84, as published in the
     [Budget Reviews of the National
     Treasury](http://www.treasury.gov.za/documents/national%20budget/default.aspx)
-  - Monthly tax revenue collections from April 2002, as published in the
+-   Monthly tax revenue collections from April 2002, as published in the
     [monthly financing statements of the National
     Treasury](http://www.treasury.gov.za/comm_media/press/monthly/default.aspx)
-  - Quarterly Bulletin data from the [South African Reserve
+-   Quarterly Bulletin data from the [South African Reserve
     Bank](https://www.resbank.co.za/en/home/publications/quarterly-bulletin1/download-information-from-xlsx-data-files)
-  - Economic statistics from [Statistics South
+-   Economic statistics from [Statistics South
     Africa](http://www.statssa.gov.za/?page_id=1847)
 
 The three functions and the personal income tax tables are intended to
@@ -63,7 +62,7 @@ SARS_annual %>%
 ```
 
 | T1                          | T2                          | T3                                                  | Year    |       Revenue |
-| :-------------------------- | :-------------------------- | :-------------------------------------------------- | :------ | ------------: |
+|:----------------------------|:----------------------------|:----------------------------------------------------|:--------|--------------:|
 | Taxes on income and profits | Taxes on income and profits | Taxes on income and profits                         | 2020/21 | 718,180,499.0 |
 | Taxes on income and profits | Personal income tax         | Personal income tax                                 | 2020/21 | 487,006,277.5 |
 | Taxes on income and profits | Tax on corporate income     | Tax on corporate income                             | 2020/21 | 227,434,992.5 |
@@ -72,7 +71,6 @@ SARS_annual %>%
 | Taxes on income and profits | Tax on corporate income     | Interest withholding tax                            | 2020/21 |     490,304.6 |
 
 ``` r
-
 # And monthly
 SARS_monthly %>% 
   filter(T3 == "Health promotion levy") %>% 
@@ -82,15 +80,14 @@ SARS_monthly %>%
 ```
 
 | Tax                   | Month\_year    | Revenue |
-| :-------------------- | :------------- | ------: |
-| Health promotion levy | December\_2020 | 210,652 |
+|:----------------------|:---------------|--------:|
 | Health promotion levy | January\_2021  | 234,444 |
 | Health promotion levy | February\_2021 | 188,848 |
 | Health promotion levy | March\_2021    | 182,444 |
 | Health promotion levy | April\_2021    | 217,617 |
+| Health promotion levy | May\_2021      | 184,318 |
 
 ``` r
-
 # Or you can download the annual and monthly data in one spreadsheet
 # This saves it in your current working directory
 # download.file("https://raw.githubusercontent.com/chrisaxelson/tax4sa/master/data-raw/SARS/Revenue.xlsx",
@@ -103,7 +100,7 @@ SARB_descriptions %>%
 ```
 
 | Code     | Description                             | Frequency | Frequency\_description | Unit\_of\_measure | Version\_description                                     |
-| :------- | :-------------------------------------- | :-------- | :--------------------- | :---------------- | :------------------------------------------------------- |
+|:---------|:----------------------------------------|:----------|:-----------------------|:------------------|:---------------------------------------------------------|
 | KBP6006C | Gross domestic product at market prices | K1        | Quarterly              | RMILL             | Constant 2010 prices                                     |
 | KBP6006D | Gross domestic product at market prices | K1        | Quarterly              | RMILL             | Constant 2010 prices. Seasonally adjusted at annual rate |
 | KBP6006K | Gross domestic product at market prices | K1        | Quarterly              | RMILL             | Current prices                                           |
@@ -111,7 +108,6 @@ SARB_descriptions %>%
 | KBP6006S | Gross domestic product at market prices | K1        | Quarterly              | PERC              | 1-Term % change                                          |
 
 ``` r
-
 SARB %>% 
   filter(Code == "KBP6006K") %>% 
   tail(5) %>% 
@@ -119,7 +115,7 @@ SARB %>%
 ```
 
 | Code     |     Date | Frequency |   Value | Month | Quarter | Year | Fiscal\_year |
-| :------- | -------: | :-------- | ------: | :---- | ------: | ---: | -----------: |
+|:---------|---------:|:----------|--------:|:------|--------:|-----:|-------------:|
 | KBP6006K | 20190400 | K1        | 1313452 | NA    |       4 | 2019 |         2020 |
 | KBP6006K | 20200100 | K1        | 1281361 | NA    |       1 | 2020 |         2020 |
 | KBP6006K | 20200200 | K1        | 1073725 | NA    |       2 | 2020 |         2021 |
@@ -127,7 +123,6 @@ SARB %>%
 | KBP6006K | 20200400 | K1        | 1352651 | NA    |       4 | 2020 |         2021 |
 
 ``` r
-
 # Look for STATSSA inflation data
 STATSSA_descriptions %>% 
   filter(grepl("Consumer Price Index", H02), H04 == "All Items") %>%
@@ -136,7 +131,7 @@ STATSSA_descriptions %>%
 ```
 
 | H01   | H02                  | H03      | H04       | H13           |
-| :---- | :------------------- | :------- | :-------- | :------------ |
+|:------|:---------------------|:---------|:----------|:--------------|
 | P0141 | Consumer Price Index | CPA00000 | All Items | Western Cape  |
 | P0141 | Consumer Price Index | CPB00000 | All Items | Eastern Cape  |
 | P0141 | Consumer Price Index | CPC00000 | All Items | Northern Cape |
@@ -150,7 +145,6 @@ STATSSA_descriptions %>%
 | P0141 | Consumer Price Index | CPT00000 | All Items | Total country |
 
 ``` r
-
 STATSSA %>% 
   filter(Code == "CPT00000") %>% 
   tail(5) %>% 
@@ -158,7 +152,7 @@ STATSSA %>%
 ```
 
 |     | Publication | Code     | Date    | Value |
-| :-- | :---------- | :------- | :------ | :---- |
+|:----|:------------|:---------|:--------|:------|
 | 156 | P0141       | CPT00000 | 2020 12 | 117   |
 | 157 | P0141       | CPT00000 | 2021 01 | 117.4 |
 | 158 | P0141       | CPT00000 | 2021 02 | 118.2 |
@@ -233,5 +227,5 @@ system.time({
     mutate(Simulated_tax = pit(Taxable_income, Age, MTC, Tax_year))
 })
 #>    user  system elapsed 
-#>   0.387   0.104   0.566
+#>   0.746   0.173   0.998
 ```
