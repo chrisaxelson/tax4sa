@@ -34,7 +34,8 @@ SARS_monthly <- SARS_monthly %>%
 
 SARS_monthly <- SARS_monthly %>%
   mutate(Month = factor(Month, levels = c("April", "May", "June", "July", "August", "September",
-                                          "October", "November", "December", "January", "February")))
+                                          "October", "November", "December", "January", "February",
+                                          "March")))
 
 save(SARS_monthly, file = "data-raw/SARS/SARS_monthly.rda", version = 2)
 usethis::use_data(SARS_monthly, overwrite = TRUE)
