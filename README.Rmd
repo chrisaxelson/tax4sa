@@ -45,20 +45,25 @@ The data can be accessed by directly entering either `SARS_annual`, `SARS_monthl
 library(tax4sa)
 library(dplyr)
 library(knitr)
+library(kableExtra)
 
 # Check revenue data
 SARS_annual %>% 
   filter(Fiscal_year == 2021) %>%  
   select(T1:T3, Year, Revenue) %>% 
+  mutate(Revenue = round(Revenue,0)) %>% 
   head() %>% 
-  kable(format.args = list(big.mark = ","))
+  kable(format.args = list(big.mark = ","), 
+        caption = "SARS_annual (R'000s)")
 
 # And monthly
 SARS_monthly %>% 
   filter(T3 == "Health promotion levy") %>% 
-  select(Tax = T3, Month_year, Revenue) %>% 
+  select(Tax = T3, Month, Year, Revenue) %>% 
+  mutate(Year = as.character(Year)) %>% 
   tail(5) %>% 
-  kable(format.args = list(big.mark = ","))
+  kable(format.args = list(big.mark = ","),
+        caption = "Health promotion levy in SARS_monthly (R'000s)") 
 
 # Or you can download the annual and monthly data in one spreadsheet
 # This saves it in your current working directory
@@ -98,15 +103,15 @@ library(scales)
 
 # Create a tax to GDP chart - revenue per year first
 Total_revenue <- SARS_annual %>% 
-  filter(T3 == "Total tax revenue (gross)") %>% 
-  select(Fiscal_year, Revenue)
+  group_by(Fiscal_year) %>% 
+  summarise(Revenue = sum(Revenue))
 
 # Get Nominal GDP across fiscal year by summing per quarter
 GDP_fiscal <- SARB %>% 
   filter(Code == "KBP6006K") %>% 
   group_by(Fiscal_year) %>% 
   summarise(GDP = sum(Value)) %>% 
-  filter(Fiscal_year < 2021)
+  filter(Fiscal_year < 2022)
 
 # Join together and create tax to GDP
 Tax_to_GDP <- GDP_fiscal %>% 

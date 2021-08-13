@@ -16,6 +16,19 @@ SARS_annual <- SARS_annual %>%
   filter(!is.na(Revenue)) %>%
   relocate(Revenue, .after = "Fiscal_year")
 
+# Create subset where sum equals the total
+SARS_annual <- SARS_annual %>%
+  filter(!(T1 == T3 & T3 != "State miscellaneous revenue"),
+         !(T3 %in% c("Tax on corporate income","Specific excise duties")),
+         !(Fiscal_year > 2009 & T3 %in% c("Value-added tax")),
+         !grepl("Total", T3),
+         !grepl("SACU", T3))
+
+# Check revenue per year
+x <- SARS_annual %>%
+  group_by(Fiscal_year) %>%
+  summarise(sum(Revenue))
+
 save(SARS_annual, file = "data-raw/SARS/SARS_annual.rda", version = 2)
 usethis::use_data(SARS_annual, overwrite = TRUE)
 
@@ -32,10 +45,32 @@ SARS_monthly <- SARS_monthly %>%
   relocate(Revenue, .after = "Fiscal_year") %>%
   filter(!is.na(Revenue))
 
+# Subset which sums to total revenue
+SARS_monthly <- SARS_monthly %>%
+  filter(!(T1 == T3 & T3 != "State miscellaneous revenue"),
+         !(T3 %in% c("Tax on corporate income",
+                     "Estate, inheritance and gift taxes", "Taxes on financial and capital transactions",
+                     "Specific excise duties", "Carbon fuel levy",
+                     "CFL Domestic", "CFL Imported",
+                     "Taxes on use of goods and on permission to use goods or perform activities", "Import duties")),
+         !(Fiscal_year > 2017 & T3 %in% c("Personal income tax")),
+         !(Fiscal_year > 2011 & T3 %in% c("Value-added tax")),
+         !(T1 == "Taxes on income and profits" & T3 == "Other"),
+         !(T1 == "Domestic taxes on goods and services" & T3 == "Other"),
+         !(T1 == "Taxes on international trade and transactions" & T3 == "Other"),
+         !grepl("Total", T3),
+         !grepl("SACU", T3))
+
 SARS_monthly <- SARS_monthly %>%
   mutate(Month = factor(Month, levels = c("April", "May", "June", "July", "August", "September",
                                           "October", "November", "December", "January", "February",
                                           "March")))
+
+# Check revenue per year
+y <- SARS_monthly %>%
+  # filter(Fiscal_year == 2006) %>%
+  group_by(Fiscal_year) %>%
+  summarise(sum(Revenue))
 
 save(SARS_monthly, file = "data-raw/SARS/SARS_monthly.rda", version = 2)
 usethis::use_data(SARS_monthly, overwrite = TRUE)

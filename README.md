@@ -4,6 +4,7 @@
 # tax4sa
 
 <!-- badges: start -->
+
 <!-- badges: end -->
 
 This is a minimal package to help with the compilation and analysis of
@@ -13,15 +14,15 @@ from 1995/96 to 2021/22.
 
 The data includes:
 
--   Annual tax revenue collections from 1983/84, as published in the
+  - Annual tax revenue collections from 1983/84, as published in the
     [Budget Reviews of the National
     Treasury](http://www.treasury.gov.za/documents/national%20budget/default.aspx)
--   Monthly tax revenue collections from April 2002, as published in the
+  - Monthly tax revenue collections from April 2002, as published in the
     [monthly financing statements of the National
     Treasury](http://www.treasury.gov.za/comm_media/press/monthly/default.aspx)
--   Quarterly Bulletin data from the [South African Reserve
+  - Quarterly Bulletin data from the [South African Reserve
     Bank](https://www.resbank.co.za/en/home/publications/quarterly-bulletin1/download-information-from-xlsx-data-files)
--   Economic statistics from [Statistics South
+  - Economic statistics from [Statistics South
     Africa](http://www.statssa.gov.za/?page_id=1847)
 
 The three functions and the personal income tax tables are intended to
@@ -52,42 +53,475 @@ two sets of data.
 library(tax4sa)
 library(dplyr)
 library(knitr)
+#> Warning: package 'knitr' was built under R version 4.0.3
+library(kableExtra)
 
 # Check revenue data
 SARS_annual %>% 
   filter(Fiscal_year == 2021) %>%  
   select(T1:T3, Year, Revenue) %>% 
+  mutate(Revenue = round(Revenue,0)) %>% 
   head() %>% 
-  kable(format.args = list(big.mark = ","))
+  kable(format.args = list(big.mark = ","), 
+        caption = "SARS_annual (R'000s)")
 ```
 
-| T1                          | T2                          | T3                                                  | Year    |       Revenue |
-|:----------------------------|:----------------------------|:----------------------------------------------------|:--------|--------------:|
-| Taxes on income and profits | Taxes on income and profits | Taxes on income and profits                         | 2020/21 | 718,180,499.0 |
-| Taxes on income and profits | Personal income tax         | Personal income tax                                 | 2020/21 | 487,006,277.5 |
-| Taxes on income and profits | Tax on corporate income     | Tax on corporate income                             | 2020/21 | 227,434,992.5 |
-| Taxes on income and profits | Tax on corporate income     | Corporate income tax                                | 2020/21 | 202,099,325.8 |
-| Taxes on income and profits | Tax on corporate income     | Secondary tax on companies/dividend withholding tax | 2020/21 |  24,845,362.0 |
-| Taxes on income and profits | Tax on corporate income     | Interest withholding tax                            | 2020/21 |     490,304.6 |
+<table>
+
+<caption>
+
+SARS\_annual (R’000s)
+
+</caption>
+
+<thead>
+
+<tr>
+
+<th style="text-align:left;">
+
+T1
+
+</th>
+
+<th style="text-align:left;">
+
+T2
+
+</th>
+
+<th style="text-align:left;">
+
+T3
+
+</th>
+
+<th style="text-align:left;">
+
+Year
+
+</th>
+
+<th style="text-align:right;">
+
+Revenue
+
+</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td style="text-align:left;">
+
+Taxes on income and profits
+
+</td>
+
+<td style="text-align:left;">
+
+Personal income tax
+
+</td>
+
+<td style="text-align:left;">
+
+Personal income tax
+
+</td>
+
+<td style="text-align:left;">
+
+2020/21
+
+</td>
+
+<td style="text-align:right;">
+
+487,006,278
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+Taxes on income and profits
+
+</td>
+
+<td style="text-align:left;">
+
+Tax on corporate income
+
+</td>
+
+<td style="text-align:left;">
+
+Corporate income tax
+
+</td>
+
+<td style="text-align:left;">
+
+2020/21
+
+</td>
+
+<td style="text-align:right;">
+
+202,099,326
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+Taxes on income and profits
+
+</td>
+
+<td style="text-align:left;">
+
+Tax on corporate income
+
+</td>
+
+<td style="text-align:left;">
+
+Secondary tax on companies/dividend withholding tax
+
+</td>
+
+<td style="text-align:left;">
+
+2020/21
+
+</td>
+
+<td style="text-align:right;">
+
+24,845,362
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+Taxes on income and profits
+
+</td>
+
+<td style="text-align:left;">
+
+Tax on corporate income
+
+</td>
+
+<td style="text-align:left;">
+
+Interest withholding tax
+
+</td>
+
+<td style="text-align:left;">
+
+2020/21
+
+</td>
+
+<td style="text-align:right;">
+
+490,305
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+Taxes on income and profits
+
+</td>
+
+<td style="text-align:left;">
+
+Other
+
+</td>
+
+<td style="text-align:left;">
+
+Interest on overdue income tax
+
+</td>
+
+<td style="text-align:left;">
+
+2020/21
+
+</td>
+
+<td style="text-align:right;">
+
+3,739,157
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+Taxes on income and profits
+
+</td>
+
+<td style="text-align:left;">
+
+Other
+
+</td>
+
+<td style="text-align:left;">
+
+Small business tax amnesty
+
+</td>
+
+<td style="text-align:left;">
+
+2020/21
+
+</td>
+
+<td style="text-align:right;">
+
+72
+
+</td>
+
+</tr>
+
+</tbody>
+
+</table>
 
 ``` r
+
 # And monthly
 SARS_monthly %>% 
   filter(T3 == "Health promotion levy") %>% 
-  select(Tax = T3, Month_year, Revenue) %>% 
+  select(Tax = T3, Month, Year, Revenue) %>% 
+  mutate(Year = as.character(Year)) %>% 
   tail(5) %>% 
-  kable(format.args = list(big.mark = ","))
+  kable(format.args = list(big.mark = ","),
+        caption = "Health promotion levy in SARS_monthly (R'000s)") 
 ```
 
-| Tax                   | Month\_year    | Revenue |
-|:----------------------|:---------------|--------:|
-| Health promotion levy | January\_2021  | 234,444 |
-| Health promotion levy | February\_2021 | 188,848 |
-| Health promotion levy | March\_2021    | 182,444 |
-| Health promotion levy | April\_2021    | 217,617 |
-| Health promotion levy | May\_2021      | 184,318 |
+<table>
+
+<caption>
+
+Health promotion levy in SARS\_monthly (R’000s)
+
+</caption>
+
+<thead>
+
+<tr>
+
+<th style="text-align:left;">
+
+Tax
+
+</th>
+
+<th style="text-align:left;">
+
+Month
+
+</th>
+
+<th style="text-align:left;">
+
+Year
+
+</th>
+
+<th style="text-align:right;">
+
+Revenue
+
+</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td style="text-align:left;">
+
+Health promotion levy
+
+</td>
+
+<td style="text-align:left;">
+
+February
+
+</td>
+
+<td style="text-align:left;">
+
+2021
+
+</td>
+
+<td style="text-align:right;">
+
+188,848
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+Health promotion levy
+
+</td>
+
+<td style="text-align:left;">
+
+March
+
+</td>
+
+<td style="text-align:left;">
+
+2021
+
+</td>
+
+<td style="text-align:right;">
+
+182,444
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+Health promotion levy
+
+</td>
+
+<td style="text-align:left;">
+
+April
+
+</td>
+
+<td style="text-align:left;">
+
+2021
+
+</td>
+
+<td style="text-align:right;">
+
+217,617
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+Health promotion levy
+
+</td>
+
+<td style="text-align:left;">
+
+May
+
+</td>
+
+<td style="text-align:left;">
+
+2021
+
+</td>
+
+<td style="text-align:right;">
+
+184,318
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+Health promotion levy
+
+</td>
+
+<td style="text-align:left;">
+
+June
+
+</td>
+
+<td style="text-align:left;">
+
+2021
+
+</td>
+
+<td style="text-align:right;">
+
+152,891
+
+</td>
+
+</tr>
+
+</tbody>
+
+</table>
 
 ``` r
+
 # Or you can download the annual and monthly data in one spreadsheet
 # This saves it in your current working directory
 # download.file("https://raw.githubusercontent.com/chrisaxelson/tax4sa/master/data-raw/SARS/Revenue.xlsx",
@@ -99,30 +533,592 @@ SARB_descriptions %>%
   kable()
 ```
 
-| Code     | Description                             | Frequency | Frequency\_description | Unit\_of\_measure | Version\_description                                     |
-|:---------|:----------------------------------------|:----------|:-----------------------|:------------------|:---------------------------------------------------------|
-| KBP6006C | Gross domestic product at market prices | K1        | Quarterly              | RMILL             | Constant 2010 prices                                     |
-| KBP6006D | Gross domestic product at market prices | K1        | Quarterly              | RMILL             | Constant 2010 prices. Seasonally adjusted at annual rate |
-| KBP6006K | Gross domestic product at market prices | K1        | Quarterly              | RMILL             | Current prices                                           |
-| KBP6006L | Gross domestic product at market prices | K1        | Quarterly              | RMILL             | Current prices. Seasonally adjusted at annual rate       |
-| KBP6006S | Gross domestic product at market prices | K1        | Quarterly              | PERC              | 1-Term % change                                          |
+<table>
+
+<thead>
+
+<tr>
+
+<th style="text-align:left;">
+
+Code
+
+</th>
+
+<th style="text-align:left;">
+
+Description
+
+</th>
+
+<th style="text-align:left;">
+
+Frequency
+
+</th>
+
+<th style="text-align:left;">
+
+Frequency\_description
+
+</th>
+
+<th style="text-align:left;">
+
+Unit\_of\_measure
+
+</th>
+
+<th style="text-align:left;">
+
+Version\_description
+
+</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td style="text-align:left;">
+
+KBP6006C
+
+</td>
+
+<td style="text-align:left;">
+
+Gross domestic product at market prices
+
+</td>
+
+<td style="text-align:left;">
+
+K1
+
+</td>
+
+<td style="text-align:left;">
+
+Quarterly
+
+</td>
+
+<td style="text-align:left;">
+
+RMILL
+
+</td>
+
+<td style="text-align:left;">
+
+Constant 2010 prices
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+KBP6006D
+
+</td>
+
+<td style="text-align:left;">
+
+Gross domestic product at market prices
+
+</td>
+
+<td style="text-align:left;">
+
+K1
+
+</td>
+
+<td style="text-align:left;">
+
+Quarterly
+
+</td>
+
+<td style="text-align:left;">
+
+RMILL
+
+</td>
+
+<td style="text-align:left;">
+
+Constant 2010 prices. Seasonally adjusted at annual rate
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+KBP6006K
+
+</td>
+
+<td style="text-align:left;">
+
+Gross domestic product at market prices
+
+</td>
+
+<td style="text-align:left;">
+
+K1
+
+</td>
+
+<td style="text-align:left;">
+
+Quarterly
+
+</td>
+
+<td style="text-align:left;">
+
+RMILL
+
+</td>
+
+<td style="text-align:left;">
+
+Current prices
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+KBP6006L
+
+</td>
+
+<td style="text-align:left;">
+
+Gross domestic product at market prices
+
+</td>
+
+<td style="text-align:left;">
+
+K1
+
+</td>
+
+<td style="text-align:left;">
+
+Quarterly
+
+</td>
+
+<td style="text-align:left;">
+
+RMILL
+
+</td>
+
+<td style="text-align:left;">
+
+Current prices. Seasonally adjusted at annual rate
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+KBP6006S
+
+</td>
+
+<td style="text-align:left;">
+
+Gross domestic product at market prices
+
+</td>
+
+<td style="text-align:left;">
+
+K1
+
+</td>
+
+<td style="text-align:left;">
+
+Quarterly
+
+</td>
+
+<td style="text-align:left;">
+
+PERC
+
+</td>
+
+<td style="text-align:left;">
+
+1-Term % change
+
+</td>
+
+</tr>
+
+</tbody>
+
+</table>
 
 ``` r
+
 SARB %>% 
   filter(Code == "KBP6006K") %>% 
   tail(5) %>% 
   kable()
 ```
 
-| Code     |     Date | Frequency |   Value | Month | Quarter | Year | Fiscal\_year |
-|:---------|---------:|:----------|--------:|:------|--------:|-----:|-------------:|
-| KBP6006K | 20190400 | K1        | 1313452 | NA    |       4 | 2019 |         2020 |
-| KBP6006K | 20200100 | K1        | 1281361 | NA    |       1 | 2020 |         2020 |
-| KBP6006K | 20200200 | K1        | 1073725 | NA    |       2 | 2020 |         2021 |
-| KBP6006K | 20200300 | K1        | 1266238 | NA    |       3 | 2020 |         2021 |
-| KBP6006K | 20200400 | K1        | 1352651 | NA    |       4 | 2020 |         2021 |
+<table>
+
+<thead>
+
+<tr>
+
+<th style="text-align:left;">
+
+Code
+
+</th>
+
+<th style="text-align:right;">
+
+Date
+
+</th>
+
+<th style="text-align:left;">
+
+Frequency
+
+</th>
+
+<th style="text-align:right;">
+
+Value
+
+</th>
+
+<th style="text-align:left;">
+
+Month
+
+</th>
+
+<th style="text-align:right;">
+
+Quarter
+
+</th>
+
+<th style="text-align:right;">
+
+Year
+
+</th>
+
+<th style="text-align:right;">
+
+Fiscal\_year
+
+</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td style="text-align:left;">
+
+KBP6006K
+
+</td>
+
+<td style="text-align:right;">
+
+20200100
+
+</td>
+
+<td style="text-align:left;">
+
+K1
+
+</td>
+
+<td style="text-align:right;">
+
+1281361
+
+</td>
+
+<td style="text-align:left;">
+
+NA
+
+</td>
+
+<td style="text-align:right;">
+
+1
+
+</td>
+
+<td style="text-align:right;">
+
+2020
+
+</td>
+
+<td style="text-align:right;">
+
+2020
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+KBP6006K
+
+</td>
+
+<td style="text-align:right;">
+
+20200200
+
+</td>
+
+<td style="text-align:left;">
+
+K1
+
+</td>
+
+<td style="text-align:right;">
+
+1073725
+
+</td>
+
+<td style="text-align:left;">
+
+NA
+
+</td>
+
+<td style="text-align:right;">
+
+2
+
+</td>
+
+<td style="text-align:right;">
+
+2020
+
+</td>
+
+<td style="text-align:right;">
+
+2021
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+KBP6006K
+
+</td>
+
+<td style="text-align:right;">
+
+20200300
+
+</td>
+
+<td style="text-align:left;">
+
+K1
+
+</td>
+
+<td style="text-align:right;">
+
+1266238
+
+</td>
+
+<td style="text-align:left;">
+
+NA
+
+</td>
+
+<td style="text-align:right;">
+
+3
+
+</td>
+
+<td style="text-align:right;">
+
+2020
+
+</td>
+
+<td style="text-align:right;">
+
+2021
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+KBP6006K
+
+</td>
+
+<td style="text-align:right;">
+
+20200400
+
+</td>
+
+<td style="text-align:left;">
+
+K1
+
+</td>
+
+<td style="text-align:right;">
+
+1351651
+
+</td>
+
+<td style="text-align:left;">
+
+NA
+
+</td>
+
+<td style="text-align:right;">
+
+4
+
+</td>
+
+<td style="text-align:right;">
+
+2020
+
+</td>
+
+<td style="text-align:right;">
+
+2021
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+KBP6006K
+
+</td>
+
+<td style="text-align:right;">
+
+20210100
+
+</td>
+
+<td style="text-align:left;">
+
+K1
+
+</td>
+
+<td style="text-align:right;">
+
+1304065
+
+</td>
+
+<td style="text-align:left;">
+
+NA
+
+</td>
+
+<td style="text-align:right;">
+
+1
+
+</td>
+
+<td style="text-align:right;">
+
+2021
+
+</td>
+
+<td style="text-align:right;">
+
+2021
+
+</td>
+
+</tr>
+
+</tbody>
+
+</table>
 
 ``` r
+
 # Look for STATSSA inflation data
 STATSSA_descriptions %>% 
   filter(grepl("Consumer Price Index", H02), H04 == "All Items") %>%
@@ -130,34 +1126,647 @@ STATSSA_descriptions %>%
   kable()
 ```
 
-| H01   | H02                  | H03      | H04       | H13           |
-|:------|:---------------------|:---------|:----------|:--------------|
-| P0141 | Consumer Price Index | CPA00000 | All Items | Western Cape  |
-| P0141 | Consumer Price Index | CPB00000 | All Items | Eastern Cape  |
-| P0141 | Consumer Price Index | CPC00000 | All Items | Northern Cape |
-| P0141 | Consumer Price Index | CPD00000 | All Items | Free State    |
-| P0141 | Consumer Price Index | CPE00000 | All Items | Kwazulu-Natal |
-| P0141 | Consumer Price Index | CPF00000 | All Items | North-West    |
-| P0141 | Consumer Price Index | CPG00000 | All Items | Gauteng       |
-| P0141 | Consumer Price Index | CPH00000 | All Items | Mpumalanga    |
-| P0141 | Consumer Price Index | CPJ00000 | All Items | Limpopo       |
-| P0141 | Consumer Price Index | CPR00000 | All Items | Rural Areas   |
-| P0141 | Consumer Price Index | CPT00000 | All Items | Total country |
+<table>
+
+<thead>
+
+<tr>
+
+<th style="text-align:left;">
+
+H01
+
+</th>
+
+<th style="text-align:left;">
+
+H02
+
+</th>
+
+<th style="text-align:left;">
+
+H03
+
+</th>
+
+<th style="text-align:left;">
+
+H04
+
+</th>
+
+<th style="text-align:left;">
+
+H13
+
+</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td style="text-align:left;">
+
+P0141
+
+</td>
+
+<td style="text-align:left;">
+
+Consumer Price Index
+
+</td>
+
+<td style="text-align:left;">
+
+CPA00000
+
+</td>
+
+<td style="text-align:left;">
+
+All Items
+
+</td>
+
+<td style="text-align:left;">
+
+Western Cape
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+P0141
+
+</td>
+
+<td style="text-align:left;">
+
+Consumer Price Index
+
+</td>
+
+<td style="text-align:left;">
+
+CPB00000
+
+</td>
+
+<td style="text-align:left;">
+
+All Items
+
+</td>
+
+<td style="text-align:left;">
+
+Eastern Cape
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+P0141
+
+</td>
+
+<td style="text-align:left;">
+
+Consumer Price Index
+
+</td>
+
+<td style="text-align:left;">
+
+CPC00000
+
+</td>
+
+<td style="text-align:left;">
+
+All Items
+
+</td>
+
+<td style="text-align:left;">
+
+Northern Cape
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+P0141
+
+</td>
+
+<td style="text-align:left;">
+
+Consumer Price Index
+
+</td>
+
+<td style="text-align:left;">
+
+CPD00000
+
+</td>
+
+<td style="text-align:left;">
+
+All Items
+
+</td>
+
+<td style="text-align:left;">
+
+Free State
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+P0141
+
+</td>
+
+<td style="text-align:left;">
+
+Consumer Price Index
+
+</td>
+
+<td style="text-align:left;">
+
+CPE00000
+
+</td>
+
+<td style="text-align:left;">
+
+All Items
+
+</td>
+
+<td style="text-align:left;">
+
+Kwazulu-Natal
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+P0141
+
+</td>
+
+<td style="text-align:left;">
+
+Consumer Price Index
+
+</td>
+
+<td style="text-align:left;">
+
+CPF00000
+
+</td>
+
+<td style="text-align:left;">
+
+All Items
+
+</td>
+
+<td style="text-align:left;">
+
+North-West
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+P0141
+
+</td>
+
+<td style="text-align:left;">
+
+Consumer Price Index
+
+</td>
+
+<td style="text-align:left;">
+
+CPG00000
+
+</td>
+
+<td style="text-align:left;">
+
+All Items
+
+</td>
+
+<td style="text-align:left;">
+
+Gauteng
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+P0141
+
+</td>
+
+<td style="text-align:left;">
+
+Consumer Price Index
+
+</td>
+
+<td style="text-align:left;">
+
+CPH00000
+
+</td>
+
+<td style="text-align:left;">
+
+All Items
+
+</td>
+
+<td style="text-align:left;">
+
+Mpumalanga
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+P0141
+
+</td>
+
+<td style="text-align:left;">
+
+Consumer Price Index
+
+</td>
+
+<td style="text-align:left;">
+
+CPJ00000
+
+</td>
+
+<td style="text-align:left;">
+
+All Items
+
+</td>
+
+<td style="text-align:left;">
+
+Limpopo
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+P0141
+
+</td>
+
+<td style="text-align:left;">
+
+Consumer Price Index
+
+</td>
+
+<td style="text-align:left;">
+
+CPR00000
+
+</td>
+
+<td style="text-align:left;">
+
+All Items
+
+</td>
+
+<td style="text-align:left;">
+
+Rural Areas
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+P0141
+
+</td>
+
+<td style="text-align:left;">
+
+Consumer Price Index
+
+</td>
+
+<td style="text-align:left;">
+
+CPT00000
+
+</td>
+
+<td style="text-align:left;">
+
+All Items
+
+</td>
+
+<td style="text-align:left;">
+
+Total country
+
+</td>
+
+</tr>
+
+</tbody>
+
+</table>
 
 ``` r
+
 STATSSA %>% 
   filter(Code == "CPT00000") %>% 
   tail(5) %>% 
   kable()
 ```
 
-|     | Publication | Code     | Date    | Value |
-|:----|:------------|:---------|:--------|:------|
-| 156 | P0141       | CPT00000 | 2020 12 | 117   |
-| 157 | P0141       | CPT00000 | 2021 01 | 117.4 |
-| 158 | P0141       | CPT00000 | 2021 02 | 118.2 |
-| 159 | P0141       | CPT00000 | 2021 03 | 119   |
-| 160 | P0141       | CPT00000 | 2021 04 | 119.8 |
+<table>
+
+<thead>
+
+<tr>
+
+<th style="text-align:left;">
+
+</th>
+
+<th style="text-align:left;">
+
+Publication
+
+</th>
+
+<th style="text-align:left;">
+
+Code
+
+</th>
+
+<th style="text-align:left;">
+
+Date
+
+</th>
+
+<th style="text-align:left;">
+
+Value
+
+</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td style="text-align:left;">
+
+156
+
+</td>
+
+<td style="text-align:left;">
+
+P0141
+
+</td>
+
+<td style="text-align:left;">
+
+CPT00000
+
+</td>
+
+<td style="text-align:left;">
+
+2020 12
+
+</td>
+
+<td style="text-align:left;">
+
+117
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+157
+
+</td>
+
+<td style="text-align:left;">
+
+P0141
+
+</td>
+
+<td style="text-align:left;">
+
+CPT00000
+
+</td>
+
+<td style="text-align:left;">
+
+2021 01
+
+</td>
+
+<td style="text-align:left;">
+
+117.4
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+158
+
+</td>
+
+<td style="text-align:left;">
+
+P0141
+
+</td>
+
+<td style="text-align:left;">
+
+CPT00000
+
+</td>
+
+<td style="text-align:left;">
+
+2021 02
+
+</td>
+
+<td style="text-align:left;">
+
+118.2
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+159
+
+</td>
+
+<td style="text-align:left;">
+
+P0141
+
+</td>
+
+<td style="text-align:left;">
+
+CPT00000
+
+</td>
+
+<td style="text-align:left;">
+
+2021 03
+
+</td>
+
+<td style="text-align:left;">
+
+119
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+160
+
+</td>
+
+<td style="text-align:left;">
+
+P0141
+
+</td>
+
+<td style="text-align:left;">
+
+CPT00000
+
+</td>
+
+<td style="text-align:left;">
+
+2021 04
+
+</td>
+
+<td style="text-align:left;">
+
+119.8
+
+</td>
+
+</tr>
+
+</tbody>
+
+</table>
 
 The data is probably most useful when combined, such as in the chart
 below.
@@ -169,15 +1778,15 @@ library(scales)
 
 # Create a tax to GDP chart - revenue per year first
 Total_revenue <- SARS_annual %>% 
-  filter(T3 == "Total tax revenue (gross)") %>% 
-  select(Fiscal_year, Revenue)
+  group_by(Fiscal_year) %>% 
+  summarise(Revenue = sum(Revenue))
 
 # Get Nominal GDP across fiscal year by summing per quarter
 GDP_fiscal <- SARB %>% 
   filter(Code == "KBP6006K") %>% 
   group_by(Fiscal_year) %>% 
   summarise(GDP = sum(Value)) %>% 
-  filter(Fiscal_year < 2021)
+  filter(Fiscal_year < 2022)
 
 # Join together and create tax to GDP
 Tax_to_GDP <- GDP_fiscal %>% 
@@ -227,5 +1836,5 @@ system.time({
     mutate(Simulated_tax = pit(Taxable_income, Age, MTC, Tax_year))
 })
 #>    user  system elapsed 
-#>   0.746   0.173   0.998
+#>    0.41    0.03    0.43
 ```
