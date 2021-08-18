@@ -8,7 +8,7 @@
 <!-- badges: end -->
 
 This is a minimal package to help with the compilation and analysis of
-tax and economic data in South Africa. The package only contains four
+tax and economic data in South Africa. The package only contains five
 main sets of data, three functions and the personal income tax tables
 from 1995/96 to 2021/22.
 
@@ -20,6 +20,9 @@ The data includes:
   - Monthly tax revenue collections from April 2002, as published in the
     [monthly financing statements of the National
     Treasury](http://www.treasury.gov.za/comm_media/press/monthly/default.aspx)
+  - Forecasts of the main tax instruments and GDP from 2005, as
+    published in the [Budget Reviews of the National
+    Treasury](http://www.treasury.gov.za/documents/national%20budget/default.aspx)
   - Quarterly Bulletin data from the [South African Reserve
     Bank](https://www.resbank.co.za/en/home/publications/quarterly-bulletin1/download-information-from-xlsx-data-files)
   - Economic statistics from [Statistics South
@@ -42,12 +45,12 @@ remotes::install_github("chrisaxelson/tax4sa")
 ## Example
 
 The data can be accessed by directly entering either `SARS_annual`,
-`SARS_monthly`, `STATSSA` or `SARB` and is in a tidy format to ease
-analysis within R. The revenue data is split by three revenue
-classifications in columns `T1`, `T2` and `T3` and all figures are in
-ZAR 000’s. The dataframes `SARB_descriptions` and `STATSSA_descriptions`
-are also available to help with the details of each variable in those
-two sets of data.
+`SARS_monthly`, `NT_forecasts`, `STATSSA` or `SARB` and is in a tidy
+format to ease analysis within R. The revenue data is split by three
+revenue classifications in columns `T1`, `T2` and `T3` and all figures
+are in ZAR 000’s. The dataframes `SARB_descriptions` and
+`STATSSA_descriptions` are also available to help with the details of
+each variable in those two sets of data.
 
 ``` r
 library(tax4sa)
@@ -63,14 +66,14 @@ SARS_annual %>%
   mutate(Revenue = round(Revenue,0)) %>% 
   head() %>% 
   kable(format.args = list(big.mark = ","), 
-        caption = "SARS_annual (R'000s)")
+        caption = "Annual tax revenue (R'000s)")
 ```
 
 <table>
 
 <caption>
 
-SARS\_annual (R’000s)
+Annual tax revenue (R’000s)
 
 </caption>
 
@@ -327,18 +330,19 @@ Small business tax amnesty
 # And monthly
 SARS_monthly %>% 
   filter(T3 == "Health promotion levy") %>% 
-  select(Tax = T3, Month, Year, Revenue) %>% 
-  mutate(Year = as.character(Year)) %>% 
+  select(Tax = T3, Month, Quarter, Year, Fiscal_year, Revenue) %>% 
+  mutate(Year = as.character(Year),
+         Fiscal_year = as.character(Fiscal_year)) %>% 
   tail(5) %>% 
   kable(format.args = list(big.mark = ","),
-        caption = "Health promotion levy in SARS_monthly (R'000s)") 
+        caption = "Monthly health promotion levy revenue (R'000s)") 
 ```
 
 <table>
 
 <caption>
 
-Health promotion levy in SARS\_monthly (R’000s)
+Monthly health promotion levy revenue (R’000s)
 
 </caption>
 
@@ -358,9 +362,21 @@ Month
 
 </th>
 
+<th style="text-align:right;">
+
+Quarter
+
+</th>
+
 <th style="text-align:left;">
 
 Year
+
+</th>
+
+<th style="text-align:left;">
+
+Fiscal\_year
 
 </th>
 
@@ -387,6 +403,18 @@ Health promotion levy
 <td style="text-align:left;">
 
 February
+
+</td>
+
+<td style="text-align:right;">
+
+1
+
+</td>
+
+<td style="text-align:left;">
+
+2021
 
 </td>
 
@@ -418,6 +446,18 @@ March
 
 </td>
 
+<td style="text-align:right;">
+
+1
+
+</td>
+
+<td style="text-align:left;">
+
+2021
+
+</td>
+
 <td style="text-align:left;">
 
 2021
@@ -446,9 +486,21 @@ April
 
 </td>
 
+<td style="text-align:right;">
+
+2
+
+</td>
+
 <td style="text-align:left;">
 
 2021
+
+</td>
+
+<td style="text-align:left;">
+
+2022
 
 </td>
 
@@ -474,9 +526,21 @@ May
 
 </td>
 
+<td style="text-align:right;">
+
+2
+
+</td>
+
 <td style="text-align:left;">
 
 2021
+
+</td>
+
+<td style="text-align:left;">
+
+2022
 
 </td>
 
@@ -502,9 +566,21 @@ June
 
 </td>
 
+<td style="text-align:right;">
+
+2
+
+</td>
+
 <td style="text-align:left;">
 
 2021
+
+</td>
+
+<td style="text-align:left;">
+
+2022
 
 </td>
 
@@ -526,6 +602,211 @@ June
 # This saves it in your current working directory
 # download.file("https://raw.githubusercontent.com/chrisaxelson/tax4sa/master/data-raw/SARS/Revenue.xlsx",
 #               "Revenue.xlsx")
+
+# Check revenue data
+NT_forecasts %>% 
+  filter(Publication_year == 2021,
+         Category == "Gross tax revenue") %>% 
+   mutate(Publication_year = as.character(Publication_year)) %>% 
+  kable(format.args = list(big.mark = ","), 
+        caption = "Tax revenue forecasts (R million)")
+```
+
+<table>
+
+<caption>
+
+Tax revenue forecasts (R million)
+
+</caption>
+
+<thead>
+
+<tr>
+
+<th style="text-align:left;">
+
+Source
+
+</th>
+
+<th style="text-align:left;">
+
+Publication\_year
+
+</th>
+
+<th style="text-align:left;">
+
+Category
+
+</th>
+
+<th style="text-align:left;">
+
+Forecast\_year
+
+</th>
+
+<th style="text-align:right;">
+
+Forecast
+
+</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td style="text-align:left;">
+
+Budget
+
+</td>
+
+<td style="text-align:left;">
+
+2021
+
+</td>
+
+<td style="text-align:left;">
+
+Gross tax revenue
+
+</td>
+
+<td style="text-align:left;">
+
+2020/21
+
+</td>
+
+<td style="text-align:right;">
+
+1,212,206
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+Budget
+
+</td>
+
+<td style="text-align:left;">
+
+2021
+
+</td>
+
+<td style="text-align:left;">
+
+Gross tax revenue
+
+</td>
+
+<td style="text-align:left;">
+
+2021/22
+
+</td>
+
+<td style="text-align:right;">
+
+1,365,124
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+Budget
+
+</td>
+
+<td style="text-align:left;">
+
+2021
+
+</td>
+
+<td style="text-align:left;">
+
+Gross tax revenue
+
+</td>
+
+<td style="text-align:left;">
+
+2022/23
+
+</td>
+
+<td style="text-align:right;">
+
+1,457,653
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+Budget
+
+</td>
+
+<td style="text-align:left;">
+
+2021
+
+</td>
+
+<td style="text-align:left;">
+
+Gross tax revenue
+
+</td>
+
+<td style="text-align:left;">
+
+2023/24
+
+</td>
+
+<td style="text-align:right;">
+
+1,548,512
+
+</td>
+
+</tr>
+
+</tbody>
+
+</table>
+
+``` r
+
+# Or you can download the forecasts in one spreadsheet
+# This saves it in your current working directory
+# download.file("https://raw.githubusercontent.com/chrisaxelson/tax4sa/master/data-raw/SARS/Forecasts.xlsx",
+#               "Forecasts.xlsx")
+
 
 # Look for SARB economic data on GDP
 SARB_descriptions %>% 
@@ -1836,5 +2117,5 @@ system.time({
     mutate(Simulated_tax = pit(Taxable_income, Age, MTC, Tax_year))
 })
 #>    user  system elapsed 
-#>    0.41    0.03    0.43
+#>    0.39    0.05    0.43
 ```

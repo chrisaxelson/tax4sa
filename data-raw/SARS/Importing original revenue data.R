@@ -41,8 +41,13 @@ SARS_monthly <- SARS_monthly %>%
   rename(Month_year = Month) %>%
   separate(Month_year, into = c("Month", "Year"), remove = FALSE) %>%
   mutate(Year = as.numeric(Year),
-         Fiscal_year = if_else(Month %in% c("January", "February", "March"), Year, Year + 1)) %>%
-  relocate(Revenue, .after = "Fiscal_year") %>%
+         Fiscal_year = if_else(Month %in% c("January", "February", "March"), Year, Year + 1),
+         Quarter = case_when(
+           Month %in% c("January", "February", "March") ~ 1,
+           Month %in% c("April", "May", "June") ~ 2,
+           Month %in% c("July", "August", "September") ~ 3,
+           TRUE ~ 4)) %>%
+  select(T1, T2, T3, Month, Quarter, Year, Fiscal_year, Revenue) %>%
   filter(!is.na(Revenue))
 
 # Subset which sums to total revenue

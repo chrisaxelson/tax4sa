@@ -18,12 +18,13 @@ knitr::opts_chunk$set(
 <!-- badges: start -->
 <!-- badges: end -->
 
-This is a minimal package to help with the compilation and analysis of tax and economic data in South Africa. The package only contains four main sets of data, three functions and the personal income tax tables from 1995/96 to 2021/22. 
+This is a minimal package to help with the compilation and analysis of tax and economic data in South Africa. The package only contains five main sets of data, three functions and the personal income tax tables from 1995/96 to 2021/22. 
 
 The data includes: 
 
   + Annual tax revenue collections from 1983/84, as published in the [Budget Reviews of the National Treasury](http://www.treasury.gov.za/documents/national%20budget/default.aspx) 
   + Monthly tax revenue collections from April 2002, as published in the [monthly financing statements of the National Treasury](http://www.treasury.gov.za/comm_media/press/monthly/default.aspx)
+  + Forecasts of the main tax instruments and GDP from 2005, as published in the [Budget Reviews of the National Treasury](http://www.treasury.gov.za/documents/national%20budget/default.aspx)
   + Quarterly Bulletin data from the [South African Reserve Bank](https://www.resbank.co.za/en/home/publications/quarterly-bulletin1/download-information-from-xlsx-data-files)
   + Economic statistics from [Statistics South Africa](http://www.statssa.gov.za/?page_id=1847)
 
@@ -39,7 +40,7 @@ remotes::install_github("chrisaxelson/tax4sa")
 ```
 ## Example
 
-The data can be accessed by directly entering either `SARS_annual`, `SARS_monthly`, `STATSSA` or `SARB` and is in a tidy format to ease analysis within R. The revenue data is split by three revenue classifications in columns `T1`, `T2` and `T3` and all figures are in ZAR 000's. The dataframes `SARB_descriptions` and `STATSSA_descriptions` are also available to help with the details of each variable in those two sets of data.  
+The data can be accessed by directly entering either `SARS_annual`, `SARS_monthly`, `NT_forecasts`, `STATSSA` or `SARB` and is in a tidy format to ease analysis within R. The revenue data is split by three revenue classifications in columns `T1`, `T2` and `T3` and all figures are in ZAR 000's. The dataframes `SARB_descriptions` and `STATSSA_descriptions` are also available to help with the details of each variable in those two sets of data.  
 
 ```{r example, message = FALSE}
 library(tax4sa)
@@ -54,21 +55,36 @@ SARS_annual %>%
   mutate(Revenue = round(Revenue,0)) %>% 
   head() %>% 
   kable(format.args = list(big.mark = ","), 
-        caption = "SARS_annual (R'000s)")
+        caption = "Annual tax revenue (R'000s)")
 
 # And monthly
 SARS_monthly %>% 
   filter(T3 == "Health promotion levy") %>% 
-  select(Tax = T3, Month, Year, Revenue) %>% 
-  mutate(Year = as.character(Year)) %>% 
+  select(Tax = T3, Month, Quarter, Year, Fiscal_year, Revenue) %>% 
+  mutate(Year = as.character(Year),
+         Fiscal_year = as.character(Fiscal_year)) %>% 
   tail(5) %>% 
   kable(format.args = list(big.mark = ","),
-        caption = "Health promotion levy in SARS_monthly (R'000s)") 
+        caption = "Monthly health promotion levy revenue (R'000s)") 
 
 # Or you can download the annual and monthly data in one spreadsheet
 # This saves it in your current working directory
 # download.file("https://raw.githubusercontent.com/chrisaxelson/tax4sa/master/data-raw/SARS/Revenue.xlsx",
 #               "Revenue.xlsx")
+
+# Check revenue data
+NT_forecasts %>% 
+  filter(Publication_year == 2021,
+         Category == "Gross tax revenue") %>% 
+   mutate(Publication_year = as.character(Publication_year)) %>% 
+  kable(format.args = list(big.mark = ","), 
+        caption = "Tax revenue forecasts (R million)")
+
+# Or you can download the forecasts in one spreadsheet
+# This saves it in your current working directory
+# download.file("https://raw.githubusercontent.com/chrisaxelson/tax4sa/master/data-raw/SARS/Forecasts.xlsx",
+#               "Forecasts.xlsx")
+
 
 # Look for SARB economic data on GDP
 SARB_descriptions %>% 
