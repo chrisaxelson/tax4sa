@@ -164,7 +164,8 @@ SARB <- SARB %>%
 
 # One correction
 SARB <- SARB %>%
-  mutate(Fiscal_year = if_else(Fiscal_year == 2, 2000, Fiscal_year))
+  mutate(Fiscal_year = if_else(Fiscal_year == 2, 2000, Fiscal_year)) %>%
+  relocate(Value, .after = last_col())
 
 # Save data
 save(SARB, file = "data-raw/SARB/SARB.rda", version = 2)

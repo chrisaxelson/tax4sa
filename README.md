@@ -42,7 +42,7 @@ You can install the package from [GitHub](https://github.com/) with:
 remotes::install_github("chrisaxelson/tax4sa")
 ```
 
-## Example
+## Data
 
 The data can be accessed by directly entering either `SARS_annual`,
 `SARS_monthly`, `NT_forecasts`, `STATSSA` or `SARB` and is in a tidy
@@ -1098,12 +1098,6 @@ Frequency
 
 </th>
 
-<th style="text-align:right;">
-
-Value
-
-</th>
-
 <th style="text-align:left;">
 
 Month
@@ -1125,6 +1119,12 @@ Year
 <th style="text-align:right;">
 
 Fiscal\_year
+
+</th>
+
+<th style="text-align:right;">
+
+Value
 
 </th>
 
@@ -1154,12 +1154,6 @@ K1
 
 </td>
 
-<td style="text-align:right;">
-
-1281361
-
-</td>
-
 <td style="text-align:left;">
 
 NA
@@ -1184,6 +1178,12 @@ NA
 
 </td>
 
+<td style="text-align:right;">
+
+1281361
+
+</td>
+
 </tr>
 
 <tr>
@@ -1203,12 +1203,6 @@ KBP6006K
 <td style="text-align:left;">
 
 K1
-
-</td>
-
-<td style="text-align:right;">
-
-1073725
 
 </td>
 
@@ -1236,6 +1230,12 @@ NA
 
 </td>
 
+<td style="text-align:right;">
+
+1073725
+
+</td>
+
 </tr>
 
 <tr>
@@ -1255,12 +1255,6 @@ KBP6006K
 <td style="text-align:left;">
 
 K1
-
-</td>
-
-<td style="text-align:right;">
-
-1266238
 
 </td>
 
@@ -1288,6 +1282,12 @@ NA
 
 </td>
 
+<td style="text-align:right;">
+
+1266238
+
+</td>
+
 </tr>
 
 <tr>
@@ -1307,12 +1307,6 @@ KBP6006K
 <td style="text-align:left;">
 
 K1
-
-</td>
-
-<td style="text-align:right;">
-
-1351651
 
 </td>
 
@@ -1340,6 +1334,12 @@ NA
 
 </td>
 
+<td style="text-align:right;">
+
+1351651
+
+</td>
+
 </tr>
 
 <tr>
@@ -1359,12 +1359,6 @@ KBP6006K
 <td style="text-align:left;">
 
 K1
-
-</td>
-
-<td style="text-align:right;">
-
-1304065
 
 </td>
 
@@ -1392,6 +1386,12 @@ NA
 
 </td>
 
+<td style="text-align:right;">
+
+1304065
+
+</td>
+
 </tr>
 
 </tbody>
@@ -1402,7 +1402,7 @@ NA
 
 # Look for STATSSA inflation data
 STATSSA_descriptions %>% 
-  filter(grepl("Consumer Price Index", H02), H04 == "All Items") %>%
+  filter(H04 == "CPI Headline") %>%
   select(H01, H02, H03, H04, H13) %>% 
   kable()
 ```
@@ -1465,359 +1465,19 @@ Consumer Price Index
 
 <td style="text-align:left;">
 
-CPA00000
+CPS00000
 
 </td>
 
 <td style="text-align:left;">
 
-All Items
+CPI Headline
 
 </td>
 
 <td style="text-align:left;">
 
-Western Cape
-
-</td>
-
-</tr>
-
-<tr>
-
-<td style="text-align:left;">
-
-P0141
-
-</td>
-
-<td style="text-align:left;">
-
-Consumer Price Index
-
-</td>
-
-<td style="text-align:left;">
-
-CPB00000
-
-</td>
-
-<td style="text-align:left;">
-
-All Items
-
-</td>
-
-<td style="text-align:left;">
-
-Eastern Cape
-
-</td>
-
-</tr>
-
-<tr>
-
-<td style="text-align:left;">
-
-P0141
-
-</td>
-
-<td style="text-align:left;">
-
-Consumer Price Index
-
-</td>
-
-<td style="text-align:left;">
-
-CPC00000
-
-</td>
-
-<td style="text-align:left;">
-
-All Items
-
-</td>
-
-<td style="text-align:left;">
-
-Northern Cape
-
-</td>
-
-</tr>
-
-<tr>
-
-<td style="text-align:left;">
-
-P0141
-
-</td>
-
-<td style="text-align:left;">
-
-Consumer Price Index
-
-</td>
-
-<td style="text-align:left;">
-
-CPD00000
-
-</td>
-
-<td style="text-align:left;">
-
-All Items
-
-</td>
-
-<td style="text-align:left;">
-
-Free State
-
-</td>
-
-</tr>
-
-<tr>
-
-<td style="text-align:left;">
-
-P0141
-
-</td>
-
-<td style="text-align:left;">
-
-Consumer Price Index
-
-</td>
-
-<td style="text-align:left;">
-
-CPE00000
-
-</td>
-
-<td style="text-align:left;">
-
-All Items
-
-</td>
-
-<td style="text-align:left;">
-
-Kwazulu-Natal
-
-</td>
-
-</tr>
-
-<tr>
-
-<td style="text-align:left;">
-
-P0141
-
-</td>
-
-<td style="text-align:left;">
-
-Consumer Price Index
-
-</td>
-
-<td style="text-align:left;">
-
-CPF00000
-
-</td>
-
-<td style="text-align:left;">
-
-All Items
-
-</td>
-
-<td style="text-align:left;">
-
-North-West
-
-</td>
-
-</tr>
-
-<tr>
-
-<td style="text-align:left;">
-
-P0141
-
-</td>
-
-<td style="text-align:left;">
-
-Consumer Price Index
-
-</td>
-
-<td style="text-align:left;">
-
-CPG00000
-
-</td>
-
-<td style="text-align:left;">
-
-All Items
-
-</td>
-
-<td style="text-align:left;">
-
-Gauteng
-
-</td>
-
-</tr>
-
-<tr>
-
-<td style="text-align:left;">
-
-P0141
-
-</td>
-
-<td style="text-align:left;">
-
-Consumer Price Index
-
-</td>
-
-<td style="text-align:left;">
-
-CPH00000
-
-</td>
-
-<td style="text-align:left;">
-
-All Items
-
-</td>
-
-<td style="text-align:left;">
-
-Mpumalanga
-
-</td>
-
-</tr>
-
-<tr>
-
-<td style="text-align:left;">
-
-P0141
-
-</td>
-
-<td style="text-align:left;">
-
-Consumer Price Index
-
-</td>
-
-<td style="text-align:left;">
-
-CPJ00000
-
-</td>
-
-<td style="text-align:left;">
-
-All Items
-
-</td>
-
-<td style="text-align:left;">
-
-Limpopo
-
-</td>
-
-</tr>
-
-<tr>
-
-<td style="text-align:left;">
-
-P0141
-
-</td>
-
-<td style="text-align:left;">
-
-Consumer Price Index
-
-</td>
-
-<td style="text-align:left;">
-
-CPR00000
-
-</td>
-
-<td style="text-align:left;">
-
-All Items
-
-</td>
-
-<td style="text-align:left;">
-
-Rural Areas
-
-</td>
-
-</tr>
-
-<tr>
-
-<td style="text-align:left;">
-
-P0141
-
-</td>
-
-<td style="text-align:left;">
-
-Consumer Price Index
-
-</td>
-
-<td style="text-align:left;">
-
-CPT00000
-
-</td>
-
-<td style="text-align:left;">
-
-All Items
-
-</td>
-
-<td style="text-align:left;">
-
-Total country
+All urban areas
 
 </td>
 
@@ -1830,7 +1490,7 @@ Total country
 ``` r
 
 STATSSA %>% 
-  filter(Code == "CPT00000") %>% 
+  filter(H03 == "CPS00000") %>% 
   tail(5) %>% 
   kable()
 ```
@@ -1847,13 +1507,13 @@ STATSSA %>%
 
 <th style="text-align:left;">
 
-Publication
+H01
 
 </th>
 
 <th style="text-align:left;">
 
-Code
+H03
 
 </th>
 
@@ -1865,6 +1525,30 @@ Date
 
 <th style="text-align:left;">
 
+Month
+
+</th>
+
+<th style="text-align:right;">
+
+Quarter
+
+</th>
+
+<th style="text-align:right;">
+
+Year
+
+</th>
+
+<th style="text-align:right;">
+
+Fiscal\_year
+
+</th>
+
+<th style="text-align:right;">
+
 Value
 
 </th>
@@ -1874,108 +1558,6 @@ Value
 </thead>
 
 <tbody>
-
-<tr>
-
-<td style="text-align:left;">
-
-156
-
-</td>
-
-<td style="text-align:left;">
-
-P0141
-
-</td>
-
-<td style="text-align:left;">
-
-CPT00000
-
-</td>
-
-<td style="text-align:left;">
-
-2020 12
-
-</td>
-
-<td style="text-align:left;">
-
-117
-
-</td>
-
-</tr>
-
-<tr>
-
-<td style="text-align:left;">
-
-157
-
-</td>
-
-<td style="text-align:left;">
-
-P0141
-
-</td>
-
-<td style="text-align:left;">
-
-CPT00000
-
-</td>
-
-<td style="text-align:left;">
-
-2021 01
-
-</td>
-
-<td style="text-align:left;">
-
-117.4
-
-</td>
-
-</tr>
-
-<tr>
-
-<td style="text-align:left;">
-
-158
-
-</td>
-
-<td style="text-align:left;">
-
-P0141
-
-</td>
-
-<td style="text-align:left;">
-
-CPT00000
-
-</td>
-
-<td style="text-align:left;">
-
-2021 02
-
-</td>
-
-<td style="text-align:left;">
-
-118.2
-
-</td>
-
-</tr>
 
 <tr>
 
@@ -1993,7 +1575,7 @@ P0141
 
 <td style="text-align:left;">
 
-CPT00000
+CPS00000
 
 </td>
 
@@ -2005,7 +1587,31 @@ CPT00000
 
 <td style="text-align:left;">
 
-119
+March
+
+</td>
+
+<td style="text-align:right;">
+
+1
+
+</td>
+
+<td style="text-align:right;">
+
+2021
+
+</td>
+
+<td style="text-align:right;">
+
+2021
+
+</td>
+
+<td style="text-align:right;">
+
+119.3
 
 </td>
 
@@ -2027,7 +1633,7 @@ P0141
 
 <td style="text-align:left;">
 
-CPT00000
+CPS00000
 
 </td>
 
@@ -2039,7 +1645,205 @@ CPT00000
 
 <td style="text-align:left;">
 
-119.8
+April
+
+</td>
+
+<td style="text-align:right;">
+
+2
+
+</td>
+
+<td style="text-align:right;">
+
+2021
+
+</td>
+
+<td style="text-align:right;">
+
+2022
+
+</td>
+
+<td style="text-align:right;">
+
+120.1
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+161
+
+</td>
+
+<td style="text-align:left;">
+
+P0141
+
+</td>
+
+<td style="text-align:left;">
+
+CPS00000
+
+</td>
+
+<td style="text-align:left;">
+
+2021 05
+
+</td>
+
+<td style="text-align:left;">
+
+May
+
+</td>
+
+<td style="text-align:right;">
+
+2
+
+</td>
+
+<td style="text-align:right;">
+
+2021
+
+</td>
+
+<td style="text-align:right;">
+
+2022
+
+</td>
+
+<td style="text-align:right;">
+
+120.2
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+162
+
+</td>
+
+<td style="text-align:left;">
+
+P0141
+
+</td>
+
+<td style="text-align:left;">
+
+CPS00000
+
+</td>
+
+<td style="text-align:left;">
+
+2021 06
+
+</td>
+
+<td style="text-align:left;">
+
+June
+
+</td>
+
+<td style="text-align:right;">
+
+2
+
+</td>
+
+<td style="text-align:right;">
+
+2021
+
+</td>
+
+<td style="text-align:right;">
+
+2022
+
+</td>
+
+<td style="text-align:right;">
+
+120.5
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+163
+
+</td>
+
+<td style="text-align:left;">
+
+P0141
+
+</td>
+
+<td style="text-align:left;">
+
+CPS00000
+
+</td>
+
+<td style="text-align:left;">
+
+2021 07
+
+</td>
+
+<td style="text-align:left;">
+
+July
+
+</td>
+
+<td style="text-align:right;">
+
+3
+
+</td>
+
+<td style="text-align:right;">
+
+2021
+
+</td>
+
+<td style="text-align:right;">
+
+2022
+
+</td>
+
+<td style="text-align:right;">
+
+121.8
 
 </td>
 
@@ -2049,10 +1853,44 @@ CPT00000
 
 </table>
 
-The data is probably most useful when combined, such as in the chart
-below.
+## Functions
+
+The three functions are `tax_calculation`, `pit` and `pit_manual`. The
+first is a generic function to apply a tax table to a value, while the
+latter two specifically calculate the personal income tax liability in
+South Africa. `pit_manual` allows for a custom tax table to be applied
+to cater for modelling the impacts of changes in the personal income tax
+tables. The package includes a list of historical tax tables to be used
+in the calculations.
 
 ``` r
+# Accessing tax tables
+tax_calculation(100000, Tax_tables$PIT_brackets_2021)
+#> [1] 18000
+
+# Calculate personal income tax
+pit(income = 1000000, age = 53, mtc = 2550, tax_year = 2021)
+#> [1] 305263
+
+# Same calculation in a relatively large dataframe with differing variables
+individuals <- 1e6
+df <- data.frame(Taxable_income = round(runif(individuals, 0, 3000000),0),
+                 Age = round(runif(individuals, 18, 80),0),
+                 MTC = round(runif(individuals, 0, 6000), 0),
+                 Tax_year = round(runif(individuals, 2014, 2020), 0))
+
+system.time({
+  df <- df %>% 
+    mutate(Simulated_tax = pit(Taxable_income, Age, MTC, Tax_year))
+})
+#>    user  system elapsed 
+#>    0.28    0.03    0.31
+```
+
+#### Examples
+
+``` r
+library(tax4sa)
 library(dplyr)
 library(ggplot2)
 library(scales)
@@ -2088,34 +1926,34 @@ ggplot(Tax_to_GDP, aes(x = Fiscal_year, y = Tax_to_GDP)) +
 
 <img src="man/figures/README-revenue-1.png" width="100%" />
 
-The three functions are `tax_calculation`, `pit` and `pit_manual`. The
-first is a generic function to apply a tax table to a value, while the
-latter two specifically calculate the personal income tax liability in
-South Africa. `pit_manual` allows for a custom tax table to be applied
-to cater for modelling the impacts of changes in the personal income tax
-tables. The package includes a list of historical tax tables to be used
-in the calculations.
+<!-- ```{r cpi, message = FALSE} -->
 
-``` r
-# Accessing tax tables
-tax_calculation(100000, Tax_tables$PIT_brackets_2021)
-#> [1] 18000
+<!-- # Get headline CPI index and check growth -->
 
-# Calculate personal income tax
-pit(income = 1000000, age = 53, mtc = 2550, tax_year = 2021)
-#> [1] 305263
+<!-- CPI <- STATSSA %>%  -->
 
-# Same calculation in a relatively large dataframe with differing variables
-individuals <- 1e6
-df <- data.frame(Taxable_income = round(runif(individuals, 0, 3000000),0),
-                 Age = round(runif(individuals, 18, 80),0),
-                 MTC = round(runif(individuals, 0, 6000), 0),
-                 Tax_year = round(runif(individuals, 2014, 2020), 0))
+<!--   filter(Code == "CPS00000") %>%  -->
 
-system.time({
-  df <- df %>% 
-    mutate(Simulated_tax = pit(Taxable_income, Age, MTC, Tax_year))
-})
-#>    user  system elapsed 
-#>    0.39    0.05    0.43
-```
+<!--   mutate(Value = as.numeric(Value),  -->
+
+<!--          Change = Value / lag(Value, n = 12) - 1) -->
+
+<!-- # Chart -->
+
+<!-- ggplot(CPI, aes(x = Fiscal_year, y = Tax_to_GDP)) + -->
+
+<!--   geom_line(color = "darkblue") +  -->
+
+<!--   geom_point(color = "darkblue") + -->
+
+<!--   scale_y_continuous(labels = scales::percent_format(accuracy = 1L)) + -->
+
+<!--   theme_minimal() + -->
+
+<!--   theme(axis.title.x = element_blank()) + -->
+
+<!--   ylab("Tax to GDP") + -->
+
+<!--   ggtitle("Total tax revenue to GDP") -->
+
+<!-- ``` -->

@@ -27,18 +27,28 @@ Data_to_include <- c(
   "P6242.1", "P6141.2"
   )
 STATSSA_links <- STATSSA_links[grepl(paste(Data_to_include, collapse = "|"), STATSSA_links)]
-STATSSA_links <- str_replace_all(STATSSA_links, " ", "%20")
 
-for (j in seq_along(STATSSA_links)) {
+Available_files_on_website <- STATSSA_links
+
+# Check with file names that have been downloaded already
+Imported_files <- readRDS("data-raw/STATSSA/Imported_files.rds")
+
+# Only keep names that are new
+Files_to_import <- Available_files_on_website[!(Available_files_on_website %in% Imported_files)]
+
+Links_to_import <- str_replace_all(Files_to_import, " ", "%20")
+
+# Loop through all links to get the data
+for (j in seq_along(Links_to_import)) {
 
   # Create temporary files to download, unzip and save files
   tmp_file <- tempfile()
   link_error <- FALSE
   tryCatch(
-    expr = {download.file(url = paste0("http://www.statssa.gov.za/", STATSSA_links[j]),
+    expr = {download.file(url = paste0("http://www.statssa.gov.za/", Links_to_import[j]),
                           destfile = tmp_file)},
     error = function(e) {
-      cat(paste0("\n", STATSSA_links[j], " link not found. Moving to next link.\n"))
+      cat(paste0("\n", Files_to_import[j], " link not found. Moving to next link.\n"))
       link_error <<- TRUE}
   )
   if(link_error) next
@@ -57,7 +67,7 @@ for (j in seq_along(STATSSA_links)) {
   setnafill(test, "locf", cols = "Group_number")
   test[str_sub(V1, 1, 1) == "H", Headers := TRUE]
 
-  print(STATSSA_links[j])
+  print(Files_to_import[j])
 
   for (i in seq_len(max(test$Group_number))) {
 
@@ -147,21 +157,24 @@ for (j in seq_along(STATSSA_links)) {
     result <- just_headers[just_values, on = c("Group_number")]
     result[, Group_number := NULL]
 
-    if (!exists("STATSSA")) {
-      STATSSA <- result
+    result$Link <- str_replace(Files_to_import[j], "timeseriesdata/Ascii/", "")
+
+    if (!exists("STATSSA_new")) {
+      STATSSA_new <- result
     } else {
-      STATSSA <- rbind(STATSSA, result, fill = TRUE)
+      STATSSA_new <- rbind(STATSSA_new, result, fill = TRUE)
     }
     cat(i, " ")
   }
 }
 
 # Remove duplicates
-STATSSA <- STATSSA %>%
-  distinct()
+STATSSA_new <- STATSSA_new %>%
+  distinct() %>%
+  mutate(Value = as.numeric(Value))
 
 # Create STATSSA_descriptions
-STATSSA_descriptions <- STATSSA %>%
+STATSSA_descriptions_new <- STATSSA_new %>%
   select(-Value, -Date) %>%
   distinct() %>%
   mutate_all(na_if," ") %>%
@@ -169,12 +182,75 @@ STATSSA_descriptions <- STATSSA %>%
   select(sort(tidyselect::peek_vars())) %>%
   arrange(H01, H03)
 
+STATSSA_new <- STATSSA_new %>%
+  select(H01, H03, Date, Value) %>%
+  arrange(H01, H03)
+
+# Create month, quarter, year, fiscal year
+STATSSA_new <- STATSSA_new %>%
+  mutate(Month = ifelse(length(Date) > 4 & !grepl("Q", Date),
+                        month.name[as.numeric(str_sub(Date,5, 7))],
+                        NA),
+         Quarter = ifelse(!is.na(Month),
+                          case_when(
+                            Month %in% c("January", "February", "March") ~ 1,
+                            Month %in% c("April", "May", "June") ~ 2,
+                            Month %in% c("July", "August", "September") ~ 3,
+                            Month %in% c("October", "November", "December") ~ 4
+                          ), ifelse(grepl("Q", Date), as.numeric(str_sub(Date, 7, 7)), NA))                        ,
+         Year = as.numeric(str_sub(Date, 1, 4)),
+         Fiscal_year = ifelse(!is.na(Month),
+                              ifelse(Month %in% c("January", "February", "March"), Year, Year + 1),
+                              ifelse(!is.na(Quarter), ifelse(Quarter == 1, Year, Year + 1), NA)))
+
+# # First time
+# STATSSA <- STATSSA_new
+# STATSSA_descriptions <- STATSSA_descriptions_new
+# save(STATSSA, file = "data-raw/STATSSA/STATSSA.rda", version = 2)
+# save(STATSSA_descriptions, file = "data-raw/STATSSA/STATSSA_descriptions.rda", version = 2)
+
+# Now replace current data with new data
+load("data-raw/STATSSA/STATSSA.rda")
+load("data-raw/STATSSA/STATSSA_descriptions.rda")
+
+# Remove new data from saved data
 STATSSA <- STATSSA %>%
-  select(Publication = H01, Code = H03, Date, Value) %>%
-  arrange(Publication, Code)
+  anti_join(STATSSA_new,
+            by = c("H01", "H03"))
+
+# Add on new data and arrange
+STATSSA <- STATSSA %>%
+  bind_rows(STATSSA_new) %>%
+  arrange(H01, H03)
+
+STATSSA <- STATSSA %>%
+  distinct()
+
+# Remove new data from saved data
+STATSSA_descriptions <- STATSSA_descriptions %>%
+  anti_join(STATSSA_descriptions_new,
+            by = c("H01", "H03"))
+
+# Add on new data and arrange
+STATSSA_descriptions <- STATSSA_descriptions %>%
+  bind_rows(STATSSA_descriptions_new) %>%
+  arrange(H01, H03)
+
+STATSSA_descriptions <- STATSSA_descriptions %>%
+  distinct()
 
 save(STATSSA, file = "data-raw/STATSSA/STATSSA.rda", version = 2)
 save(STATSSA_descriptions, file = "data-raw/STATSSA/STATSSA_descriptions.rda", version = 2)
 
 usethis::use_data(STATSSA, overwrite = TRUE)
 usethis::use_data(STATSSA_descriptions, overwrite = TRUE)
+
+# Check STATSSA descriptions for links
+Imported_files <- STATSSA_descriptions %>%
+  pull(Link) %>%
+  unique()
+
+Imported_files <- paste0("timeseriesdata/Ascii/", Imported_files)
+
+# Save file names so don't need to redownload next time
+saveRDS(Imported_files, file = "data-raw/STATSSA/Imported_files.rds")

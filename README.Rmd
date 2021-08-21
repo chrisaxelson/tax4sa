@@ -9,7 +9,8 @@ knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
   fig.path = "man/figures/README-",
-  out.width = "100%"
+  out.width = "100%",
+  dpi=300
 )
 ```
 
@@ -38,7 +39,7 @@ You can install the package from [GitHub](https://github.com/) with:
 # install.packages("remotes")
 remotes::install_github("chrisaxelson/tax4sa")
 ```
-## Example
+## Data
 
 The data can be accessed by directly entering either `SARS_annual`, `SARS_monthly`, `NT_forecasts`, `STATSSA` or `SARB` and is in a tidy format to ease analysis within R. The revenue data is split by three revenue classifications in columns `T1`, `T2` and `T3` and all figures are in ZAR 000's. The dataframes `SARB_descriptions` and `STATSSA_descriptions` are also available to help with the details of each variable in those two sets of data.  
 
@@ -98,21 +99,46 @@ SARB %>%
 
 # Look for STATSSA inflation data
 STATSSA_descriptions %>% 
-  filter(grepl("Consumer Price Index", H02), H04 == "All Items") %>%
+  filter(H04 == "CPI Headline") %>%
   select(H01, H02, H03, H04, H13) %>% 
   kable()
 
 STATSSA %>% 
-  filter(Code == "CPT00000") %>% 
+  filter(H03 == "CPS00000") %>% 
   tail(5) %>% 
   kable()
 
 
 ```
 
-The data is probably most useful when combined, such as in the chart below. 
+## Functions
+
+The three functions are `tax_calculation`, `pit` and `pit_manual`. The first is a generic function to apply a tax table to a value, while the latter two specifically calculate the personal income tax liability in South Africa. `pit_manual` allows for a custom tax table to be applied to cater for modelling the impacts of changes in the personal income tax tables. The package includes a list of historical tax tables to be used in the calculations.  
+
+```{r tax, message = FALSE}
+# Accessing tax tables
+tax_calculation(100000, Tax_tables$PIT_brackets_2021)
+
+# Calculate personal income tax
+pit(income = 1000000, age = 53, mtc = 2550, tax_year = 2021)
+
+# Same calculation in a relatively large dataframe with differing variables
+individuals <- 1e6
+df <- data.frame(Taxable_income = round(runif(individuals, 0, 3000000),0),
+                 Age = round(runif(individuals, 18, 80),0),
+                 MTC = round(runif(individuals, 0, 6000), 0),
+                 Tax_year = round(runif(individuals, 2014, 2020), 0))
+
+system.time({
+  df <- df %>% 
+    mutate(Simulated_tax = pit(Taxable_income, Age, MTC, Tax_year))
+})
+```
+
+#### Examples
 
 ```{r revenue, message = FALSE}
+library(tax4sa)
 library(dplyr)
 library(ggplot2)
 library(scales)
@@ -147,24 +173,23 @@ ggplot(Tax_to_GDP, aes(x = Fiscal_year, y = Tax_to_GDP)) +
   
 ```
 
-The three functions are `tax_calculation`, `pit` and `pit_manual`. The first is a generic function to apply a tax table to a value, while the latter two specifically calculate the personal income tax liability in South Africa. `pit_manual` allows for a custom tax table to be applied to cater for modelling the impacts of changes in the personal income tax tables. The package includes a list of historical tax tables to be used in the calculations.  
 
-```{r tax, message = FALSE}
-# Accessing tax tables
-tax_calculation(100000, Tax_tables$PIT_brackets_2021)
+<!-- ```{r cpi, message = FALSE} -->
 
-# Calculate personal income tax
-pit(income = 1000000, age = 53, mtc = 2550, tax_year = 2021)
+<!-- # Get headline CPI index and check growth -->
+<!-- CPI <- STATSSA %>%  -->
+<!--   filter(Code == "CPS00000") %>%  -->
+<!--   mutate(Value = as.numeric(Value),  -->
+<!--          Change = Value / lag(Value, n = 12) - 1) -->
 
-# Same calculation in a relatively large dataframe with differing variables
-individuals <- 1e6
-df <- data.frame(Taxable_income = round(runif(individuals, 0, 3000000),0),
-                 Age = round(runif(individuals, 18, 80),0),
-                 MTC = round(runif(individuals, 0, 6000), 0),
-                 Tax_year = round(runif(individuals, 2014, 2020), 0))
+<!-- # Chart -->
+<!-- ggplot(CPI, aes(x = Fiscal_year, y = Tax_to_GDP)) + -->
+<!--   geom_line(color = "darkblue") +  -->
+<!--   geom_point(color = "darkblue") + -->
+<!--   scale_y_continuous(labels = scales::percent_format(accuracy = 1L)) + -->
+<!--   theme_minimal() + -->
+<!--   theme(axis.title.x = element_blank()) + -->
+<!--   ylab("Tax to GDP") + -->
+<!--   ggtitle("Total tax revenue to GDP") -->
 
-system.time({
-  df <- df %>% 
-    mutate(Simulated_tax = pit(Taxable_income, Age, MTC, Tax_year))
-})
-```
+<!-- ``` -->
