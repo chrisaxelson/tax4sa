@@ -239,6 +239,13 @@ STATSSA_descriptions <- STATSSA_descriptions %>%
 STATSSA_descriptions <- STATSSA_descriptions %>%
   distinct()
 
+STATSSA <- STATSSA %>%
+  mutate_if(is.character, str_trim)
+
+STATSSA_descriptions <- STATSSA_descriptions %>%
+  mutate_if(is.character, str_trim)
+
+
 save(STATSSA, file = "data-raw/STATSSA/STATSSA.rda", version = 2)
 save(STATSSA_descriptions, file = "data-raw/STATSSA/STATSSA_descriptions.rda", version = 2)
 
