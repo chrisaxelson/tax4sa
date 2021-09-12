@@ -7,7 +7,7 @@ library(stringr)
 library(openxlsx)
 
 # GDP link
-GDP_url <- "http://www.statssa.gov.za/publications/Report%2004-04-04/GDP%20P0441%20-%20GDP%20Time%20series.xlsx"
+GDP_url <- "http://www.statssa.gov.za/publications/P0441/GDP%20P0441%20-%20GDP%20Time%20series%202021%20Q2.xlsx"
 
 Annual <- read.xlsx(GDP_url, sheet = "Annual") %>% pivot_longer(cols = -c(H01:H25))
 AnnualP <- read.xlsx(GDP_url, sheet = "AnnualP") %>% pivot_longer(cols = -c(H01:H25))
@@ -55,6 +55,12 @@ STATSSA <- STATSSA %>%
 STATSSA_descriptions <- STATSSA_descriptions %>%
   bind_rows(GDP_data_descriptions) %>%
   arrange(H01, H03)
+
+STATSSA <- STATSSA %>%
+  distinct()
+
+STATSSA_descriptions <- STATSSA_descriptions %>%
+  distinct()
 
 save(STATSSA, file = "data-raw/STATSSA/STATSSA.rda", version = 2)
 save(STATSSA_descriptions, file = "data-raw/STATSSA/STATSSA_descriptions.rda", version = 2)

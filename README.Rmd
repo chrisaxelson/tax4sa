@@ -17,17 +17,18 @@ knitr::opts_chunk$set(
 # tax4sa
 
 <!-- badges: start -->
+
 <!-- badges: end -->
 
-This is a minimal package to help with the compilation and analysis of tax and economic data in South Africa. The package only contains five main sets of data, three functions and the personal income tax tables from 1995/96 to 2021/22. 
+This is a minimal package to help with the compilation and analysis of tax and economic data in South Africa. The package only contains five main sets of data, three functions and the personal income tax tables from 1995/96 to 2021/22.
 
-The data includes: 
+The data includes:
 
-  + Annual tax revenue collections from 1983/84, as published in the [Budget Reviews of the National Treasury](http://www.treasury.gov.za/documents/national%20budget/default.aspx) 
-  + Monthly tax revenue collections from April 2002, as published in the [monthly financing statements of the National Treasury](http://www.treasury.gov.za/comm_media/press/monthly/default.aspx)
-  + Forecasts of the main tax instruments and GDP from 2005, as published in the [Budget Reviews of the National Treasury](http://www.treasury.gov.za/documents/national%20budget/default.aspx)
-  + Quarterly Bulletin data from the [South African Reserve Bank](https://www.resbank.co.za/en/home/publications/quarterly-bulletin1/download-information-from-xlsx-data-files)
-  + Economic statistics from [Statistics South Africa](http://www.statssa.gov.za/?page_id=1847)
+-   Annual tax revenue collections from 1983/84, as published in the [Budget Reviews of the National Treasury](http://www.treasury.gov.za/documents/national%20budget/default.aspx)
+-   Monthly tax revenue collections from April 2002, as published in the [monthly financing statements of the National Treasury](http://www.treasury.gov.za/comm_media/press/monthly/default.aspx)
+-   Forecasts of the main tax instruments and GDP from 2005, as published in the [Budget Reviews of the National Treasury](http://www.treasury.gov.za/documents/national%20budget/default.aspx)
+-   Quarterly Bulletin data from the [South African Reserve Bank](https://www.resbank.co.za/en/home/publications/quarterly-bulletin1/download-information-from-xlsx-data-files)
+-   Economic statistics from [Statistics South Africa](http://www.statssa.gov.za/?page_id=1847)
 
 The three functions and the personal income tax tables are intended to help with calculating tax liabilities, particularly when used with the [administrative data from SARS](https://sa-tied.wider.unu.edu/sites/default/files/pdf/SATIED_WP36_Ebrahim_Axelson_March_2019.pdf).
 
@@ -39,9 +40,10 @@ You can install the package from [GitHub](https://github.com/) with:
 # install.packages("remotes")
 remotes::install_github("chrisaxelson/tax4sa")
 ```
+
 ## Data
 
-The data can be accessed by directly entering either `SARS_annual`, `SARS_monthly`, `NT_forecasts`, `STATSSA` or `SARB` and is in a tidy format to ease analysis within R. The revenue data is split by three revenue classifications in columns `T1`, `T2` and `T3` and all figures are in ZAR 000's. The dataframes `SARB_descriptions` and `STATSSA_descriptions` are also available to help with the details of each variable in those two sets of data.  
+The data can be accessed by directly entering either `SARS_annual`, `SARS_monthly`, `NT_forecasts`, `STATSSA` or `SARB` and is in a tidy format to ease analysis within R. The revenue data is split by three revenue classifications in columns `T1`, `T2` and `T3` and all figures are in ZAR 000's. The dataframes `SARB_descriptions` and `STATSSA_descriptions` are also available to help with the details of each variable in those two sets of data.
 
 ```{r example, message = FALSE}
 library(tax4sa)
@@ -113,7 +115,7 @@ STATSSA %>%
 
 ## Functions
 
-The three functions are `tax_calculation`, `pit` and `pit_manual`. The first is a generic function to apply a tax table to a value, while the latter two specifically calculate the personal income tax liability in South Africa. `pit_manual` allows for a custom tax table to be applied to cater for modelling the impacts of changes in the personal income tax tables. The package includes a list of historical tax tables to be used in the calculations.  
+The three functions are `tax_calculation`, `pit` and `pit_manual`. The first is a generic function to apply a tax table to a value, while the latter two specifically calculate the personal income tax liability in South Africa. `pit_manual` allows for a custom tax table to be applied to cater for modelling the impacts of changes in the personal income tax tables. The package includes a list of historical tax tables to be used in the calculations.
 
 ```{r tax, message = FALSE}
 # Accessing tax tables
@@ -148,12 +150,19 @@ Total_revenue <- SARS_annual %>%
   group_by(Fiscal_year) %>% 
   summarise(Revenue = sum(Revenue))
 
+# # Get Nominal GDP across fiscal year by summing per quarter
+# GDP_fiscal <- SARB %>% 
+#   filter(Code == "KBP6006K") %>% 
+#   group_by(Fiscal_year) %>% 
+#   summarise(GDP = sum(Value)) %>% 
+#   filter(Fiscal_year < 2022)
+
 # Get Nominal GDP across fiscal year by summing per quarter
-GDP_fiscal <- SARB %>% 
-  filter(Code == "KBP6006K") %>% 
-  group_by(Fiscal_year) %>% 
+GDP_fiscal <- STATSSA %>% 
+  filter(H03 == "C00111" | H03 == "QNU1000") %>% 
+  group_by(Fiscal_year, H03) %>% 
   summarise(GDP = sum(Value)) %>% 
-  filter(Fiscal_year < 2022)
+  filter(Fiscal_year < 2022, Fiscal_year > 1993)
 
 # Join together and create tax to GDP
 Tax_to_GDP <- GDP_fiscal %>% 
@@ -162,34 +171,52 @@ Tax_to_GDP <- GDP_fiscal %>%
          Tax_to_GDP = Revenue / GDP)
 
 # Chart
-ggplot(Tax_to_GDP, aes(x = Fiscal_year, y = Tax_to_GDP)) +
-  geom_line(color = "darkblue") + 
-  geom_point(color = "darkblue") +
+ggplot(Tax_to_GDP, aes(x = Fiscal_year, y = Tax_to_GDP,
+                       group = H03, colour = H03)) +
+  geom_line() + 
+  geom_point() +
+  geom_text(aes(label = ifelse(Fiscal_year == 2021, paste0(round(Tax_to_GDP,3) * 100, "%"),'')),
+            hjust=0.5, vjust=1.8, show.legend = FALSE) +
   scale_y_continuous(labels = scales::percent_format(accuracy = 1L)) +
-  theme_minimal() +
-  theme(axis.title.x = element_blank()) +
+  scale_color_brewer(palette = "Set1") +
+  theme_classic() +
+  theme(axis.title.x = element_blank(),
+        legend.title = element_blank(),
+        legend.position = c(0.8, 0.2)) +
   ylab("Tax to GDP") +
-  ggtitle("Total tax revenue to GDP")
+  ggtitle("Gross tax revenue to GDP",
+          subtitle = "GDP at 2010 prices (C00111) and rebased GDP at 2015 prices (QNU1000)")
   
 ```
-
 
 <!-- ```{r cpi, message = FALSE} -->
 
 <!-- # Get headline CPI index and check growth -->
+
 <!-- CPI <- STATSSA %>%  -->
+
 <!--   filter(Code == "CPS00000") %>%  -->
+
 <!--   mutate(Value = as.numeric(Value),  -->
+
 <!--          Change = Value / lag(Value, n = 12) - 1) -->
 
 <!-- # Chart -->
+
 <!-- ggplot(CPI, aes(x = Fiscal_year, y = Tax_to_GDP)) + -->
+
 <!--   geom_line(color = "darkblue") +  -->
+
 <!--   geom_point(color = "darkblue") + -->
+
 <!--   scale_y_continuous(labels = scales::percent_format(accuracy = 1L)) + -->
+
 <!--   theme_minimal() + -->
+
 <!--   theme(axis.title.x = element_blank()) + -->
+
 <!--   ylab("Tax to GDP") + -->
+
 <!--   ggtitle("Total tax revenue to GDP") -->
 
 <!-- ``` -->
