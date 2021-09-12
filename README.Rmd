@@ -137,7 +137,7 @@ system.time({
 })
 ```
 
-#### Examples
+## Examples
 
 ```{r revenue, message = FALSE}
 library(tax4sa)

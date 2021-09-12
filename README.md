@@ -1025,10 +1025,10 @@ system.time({
     mutate(Simulated_tax = pit(Taxable_income, Age, MTC, Tax_year))
 })
 #>    user  system elapsed 
-#>   0.345   0.124   0.491
+#>   0.391   0.126   0.552
 ```
 
-#### Examples
+## Examples
 
 ``` r
 library(tax4sa)
