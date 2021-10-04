@@ -1144,58 +1144,6 @@ KBP6006K
 
 <td style="text-align:right;">
 
-20200100
-
-</td>
-
-<td style="text-align:left;">
-
-K1
-
-</td>
-
-<td style="text-align:left;">
-
-NA
-
-</td>
-
-<td style="text-align:right;">
-
-1
-
-</td>
-
-<td style="text-align:right;">
-
-2020
-
-</td>
-
-<td style="text-align:right;">
-
-2020
-
-</td>
-
-<td style="text-align:right;">
-
-1281361
-
-</td>
-
-</tr>
-
-<tr>
-
-<td style="text-align:left;">
-
-KBP6006K
-
-</td>
-
-<td style="text-align:right;">
-
 20200200
 
 </td>
@@ -1232,7 +1180,7 @@ NA
 
 <td style="text-align:right;">
 
-1073725
+1208499
 
 </td>
 
@@ -1284,7 +1232,7 @@ NA
 
 <td style="text-align:right;">
 
-1266238
+1404540
 
 </td>
 
@@ -1336,7 +1284,7 @@ NA
 
 <td style="text-align:right;">
 
-1351651
+1499180
 
 </td>
 
@@ -1388,7 +1336,59 @@ NA
 
 <td style="text-align:right;">
 
-1304065
+1453958
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+KBP6006K
+
+</td>
+
+<td style="text-align:right;">
+
+20210200
+
+</td>
+
+<td style="text-align:left;">
+
+K1
+
+</td>
+
+<td style="text-align:left;">
+
+NA
+
+</td>
+
+<td style="text-align:right;">
+
+2
+
+</td>
+
+<td style="text-align:right;">
+
+2021
+
+</td>
+
+<td style="text-align:right;">
+
+2022
+
+</td>
+
+<td style="text-align:right;">
+
+1529974
 
 </td>
 
@@ -1884,7 +1884,7 @@ system.time({
     mutate(Simulated_tax = pit(Taxable_income, Age, MTC, Tax_year))
 })
 #>    user  system elapsed 
-#>    0.29    0.03    0.33
+#>    0.26    0.06    0.33
 ```
 
 ## Examples
