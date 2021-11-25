@@ -2,8 +2,8 @@
 # Update SARS monthly data ------------------------------------------------
 
 # Latest information - UPDATE THIS EACH MONTH
-Latest_link <- "http://www.treasury.gov.za/comm_media/press/monthly/2110/Hardcoded%20database%20August%202021.xlsm"
-Latest_month <- "August"
+Latest_link <- "http://www.treasury.gov.za/comm_media/press/monthly/2111/Hardcoded%20database%20September%202021.xlsm"
+Latest_month <- "September"
 Latest_year <- "2021"
 
 # This should run the same way each month ---------------------------------

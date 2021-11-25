@@ -402,46 +402,6 @@ Health promotion levy
 
 <td style="text-align:left;">
 
-April
-
-</td>
-
-<td style="text-align:right;">
-
-2
-
-</td>
-
-<td style="text-align:left;">
-
-2021
-
-</td>
-
-<td style="text-align:left;">
-
-2022
-
-</td>
-
-<td style="text-align:right;">
-
-217,617
-
-</td>
-
-</tr>
-
-<tr>
-
-<td style="text-align:left;">
-
-Health promotion levy
-
-</td>
-
-<td style="text-align:left;">
-
 May
 
 </td>
@@ -587,6 +547,46 @@ August
 <td style="text-align:right;">
 
 139,251
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+Health promotion levy
+
+</td>
+
+<td style="text-align:left;">
+
+September
+
+</td>
+
+<td style="text-align:right;">
+
+3
+
+</td>
+
+<td style="text-align:left;">
+
+2021
+
+</td>
+
+<td style="text-align:left;">
+
+2022
+
+</td>
+
+<td style="text-align:right;">
+
+167,249
 
 </td>
 
@@ -1563,180 +1563,6 @@ Value
 
 <td style="text-align:left;">
 
-159
-
-</td>
-
-<td style="text-align:left;">
-
-P0141
-
-</td>
-
-<td style="text-align:left;">
-
-CPS00000
-
-</td>
-
-<td style="text-align:left;">
-
-2021 03
-
-</td>
-
-<td style="text-align:left;">
-
-March
-
-</td>
-
-<td style="text-align:right;">
-
-1
-
-</td>
-
-<td style="text-align:right;">
-
-2021
-
-</td>
-
-<td style="text-align:right;">
-
-2021
-
-</td>
-
-<td style="text-align:right;">
-
-119.3
-
-</td>
-
-</tr>
-
-<tr>
-
-<td style="text-align:left;">
-
-160
-
-</td>
-
-<td style="text-align:left;">
-
-P0141
-
-</td>
-
-<td style="text-align:left;">
-
-CPS00000
-
-</td>
-
-<td style="text-align:left;">
-
-2021 04
-
-</td>
-
-<td style="text-align:left;">
-
-April
-
-</td>
-
-<td style="text-align:right;">
-
-2
-
-</td>
-
-<td style="text-align:right;">
-
-2021
-
-</td>
-
-<td style="text-align:right;">
-
-2022
-
-</td>
-
-<td style="text-align:right;">
-
-120.1
-
-</td>
-
-</tr>
-
-<tr>
-
-<td style="text-align:left;">
-
-161
-
-</td>
-
-<td style="text-align:left;">
-
-P0141
-
-</td>
-
-<td style="text-align:left;">
-
-CPS00000
-
-</td>
-
-<td style="text-align:left;">
-
-2021 05
-
-</td>
-
-<td style="text-align:left;">
-
-May
-
-</td>
-
-<td style="text-align:right;">
-
-2
-
-</td>
-
-<td style="text-align:right;">
-
-2021
-
-</td>
-
-<td style="text-align:right;">
-
-2022
-
-</td>
-
-<td style="text-align:right;">
-
-120.2
-
-</td>
-
-</tr>
-
-<tr>
-
-<td style="text-align:left;">
-
 162
 
 </td>
@@ -1849,6 +1675,180 @@ July
 
 </tr>
 
+<tr>
+
+<td style="text-align:left;">
+
+164
+
+</td>
+
+<td style="text-align:left;">
+
+P0141
+
+</td>
+
+<td style="text-align:left;">
+
+CPS00000
+
+</td>
+
+<td style="text-align:left;">
+
+2021 08
+
+</td>
+
+<td style="text-align:left;">
+
+August
+
+</td>
+
+<td style="text-align:right;">
+
+3
+
+</td>
+
+<td style="text-align:right;">
+
+2021
+
+</td>
+
+<td style="text-align:right;">
+
+2022
+
+</td>
+
+<td style="text-align:right;">
+
+122.3
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+165
+
+</td>
+
+<td style="text-align:left;">
+
+P0141
+
+</td>
+
+<td style="text-align:left;">
+
+CPS00000
+
+</td>
+
+<td style="text-align:left;">
+
+2021 09
+
+</td>
+
+<td style="text-align:left;">
+
+September
+
+</td>
+
+<td style="text-align:right;">
+
+3
+
+</td>
+
+<td style="text-align:right;">
+
+2021
+
+</td>
+
+<td style="text-align:right;">
+
+2022
+
+</td>
+
+<td style="text-align:right;">
+
+122.6
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+166
+
+</td>
+
+<td style="text-align:left;">
+
+P0141
+
+</td>
+
+<td style="text-align:left;">
+
+CPS00000
+
+</td>
+
+<td style="text-align:left;">
+
+2021 10
+
+</td>
+
+<td style="text-align:left;">
+
+October
+
+</td>
+
+<td style="text-align:right;">
+
+4
+
+</td>
+
+<td style="text-align:right;">
+
+2021
+
+</td>
+
+<td style="text-align:right;">
+
+2022
+
+</td>
+
+<td style="text-align:right;">
+
+122.9
+
+</td>
+
+</tr>
+
 </tbody>
 
 </table>
@@ -1884,7 +1884,7 @@ system.time({
     mutate(Simulated_tax = pit(Taxable_income, Age, MTC, Tax_year))
 })
 #>    user  system elapsed 
-#>    0.26    0.06    0.33
+#>    0.36    0.06    0.45
 ```
 
 ## Examples
