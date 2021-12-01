@@ -402,46 +402,6 @@ Health promotion levy
 
 <td style="text-align:left;">
 
-May
-
-</td>
-
-<td style="text-align:right;">
-
-2
-
-</td>
-
-<td style="text-align:left;">
-
-2021
-
-</td>
-
-<td style="text-align:left;">
-
-2022
-
-</td>
-
-<td style="text-align:right;">
-
-184,318
-
-</td>
-
-</tr>
-
-<tr>
-
-<td style="text-align:left;">
-
-Health promotion levy
-
-</td>
-
-<td style="text-align:left;">
-
 June
 
 </td>
@@ -587,6 +547,46 @@ September
 <td style="text-align:right;">
 
 167,249
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+Health promotion levy
+
+</td>
+
+<td style="text-align:left;">
+
+October
+
+</td>
+
+<td style="text-align:right;">
+
+4
+
+</td>
+
+<td style="text-align:left;">
+
+2021
+
+</td>
+
+<td style="text-align:left;">
+
+2022
+
+</td>
+
+<td style="text-align:right;">
+
+204,775
 
 </td>
 
@@ -1884,7 +1884,7 @@ system.time({
     mutate(Simulated_tax = pit(Taxable_income, Age, MTC, Tax_year))
 })
 #>    user  system elapsed 
-#>    0.36    0.06    0.45
+#>    0.32    0.04    0.36
 ```
 
 ## Examples

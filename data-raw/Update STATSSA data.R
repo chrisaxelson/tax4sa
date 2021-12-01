@@ -22,7 +22,8 @@ STATSSA_links <- str_replace(STATSSA_links, " http://www.statssa.gov.za/wp-conte
 # Only keep updated data
 Data_to_include <- c(
   "P0141", "P6410", "P5041.1", "P0041", "P0151.1", "P4141", "P0142.7",
-  "P9119.4", "P9102", "P9103.1", "P9119.3", "P9121", "P6420", "P0441",
+  # "P9119.4",
+  "P9102", "P9103.1", "P9119.3", "P9121", "P6420", "P0441",
   "P7162", "P0043", "P3043", "P3041.2", "P2041", "P6343.2", "P0142.1",
   "P6242.1", "P6141.2"
   )
@@ -261,3 +262,4 @@ Imported_files <- paste0("timeseriesdata/Ascii/", Imported_files)
 
 # Save file names so don't need to redownload next time
 saveRDS(Imported_files, file = "data-raw/STATSSA/Imported_files.rds")
+devtools::document()
