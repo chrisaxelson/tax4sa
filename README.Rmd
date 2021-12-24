@@ -159,8 +159,8 @@ Total_revenue <- SARS_annual %>%
 
 # Get Nominal GDP across fiscal year by summing per quarter
 GDP_fiscal <- STATSSA %>% 
-  filter(H03 == "C00111" | H03 == "QNU1000") %>% 
-  group_by(Fiscal_year, H03) %>% 
+  filter(H03 == "QNU1000") %>% 
+  group_by(Fiscal_year) %>% 
   summarise(GDP = sum(Value)) %>% 
   filter(Fiscal_year < 2022, Fiscal_year > 1993)
 
@@ -171,8 +171,7 @@ Tax_to_GDP <- GDP_fiscal %>%
          Tax_to_GDP = Revenue / GDP)
 
 # Chart
-ggplot(Tax_to_GDP, aes(x = Fiscal_year, y = Tax_to_GDP,
-                       group = H03, colour = H03)) +
+ggplot(Tax_to_GDP, aes(x = Fiscal_year, y = Tax_to_GDP)) +
   geom_line() + 
   geom_point() +
   geom_text(aes(label = ifelse(Fiscal_year == 2021, paste0(round(Tax_to_GDP,3) * 100, "%"),'')),
@@ -184,8 +183,7 @@ ggplot(Tax_to_GDP, aes(x = Fiscal_year, y = Tax_to_GDP,
         legend.title = element_blank(),
         legend.position = c(0.8, 0.2)) +
   ylab("Tax to GDP") +
-  ggtitle("Gross tax revenue to GDP",
-          subtitle = "GDP at 2010 prices (C00111) and rebased GDP at 2015 prices (QNU1000)")
+  ggtitle("Gross tax revenue to GDP")
   
 ```
 
