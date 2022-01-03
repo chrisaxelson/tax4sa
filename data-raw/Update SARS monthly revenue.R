@@ -2,8 +2,8 @@
 # Update SARS monthly data ------------------------------------------------
 
 # Latest information - UPDATE THIS EACH MONTH
-Latest_link <- "http://www.treasury.gov.za/comm_media/press/monthly/2112/Hardcoded%20database%20October%202021.xlsm"
-Latest_month <- "October"
+Latest_link <- "http://www.treasury.gov.za/comm_media/press/monthly/2201/Hardcoded%20database%20November%202021.xlsm"
+Latest_month <- "November"
 Latest_year <- "2021"
 
 # This should run the same way each month ---------------------------------
@@ -80,7 +80,7 @@ SARS_monthly <- read_excel(path = "data-raw/SARS/Revenue.xlsx", sheet = "Monthly
 SARS_monthly_new <- SARS_monthly %>%
   left_join(SARS_temp, by = c("T1", "T2", "T3"))
 
-check <- SARS_monthly_new %>% select(T1, T2, T3, March_2021, April_2021)
+SARS_monthly_new %>% select(T1, T2, T3,last_col())
 
 
 # Write to xlsx

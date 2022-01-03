@@ -7,7 +7,7 @@ library(tidyr)
 library(stringr)
 
 # Annual sheet
-NT_forecasts <- read_excel(path = "data-raw/SARS/Forecasts.xlsx")
+NT_forecasts <- read_excel(path = "data-raw/NT/Forecasts.xlsx")
 
 # Reshape
 NT_forecasts <- NT_forecasts %>%
@@ -16,5 +16,5 @@ NT_forecasts <- NT_forecasts %>%
   filter(!is.na(Forecast)) %>%
   select(-Category_order)
 
-save(NT_forecasts, file = "data-raw/SARS/NT_forecasts.rda", version = 2)
+save(NT_forecasts, file = "data-raw/NT/NT_forecasts.rda", version = 2)
 usethis::use_data(NT_forecasts, overwrite = TRUE)
