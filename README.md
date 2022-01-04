@@ -8,7 +8,7 @@
 <!-- badges: end -->
 
 This is a minimal package to help with the compilation and analysis of
-tax and economic data in South Africa. The package only contains five
+tax and economic data in South Africa. The package only contains six
 main sets of data, three functions and the personal income tax tables
 from 1995/96 to 2021/22.
 
@@ -20,6 +20,9 @@ The data includes:
   - Monthly tax revenue collections from April 2002, as published in the
     [monthly financing statements of the National
     Treasury](http://www.treasury.gov.za/comm_media/press/monthly/default.aspx)
+  - Monthly trade data on imports and exports from January 2010 from the
+    [South African Revenue
+    Service](https://tools.sars.gov.za/tradestatsportal/data_download.aspx)
   - Forecasts of the main tax instruments and GDP from 2005, as
     published in the [Budget Reviews of the National
     Treasury](http://www.treasury.gov.za/documents/national%20budget/default.aspx)
@@ -46,11 +49,12 @@ remotes::install_github("chrisaxelson/tax4sa")
 
 The data can be accessed by directly entering either `SARS_annual`,
 `SARS_monthly`, `NT_forecasts`, `STATSSA` or `SARB` and is in a tidy
-format to ease analysis within R. The revenue data is split by three
-revenue classifications in columns `T1`, `T2` and `T3` and all figures
-are in ZAR 000’s. The dataframes `SARB_descriptions` and
-`STATSSA_descriptions` are also available to help with the details of
-each variable in those two sets of data.
+format to ease analysis within R.
+
+### South African Revenue Service
+
+The tax revenue data is split by three revenue classifications in
+columns `T1`, `T2` and `T3` and all figures are in ZAR 000’s.
 
 ``` r
 library(tax4sa)
@@ -64,7 +68,7 @@ SARS_annual %>%
   filter(Fiscal_year == 2021) %>%  
   select(T1:T3, Year, Revenue) %>% 
   mutate(Revenue = round(Revenue,0)) %>% 
-  head() %>% 
+  head(5) %>% 
   kable(format.args = list(big.mark = ","), 
         caption = "Annual tax revenue (R'000s)")
 ```
@@ -282,40 +286,6 @@ Interest on overdue income tax
 <td style="text-align:right;">
 
 3,739,157
-
-</td>
-
-</tr>
-
-<tr>
-
-<td style="text-align:left;">
-
-Taxes on income and profits
-
-</td>
-
-<td style="text-align:left;">
-
-Other
-
-</td>
-
-<td style="text-align:left;">
-
-Small business tax amnesty
-
-</td>
-
-<td style="text-align:left;">
-
-2020/21
-
-</td>
-
-<td style="text-align:right;">
-
-72
 
 </td>
 
@@ -596,13 +566,335 @@ November
 
 </table>
 
-``` r
+Or you can download the annual and monthly data in one spreadsheet.
 
-# Or you can download the annual and monthly data in one spreadsheet
+``` r
 # This saves it in your current working directory
 # download.file("https://raw.githubusercontent.com/chrisaxelson/tax4sa/master/data-raw/SARS/Revenue.xlsx",
 #               "Revenue.xlsx")
+```
 
+The line-by-line trade data from the South African Revenue Service is
+too large to be included directly in the package, but can be downloaded
+separately per year of data and type of trade (imports or exports). Each
+file is around 20MB.
+
+``` r
+# Downloading 2021 imports
+if (!file.exists("SARS_imports_2021.rda")) {
+  download.file("https://github.com/chrisaxelson/tax4sa/releases/download/v0.0.1/SARS_imports_2021.rda",
+              "SARS_imports_2021.rda")
+} 
+# Data is available from 2010 for both imports and exports. File name convention is "SARS_exports_2010.rda", etc. 
+
+load("SARS_imports_2021.rda")
+
+SARS_imports_2021 %>% 
+  head(5) %>% 
+  mutate(YearMonth = as.character(YearMonth)) %>% 
+  select(District = DistrictOfficeName, Origin = CountryOfOriginName, Unit = StatisticalUnit,
+         YearMonth, ChapterAndDescription, Quantity = StatisticalQuantity, Value_ZAR = CustomsValue) %>% 
+  kable(format.args = list(big.mark = ","),
+        caption = "Monthly trade data")
+```
+
+<table>
+
+<caption>
+
+Monthly trade data
+
+</caption>
+
+<thead>
+
+<tr>
+
+<th style="text-align:left;">
+
+District
+
+</th>
+
+<th style="text-align:left;">
+
+Origin
+
+</th>
+
+<th style="text-align:left;">
+
+Unit
+
+</th>
+
+<th style="text-align:left;">
+
+YearMonth
+
+</th>
+
+<th style="text-align:left;">
+
+ChapterAndDescription
+
+</th>
+
+<th style="text-align:right;">
+
+Quantity
+
+</th>
+
+<th style="text-align:right;">
+
+Value\_ZAR
+
+</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+<tr>
+
+<td style="text-align:left;">
+
+Beit Bridge
+
+</td>
+
+<td style="text-align:left;">
+
+China
+
+</td>
+
+<td style="text-align:left;">
+
+KG
+
+</td>
+
+<td style="text-align:left;">
+
+202102
+
+</td>
+
+<td style="text-align:left;">
+
+90 - Medical and Photographic Equipment
+
+</td>
+
+<td style="text-align:right;">
+
+5.00
+
+</td>
+
+<td style="text-align:right;">
+
+18,870
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+Beit Bridge
+
+</td>
+
+<td style="text-align:left;">
+
+Malawi
+
+</td>
+
+<td style="text-align:left;">
+
+KG
+
+</td>
+
+<td style="text-align:left;">
+
+202102
+
+</td>
+
+<td style="text-align:left;">
+
+03 - Fish and crustaceans
+
+</td>
+
+<td style="text-align:right;">
+
+10,544.00
+
+</td>
+
+<td style="text-align:right;">
+
+62,266
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+Beit Bridge
+
+</td>
+
+<td style="text-align:left;">
+
+Malawi
+
+</td>
+
+<td style="text-align:left;">
+
+KG
+
+</td>
+
+<td style="text-align:left;">
+
+202102
+
+</td>
+
+<td style="text-align:left;">
+
+07 - Edible vegetables and certain roots and tubers
+
+</td>
+
+<td style="text-align:right;">
+
+6,000.00
+
+</td>
+
+<td style="text-align:right;">
+
+4,009
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+Beit Bridge
+
+</td>
+
+<td style="text-align:left;">
+
+Malawi
+
+</td>
+
+<td style="text-align:left;">
+
+KG
+
+</td>
+
+<td style="text-align:left;">
+
+202102
+
+</td>
+
+<td style="text-align:left;">
+
+07 - Edible vegetables and certain roots and tubers
+
+</td>
+
+<td style="text-align:right;">
+
+90,000.00
+
+</td>
+
+<td style="text-align:right;">
+
+1,278,398
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+Beit Bridge
+
+</td>
+
+<td style="text-align:left;">
+
+Italy
+
+</td>
+
+<td style="text-align:left;">
+
+KG
+
+</td>
+
+<td style="text-align:left;">
+
+202102
+
+</td>
+
+<td style="text-align:left;">
+
+40 - Rubber and articles thereof
+
+</td>
+
+<td style="text-align:right;">
+
+0.04
+
+</td>
+
+<td style="text-align:right;">
+
+34
+
+</td>
+
+</tr>
+
+</tbody>
+
+</table>
+
+## National Treasury
+
+``` r
 # Check revenue data
 NT_forecasts %>% 
   filter(Publication_year == 2021,
@@ -800,17 +1092,21 @@ Gross tax revenue
 
 </table>
 
+Or you can download the forecasts in one spreadsheet.
+
 ``` r
-
-# Or you can download the forecasts in one spreadsheet
 # This saves it in your current working directory
-# download.file("https://raw.githubusercontent.com/chrisaxelson/tax4sa/master/data-raw/SARS/Forecasts.xlsx",
+# download.file("https://raw.githubusercontent.com/chrisaxelson/tax4sa/master/data-raw/NT/Forecasts.xlsx",
 #               "Forecasts.xlsx")
+```
 
+## South African Reserve Bank
 
+``` r
 # Look for SARB economic data on GDP
 SARB_descriptions %>% 
   filter(grepl("Gross domestic product at market prices", Description), Frequency == "K1") %>%
+  select(-Description, -Frequency) %>% 
   kable()
 ```
 
@@ -823,18 +1119,6 @@ SARB_descriptions %>%
 <th style="text-align:left;">
 
 Code
-
-</th>
-
-<th style="text-align:left;">
-
-Description
-
-</th>
-
-<th style="text-align:left;">
-
-Frequency
 
 </th>
 
@@ -872,18 +1156,6 @@ KBP6006C
 
 <td style="text-align:left;">
 
-Gross domestic product at market prices
-
-</td>
-
-<td style="text-align:left;">
-
-K1
-
-</td>
-
-<td style="text-align:left;">
-
 Quarterly
 
 </td>
@@ -907,18 +1179,6 @@ Constant 2010 prices
 <td style="text-align:left;">
 
 KBP6006D
-
-</td>
-
-<td style="text-align:left;">
-
-Gross domestic product at market prices
-
-</td>
-
-<td style="text-align:left;">
-
-K1
 
 </td>
 
@@ -952,18 +1212,6 @@ KBP6006K
 
 <td style="text-align:left;">
 
-Gross domestic product at market prices
-
-</td>
-
-<td style="text-align:left;">
-
-K1
-
-</td>
-
-<td style="text-align:left;">
-
 Quarterly
 
 </td>
@@ -987,18 +1235,6 @@ Current prices
 <td style="text-align:left;">
 
 KBP6006L
-
-</td>
-
-<td style="text-align:left;">
-
-Gross domestic product at market prices
-
-</td>
-
-<td style="text-align:left;">
-
-K1
 
 </td>
 
@@ -1032,18 +1268,6 @@ KBP6006S
 
 <td style="text-align:left;">
 
-Gross domestic product at market prices
-
-</td>
-
-<td style="text-align:left;">
-
-K1
-
-</td>
-
-<td style="text-align:left;">
-
 Quarterly
 
 </td>
@@ -1067,9 +1291,9 @@ PERC
 </table>
 
 ``` r
-
 SARB %>% 
   filter(Code == "KBP6006K") %>% 
+  select(-Month) %>% 
   tail(5) %>% 
   kable()
 ```
@@ -1095,12 +1319,6 @@ Date
 <th style="text-align:left;">
 
 Frequency
-
-</th>
-
-<th style="text-align:left;">
-
-Month
 
 </th>
 
@@ -1154,12 +1372,6 @@ K1
 
 </td>
 
-<td style="text-align:left;">
-
-NA
-
-</td>
-
 <td style="text-align:right;">
 
 3
@@ -1203,12 +1415,6 @@ KBP6006K
 <td style="text-align:left;">
 
 K1
-
-</td>
-
-<td style="text-align:left;">
-
-NA
 
 </td>
 
@@ -1258,12 +1464,6 @@ K1
 
 </td>
 
-<td style="text-align:left;">
-
-NA
-
-</td>
-
 <td style="text-align:right;">
 
 1
@@ -1307,12 +1507,6 @@ KBP6006K
 <td style="text-align:left;">
 
 K1
-
-</td>
-
-<td style="text-align:left;">
-
-NA
 
 </td>
 
@@ -1362,12 +1556,6 @@ K1
 
 </td>
 
-<td style="text-align:left;">
-
-NA
-
-</td>
-
 <td style="text-align:right;">
 
 3
@@ -1398,8 +1586,9 @@ NA
 
 </table>
 
-``` r
+## Statistics South Africa
 
+``` r
 # Look for STATSSA inflation data
 STATSSA_descriptions %>% 
   filter(H04 == "CPI Headline") %>%
@@ -1488,7 +1677,6 @@ All urban areas
 </table>
 
 ``` r
-
 STATSSA %>% 
   filter(H03 == "CPS00000") %>% 
   tail(5) %>% 
@@ -1884,7 +2072,7 @@ system.time({
     mutate(Simulated_tax = pit(Taxable_income, Age, MTC, Tax_year))
 })
 #>    user  system elapsed 
-#>    0.26    0.03    0.31
+#>    0.25    0.05    0.30
 ```
 
 ## Examples
@@ -1899,13 +2087,6 @@ library(scales)
 Total_revenue <- SARS_annual %>% 
   group_by(Fiscal_year) %>% 
   summarise(Revenue = sum(Revenue))
-
-# # Get Nominal GDP across fiscal year by summing per quarter
-# GDP_fiscal <- SARB %>% 
-#   filter(Code == "KBP6006K") %>% 
-#   group_by(Fiscal_year) %>% 
-#   summarise(GDP = sum(Value)) %>% 
-#   filter(Fiscal_year < 2022)
 
 # Get Nominal GDP across fiscal year by summing per quarter
 GDP_fiscal <- STATSSA %>% 
@@ -1927,12 +2108,9 @@ ggplot(Tax_to_GDP, aes(x = Fiscal_year, y = Tax_to_GDP)) +
   geom_text(aes(label = ifelse(Fiscal_year == 2021, paste0(round(Tax_to_GDP,3) * 100, "%"),'')),
             hjust=0.5, vjust=1.8, show.legend = FALSE) +
   scale_y_continuous(labels = scales::percent_format(accuracy = 1L)) +
-  scale_color_brewer(palette = "Set1") +
   theme_classic() +
-  theme(axis.title.x = element_blank(),
-        legend.title = element_blank(),
-        legend.position = c(0.8, 0.2)) +
   ylab("Tax to GDP") +
+  xlab("Fiscal year") +
   ggtitle("Gross tax revenue to GDP")
 ```
 

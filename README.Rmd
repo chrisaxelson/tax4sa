@@ -20,15 +20,17 @@ knitr::opts_chunk$set(
 
 <!-- badges: end -->
 
-This is a minimal package to help with the compilation and analysis of tax and economic data in South Africa. The package only contains five main sets of data, three functions and the personal income tax tables from 1995/96 to 2021/22.
+This is a minimal package to help with the compilation and analysis of tax and economic data in South Africa. The package only contains six main sets of data, three functions and the personal income tax tables from 1995/96 to 2021/22.
 
 The data includes:
 
 -   Annual tax revenue collections from 1983/84, as published in the [Budget Reviews of the National Treasury](http://www.treasury.gov.za/documents/national%20budget/default.aspx)
 -   Monthly tax revenue collections from April 2002, as published in the [monthly financing statements of the National Treasury](http://www.treasury.gov.za/comm_media/press/monthly/default.aspx)
+-   Monthly trade data on imports and exports from January 2010 from the [South African Revenue Service](https://tools.sars.gov.za/tradestatsportal/data_download.aspx)
 -   Forecasts of the main tax instruments and GDP from 2005, as published in the [Budget Reviews of the National Treasury](http://www.treasury.gov.za/documents/national%20budget/default.aspx)
 -   Quarterly Bulletin data from the [South African Reserve Bank](https://www.resbank.co.za/en/home/publications/quarterly-bulletin1/download-information-from-xlsx-data-files)
 -   Economic statistics from [Statistics South Africa](http://www.statssa.gov.za/?page_id=1847)
+
 
 The three functions and the personal income tax tables are intended to help with calculating tax liabilities, particularly when used with the [administrative data from SARS](https://sa-tied.wider.unu.edu/sites/default/files/pdf/SATIED_WP36_Ebrahim_Axelson_March_2019.pdf).
 
@@ -43,7 +45,11 @@ remotes::install_github("chrisaxelson/tax4sa")
 
 ## Data
 
-The data can be accessed by directly entering either `SARS_annual`, `SARS_monthly`, `NT_forecasts`, `STATSSA` or `SARB` and is in a tidy format to ease analysis within R. The revenue data is split by three revenue classifications in columns `T1`, `T2` and `T3` and all figures are in ZAR 000's. The dataframes `SARB_descriptions` and `STATSSA_descriptions` are also available to help with the details of each variable in those two sets of data.
+The data can be accessed by directly entering either `SARS_annual`, `SARS_monthly`, `NT_forecasts`, `STATSSA` or `SARB` and is in a tidy format to ease analysis within R.
+
+### South African Revenue Service
+
+The tax revenue data is split by three revenue classifications in columns `T1`, `T2` and `T3` and all figures are in ZAR 000's. 
 
 ```{r example, message = FALSE}
 library(tax4sa)
@@ -56,7 +62,7 @@ SARS_annual %>%
   filter(Fiscal_year == 2021) %>%  
   select(T1:T3, Year, Revenue) %>% 
   mutate(Revenue = round(Revenue,0)) %>% 
-  head() %>% 
+  head(5) %>% 
   kable(format.args = list(big.mark = ","), 
         caption = "Annual tax revenue (R'000s)")
 
@@ -69,12 +75,40 @@ SARS_monthly %>%
   tail(5) %>% 
   kable(format.args = list(big.mark = ","),
         caption = "Monthly health promotion levy revenue (R'000s)") 
+```
 
-# Or you can download the annual and monthly data in one spreadsheet
+Or you can download the annual and monthly data in one spreadsheet.
+
+```{r download1, message = FALSE}
 # This saves it in your current working directory
 # download.file("https://raw.githubusercontent.com/chrisaxelson/tax4sa/master/data-raw/SARS/Revenue.xlsx",
 #               "Revenue.xlsx")
+```
 
+The line-by-line trade data from the South African Revenue Service is too large to be included directly in the package, but can be downloaded separately per year of data and type of trade (imports or exports). Each file is around 20MB. 
+
+```{r trade, message = FALSE}
+# Downloading 2021 imports
+if (!file.exists("SARS_imports_2021.rda")) {
+  download.file("https://github.com/chrisaxelson/tax4sa/releases/download/v0.0.1/SARS_imports_2021.rda",
+              "SARS_imports_2021.rda")
+} 
+# Data is available from 2010 for both imports and exports. File name convention is "SARS_exports_2010.rda", etc. 
+
+load("SARS_imports_2021.rda")
+
+SARS_imports_2021 %>% 
+  head(5) %>% 
+  mutate(YearMonth = as.character(YearMonth)) %>% 
+  select(District = DistrictOfficeName, Origin = CountryOfOriginName, Unit = StatisticalUnit,
+         YearMonth, ChapterAndDescription, Quantity = StatisticalQuantity, Value_ZAR = CustomsValue) %>% 
+  kable(format.args = list(big.mark = ","),
+        caption = "Monthly trade data")
+```
+
+## National Treasury
+
+```{r forecasts, message = FALSE}
 # Check revenue data
 NT_forecasts %>% 
   filter(Publication_year == 2021,
@@ -82,35 +116,46 @@ NT_forecasts %>%
    mutate(Publication_year = as.character(Publication_year)) %>% 
   kable(format.args = list(big.mark = ","), 
         caption = "Tax revenue forecasts (R million)")
+```
 
-# Or you can download the forecasts in one spreadsheet
+
+Or you can download the forecasts in one spreadsheet.
+
+```{r download, message = FALSE}
 # This saves it in your current working directory
-# download.file("https://raw.githubusercontent.com/chrisaxelson/tax4sa/master/data-raw/SARS/Forecasts.xlsx",
+# download.file("https://raw.githubusercontent.com/chrisaxelson/tax4sa/master/data-raw/NT/Forecasts.xlsx",
 #               "Forecasts.xlsx")
 
+```
 
+## South African Reserve Bank
+
+```{r sarb, message = FALSE}
 # Look for SARB economic data on GDP
 SARB_descriptions %>% 
   filter(grepl("Gross domestic product at market prices", Description), Frequency == "K1") %>%
+  select(-Description, -Frequency) %>% 
   kable()
-
 SARB %>% 
   filter(Code == "KBP6006K") %>% 
+  select(-Month) %>% 
   tail(5) %>% 
   kable()
 
+```
+
+## Statistics South Africa
+
+```{r sars, message = FALSE}
 # Look for STATSSA inflation data
 STATSSA_descriptions %>% 
   filter(H04 == "CPI Headline") %>%
   select(H01, H02, H03, H04, H13) %>% 
   kable()
-
 STATSSA %>% 
   filter(H03 == "CPS00000") %>% 
   tail(5) %>% 
   kable()
-
-
 ```
 
 ## Functions
@@ -150,13 +195,6 @@ Total_revenue <- SARS_annual %>%
   group_by(Fiscal_year) %>% 
   summarise(Revenue = sum(Revenue))
 
-# # Get Nominal GDP across fiscal year by summing per quarter
-# GDP_fiscal <- SARB %>% 
-#   filter(Code == "KBP6006K") %>% 
-#   group_by(Fiscal_year) %>% 
-#   summarise(GDP = sum(Value)) %>% 
-#   filter(Fiscal_year < 2022)
-
 # Get Nominal GDP across fiscal year by summing per quarter
 GDP_fiscal <- STATSSA %>% 
   filter(H03 == "QNU1000") %>% 
@@ -177,12 +215,9 @@ ggplot(Tax_to_GDP, aes(x = Fiscal_year, y = Tax_to_GDP)) +
   geom_text(aes(label = ifelse(Fiscal_year == 2021, paste0(round(Tax_to_GDP,3) * 100, "%"),'')),
             hjust=0.5, vjust=1.8, show.legend = FALSE) +
   scale_y_continuous(labels = scales::percent_format(accuracy = 1L)) +
-  scale_color_brewer(palette = "Set1") +
   theme_classic() +
-  theme(axis.title.x = element_blank(),
-        legend.title = element_blank(),
-        legend.position = c(0.8, 0.2)) +
   ylab("Tax to GDP") +
+  xlab("Fiscal year") +
   ggtitle("Gross tax revenue to GDP")
   
 ```
