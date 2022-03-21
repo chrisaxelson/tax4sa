@@ -60,7 +60,7 @@ columns `T1`, `T2` and `T3` and all figures are in ZAR 000’s.
 library(tax4sa)
 library(dplyr)
 library(knitr)
-#> Warning: package 'knitr' was built under R version 4.0.3
+#> Warning: package 'knitr' was built under R version 4.0.5
 library(kableExtra)
 
 # Check revenue data
@@ -372,46 +372,6 @@ Health promotion levy
 
 <td style="text-align:left;">
 
-August
-
-</td>
-
-<td style="text-align:right;">
-
-3
-
-</td>
-
-<td style="text-align:left;">
-
-2021
-
-</td>
-
-<td style="text-align:left;">
-
-2022
-
-</td>
-
-<td style="text-align:right;">
-
-139,251
-
-</td>
-
-</tr>
-
-<tr>
-
-<td style="text-align:left;">
-
-Health promotion levy
-
-</td>
-
-<td style="text-align:left;">
-
 September
 
 </td>
@@ -557,6 +517,46 @@ December
 <td style="text-align:right;">
 
 231,748
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+Health promotion levy
+
+</td>
+
+<td style="text-align:left;">
+
+January
+
+</td>
+
+<td style="text-align:right;">
+
+1
+
+</td>
+
+<td style="text-align:left;">
+
+2022
+
+</td>
+
+<td style="text-align:left;">
+
+2022
+
+</td>
+
+<td style="text-align:right;">
+
+209,823
 
 </td>
 
@@ -1751,122 +1751,6 @@ Value
 
 <td style="text-align:left;">
 
-163
-
-</td>
-
-<td style="text-align:left;">
-
-P0141
-
-</td>
-
-<td style="text-align:left;">
-
-CPS00000
-
-</td>
-
-<td style="text-align:left;">
-
-2021 07
-
-</td>
-
-<td style="text-align:left;">
-
-July
-
-</td>
-
-<td style="text-align:right;">
-
-3
-
-</td>
-
-<td style="text-align:right;">
-
-2021
-
-</td>
-
-<td style="text-align:right;">
-
-2022
-
-</td>
-
-<td style="text-align:right;">
-
-121.8
-
-</td>
-
-</tr>
-
-<tr>
-
-<td style="text-align:left;">
-
-164
-
-</td>
-
-<td style="text-align:left;">
-
-P0141
-
-</td>
-
-<td style="text-align:left;">
-
-CPS00000
-
-</td>
-
-<td style="text-align:left;">
-
-2021 08
-
-</td>
-
-<td style="text-align:left;">
-
-August
-
-</td>
-
-<td style="text-align:right;">
-
-3
-
-</td>
-
-<td style="text-align:right;">
-
-2021
-
-</td>
-
-<td style="text-align:right;">
-
-2022
-
-</td>
-
-<td style="text-align:right;">
-
-122.3
-
-</td>
-
-</tr>
-
-<tr>
-
-<td style="text-align:left;">
-
 165
 
 </td>
@@ -1915,7 +1799,7 @@ September
 
 <td style="text-align:right;">
 
-122.6
+98.7
 
 </td>
 
@@ -1973,7 +1857,7 @@ October
 
 <td style="text-align:right;">
 
-122.9
+99.0
 
 </td>
 
@@ -2031,7 +1915,123 @@ November
 
 <td style="text-align:right;">
 
-123.5
+99.4
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+168
+
+</td>
+
+<td style="text-align:left;">
+
+P0141
+
+</td>
+
+<td style="text-align:left;">
+
+CPS00000
+
+</td>
+
+<td style="text-align:left;">
+
+2021 12
+
+</td>
+
+<td style="text-align:left;">
+
+December
+
+</td>
+
+<td style="text-align:right;">
+
+4
+
+</td>
+
+<td style="text-align:right;">
+
+2021
+
+</td>
+
+<td style="text-align:right;">
+
+2022
+
+</td>
+
+<td style="text-align:right;">
+
+100.0
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+169
+
+</td>
+
+<td style="text-align:left;">
+
+P0141
+
+</td>
+
+<td style="text-align:left;">
+
+CPS00000
+
+</td>
+
+<td style="text-align:left;">
+
+2022 01
+
+</td>
+
+<td style="text-align:left;">
+
+January
+
+</td>
+
+<td style="text-align:right;">
+
+1
+
+</td>
+
+<td style="text-align:right;">
+
+2022
+
+</td>
+
+<td style="text-align:right;">
+
+2022
+
+</td>
+
+<td style="text-align:right;">
+
+100.2
 
 </td>
 
@@ -2072,7 +2072,7 @@ system.time({
     mutate(Simulated_tax = pit(Taxable_income, Age, MTC, Tax_year))
 })
 #>    user  system elapsed 
-#>    0.36    0.15    0.56
+#>    0.26    0.03    0.30
 ```
 
 ## Examples

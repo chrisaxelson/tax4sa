@@ -2,9 +2,9 @@
 # Update SARS monthly data ------------------------------------------------
 
 # Latest information - UPDATE THIS EACH MONTH
-Latest_link <- "http://www.treasury.gov.za/comm_media/press/monthly/2202/Hardcoded%20database%20December%202021.xls"
-Latest_month <- "December"
-Latest_year <- "2021"
+Latest_link <- "http://www.treasury.gov.za/comm_media/press/monthly/2203/Hardcoded%20database%20January%202022.xls"
+Latest_month <- "January"
+Latest_year <- "2022"
 
 # This should run the same way each month ---------------------------------
 
@@ -94,5 +94,6 @@ writeData(wb2,
 saveWorkbook(wb2, file = "data-raw/SARS/Revenue.xlsx", overwrite = TRUE)
 
 source("data-raw/SARS/Importing original revenue data.R")
+source("README.Rmd")
 devtools::document()
 
