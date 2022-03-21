@@ -897,7 +897,7 @@ KG
 ``` r
 # Check revenue data
 NT_forecasts %>% 
-  filter(Publication_year == 2021,
+  filter(Publication_year == 2022,
          Category == "Gross tax revenue") %>% 
    mutate(Publication_year = as.character(Publication_year)) %>% 
   kable(format.args = list(big.mark = ","), 
@@ -962,41 +962,7 @@ Budget
 
 <td style="text-align:left;">
 
-2021
-
-</td>
-
-<td style="text-align:left;">
-
-Gross tax revenue
-
-</td>
-
-<td style="text-align:left;">
-
-2020/21
-
-</td>
-
-<td style="text-align:right;">
-
-1,212,206
-
-</td>
-
-</tr>
-
-<tr>
-
-<td style="text-align:left;">
-
-Budget
-
-</td>
-
-<td style="text-align:left;">
-
-2021
+2022
 
 </td>
 
@@ -1014,7 +980,7 @@ Gross tax revenue
 
 <td style="text-align:right;">
 
-1,365,124
+1,547,071
 
 </td>
 
@@ -1030,7 +996,7 @@ Budget
 
 <td style="text-align:left;">
 
-2021
+2022
 
 </td>
 
@@ -1048,7 +1014,7 @@ Gross tax revenue
 
 <td style="text-align:right;">
 
-1,457,653
+1,598,447
 
 </td>
 
@@ -1064,7 +1030,7 @@ Budget
 
 <td style="text-align:left;">
 
-2021
+2022
 
 </td>
 
@@ -1082,7 +1048,41 @@ Gross tax revenue
 
 <td style="text-align:right;">
 
-1,548,512
+1,694,259
+
+</td>
+
+</tr>
+
+<tr>
+
+<td style="text-align:left;">
+
+Budget
+
+</td>
+
+<td style="text-align:left;">
+
+2022
+
+</td>
+
+<td style="text-align:left;">
+
+Gross tax revenue
+
+</td>
+
+<td style="text-align:left;">
+
+2024/25
+
+</td>
+
+<td style="text-align:right;">
+
+1,807,614
 
 </td>
 
@@ -2072,7 +2072,7 @@ system.time({
     mutate(Simulated_tax = pit(Taxable_income, Age, MTC, Tax_year))
 })
 #>    user  system elapsed 
-#>    0.26    0.03    0.30
+#>    0.32    0.05    0.36
 ```
 
 ## Examples

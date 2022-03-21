@@ -111,7 +111,7 @@ SARS_imports_2021 %>%
 ```{r forecasts, message = FALSE}
 # Check revenue data
 NT_forecasts %>% 
-  filter(Publication_year == 2021,
+  filter(Publication_year == 2022,
          Category == "Gross tax revenue") %>% 
    mutate(Publication_year = as.character(Publication_year)) %>% 
   kable(format.args = list(big.mark = ","), 
