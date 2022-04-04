@@ -13,7 +13,7 @@ usethis::use_data(SARB, overwrite = TRUE)
 
 
 # URL of page to download xlsx data
-SARB_download_url <- "https://www.resbank.co.za/en/home/publications/publication-detail-pages/quarterly-bulletins/download-information-from-xlsx-data-files/2021/Downloadinformationfromxlsxdatafiles0"
+SARB_download_url <- "https://www.resbank.co.za/en/home/publications/publication-detail-pages/quarterly-bulletins/download-information-from-xlsx-data-files/2022/Downloadinformationfromxlsxdatafiles0"
 
 # Packages
 library(rvest)
@@ -38,7 +38,7 @@ SARB_QB_date <- SARB_page %>%
   html_nodes(xpath = "//*/div[@class = 'value col-md-7 col-6']") %>%
   html_text()
 
-SARB_QB_date <- str_replace_all(SARB_QB_date[2], "-", "")
+SARB_QB_date <- str_trim(str_replace_all(SARB_QB_date[2], "-", ""))
 
 # Create folder if it doesn't exist
 SARB_folder <- paste0("data-raw/SARB/", SARB_QB_date ," Quarterly Bulletin")

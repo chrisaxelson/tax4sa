@@ -2,8 +2,8 @@
 # Update SARS monthly data ------------------------------------------------
 
 # Latest information - UPDATE THIS EACH MONTH
-Latest_link <- "http://www.treasury.gov.za/comm_media/press/monthly/2203/Hardcoded%20database%20January%202022.xls"
-Latest_month <- "January"
+Latest_link <- "http://www.treasury.gov.za/comm_media/press/monthly/2204/Hardcoded%20database%20February%202022.xls"
+Latest_month <- "February"
 Latest_year <- "2022"
 
 # This should run the same way each month ---------------------------------
@@ -19,6 +19,7 @@ library(openxlsx)
 
 # Download and import data - NB CHANGE THE EXTENSION IF CHANGES TO XLSX or vice versa
 GET(Latest_link, write_disk(S32 <- tempfile(fileext = sub('.*\\.', '', Latest_link))))
+
 SARS_temp <- read_excel(S32, sheet = "Table 1", range = "A4:T148")
 
 SARS_temp <- SARS_temp %>%
@@ -94,6 +95,6 @@ writeData(wb2,
 saveWorkbook(wb2, file = "data-raw/SARS/Revenue.xlsx", overwrite = TRUE)
 
 source("data-raw/SARS/Importing original revenue data.R")
-source("README.Rmd")
+# source("README.Rmd")
 devtools::document()
 
