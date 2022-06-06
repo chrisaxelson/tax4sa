@@ -51,7 +51,7 @@ The data can be accessed by directly entering either `SARS_annual`, `SARS_monthl
 
 The tax revenue data is split by three revenue classifications in columns `T1`, `T2` and `T3` and all figures are in ZAR 000's. 
 
-```{r example, message = FALSE}
+```{r example, message = FALSE, warning=FALSE}
 library(tax4sa)
 library(dplyr)
 library(knitr)
@@ -59,7 +59,7 @@ library(kableExtra)
 
 # Check revenue data
 SARS_annual %>% 
-  filter(Fiscal_year == 2021) %>%  
+  filter(Fiscal_year == 2022) %>%  
   select(T1:T3, Year, Revenue) %>% 
   mutate(Revenue = round(Revenue,0)) %>% 
   head(5) %>% 
