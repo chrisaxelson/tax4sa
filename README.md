@@ -4,32 +4,34 @@
 # tax4sa
 
 <!-- badges: start -->
-
 <!-- badges: end -->
 
 This is a minimal package to help with the compilation and analysis of
-tax and economic data in South Africa. The package only contains six
+tax and economic data in South Africa. The package only contains seven
 main sets of data, three functions and the personal income tax tables
 from 1995/96 to 2021/22.
 
 The data includes:
 
-  - Annual tax revenue collections from 1983/84, as published in the
+-   Annual tax revenue collections from 1983/84, as published in the
     [Budget Reviews of the National
     Treasury](http://www.treasury.gov.za/documents/national%20budget/default.aspx)
-  - Monthly tax revenue collections from April 2002, as published in the
+-   Monthly tax revenue collections from April 2002, as published in the
     [monthly financing statements of the National
     Treasury](http://www.treasury.gov.za/comm_media/press/monthly/default.aspx)
-  - Monthly trade data on imports and exports from January 2010 from the
+-   Monthly trade data on imports and exports from January 2010 from the
     [South African Revenue
     Service](https://tools.sars.gov.za/tradestatsportal/data_download.aspx)
-  - Forecasts of the main tax instruments and GDP from 2005, as
+-   Forecasts of the main tax instruments and GDP from 2005, as
     published in the [Budget Reviews of the National
     Treasury](http://www.treasury.gov.za/documents/national%20budget/default.aspx)
-  - Quarterly Bulletin data from the [South African Reserve
+-   Quarterly Bulletin data from the [South African Reserve
     Bank](https://www.resbank.co.za/en/home/publications/quarterly-bulletin1/download-information-from-xlsx-data-files)
-  - Economic statistics from [Statistics South
+-   Economic statistics from [Statistics South
     Africa](http://www.statssa.gov.za/?page_id=1847)
+-   Fuel pricing and levies from the [Department of Mineral Resources
+    and
+    Energy](http://www.energy.gov.za/files/esources/petroleum/petroleum_arch.html)
 
 The three functions and the personal income tax tables are intended to
 help with calculating tax liabilities, particularly when used with the
@@ -48,8 +50,8 @@ remotes::install_github("chrisaxelson/tax4sa")
 ## Data
 
 The data can be accessed by directly entering either `SARS_annual`,
-`SARS_monthly`, `NT_forecasts`, `STATSSA` or `SARB` and is in a tidy
-format to ease analysis within R.
+`SARS_monthly`, `NT_forecasts`, `STATSSA`, `SARB` or `DMRE_fuel` and is
+in a tidy format to ease analysis within R.
 
 ### South African Revenue Service
 
@@ -73,229 +75,118 @@ SARS_annual %>%
 ```
 
 <table>
-
 <caption>
-
 Annual tax revenue (R’000s)
-
 </caption>
-
 <thead>
-
 <tr>
-
 <th style="text-align:left;">
-
 T1
-
 </th>
-
 <th style="text-align:left;">
-
 T2
-
 </th>
-
 <th style="text-align:left;">
-
 T3
-
 </th>
-
 <th style="text-align:left;">
-
 Year
-
 </th>
-
 <th style="text-align:right;">
-
 Revenue
-
 </th>
-
 </tr>
-
 </thead>
-
 <tbody>
-
 <tr>
-
 <td style="text-align:left;">
-
 Taxes on income and profits
-
 </td>
-
 <td style="text-align:left;">
-
 Personal income tax
-
 </td>
-
 <td style="text-align:left;">
-
 Personal income tax
-
 </td>
-
 <td style="text-align:left;">
-
 2021/22
-
 </td>
-
 <td style="text-align:right;">
-
 553,951,488
-
 </td>
-
 </tr>
-
 <tr>
-
 <td style="text-align:left;">
-
 Taxes on income and profits
-
 </td>
-
 <td style="text-align:left;">
-
 Tax on corporate income
-
 </td>
-
 <td style="text-align:left;">
-
 Corporate income tax
-
 </td>
-
 <td style="text-align:left;">
-
 2021/22
-
 </td>
-
 <td style="text-align:right;">
-
 320,446,871
-
 </td>
-
 </tr>
-
 <tr>
-
 <td style="text-align:left;">
-
 Taxes on income and profits
-
 </td>
-
 <td style="text-align:left;">
-
 Tax on corporate income
-
 </td>
-
 <td style="text-align:left;">
-
 Secondary tax on companies/dividend withholding tax
-
 </td>
-
 <td style="text-align:left;">
-
 2021/22
-
 </td>
-
 <td style="text-align:right;">
-
 33,429,472
-
 </td>
-
 </tr>
-
 <tr>
-
 <td style="text-align:left;">
-
 Taxes on income and profits
-
 </td>
-
 <td style="text-align:left;">
-
 Tax on corporate income
-
 </td>
-
 <td style="text-align:left;">
-
 Interest withholding tax
-
 </td>
-
 <td style="text-align:left;">
-
 2021/22
-
 </td>
-
 <td style="text-align:right;">
-
 468,752
-
 </td>
-
 </tr>
-
 <tr>
-
 <td style="text-align:left;">
-
 Taxes on income and profits
-
 </td>
-
 <td style="text-align:left;">
-
 Other
-
 </td>
-
 <td style="text-align:left;">
-
 Interest on overdue income tax
-
 </td>
-
 <td style="text-align:left;">
-
 2021/22
-
 </td>
-
 <td style="text-align:right;">
-
 4,573,663
-
 </td>
-
 </tr>
-
 </tbody>
-
 </table>
 
 ``` r
-
 # And monthly
 SARS_monthly %>% 
   filter(T3 == "Health promotion levy") %>% 
@@ -308,261 +199,133 @@ SARS_monthly %>%
 ```
 
 <table>
-
 <caption>
-
 Monthly health promotion levy revenue (R’000s)
-
 </caption>
-
 <thead>
-
 <tr>
-
 <th style="text-align:left;">
-
 Tax
-
 </th>
-
 <th style="text-align:left;">
-
 Month
-
 </th>
-
 <th style="text-align:right;">
-
 Quarter
-
 </th>
-
 <th style="text-align:left;">
-
 Year
-
 </th>
-
 <th style="text-align:left;">
-
-Fiscal\_year
-
+Fiscal_year
 </th>
-
 <th style="text-align:right;">
-
 Revenue
-
 </th>
-
 </tr>
-
 </thead>
-
 <tbody>
-
 <tr>
-
 <td style="text-align:left;">
-
 Health promotion levy
-
 </td>
-
 <td style="text-align:left;">
-
 December
-
 </td>
-
 <td style="text-align:right;">
-
 4
-
 </td>
-
 <td style="text-align:left;">
-
 2021
-
 </td>
-
 <td style="text-align:left;">
-
 2022
-
 </td>
-
 <td style="text-align:right;">
-
 231,748.0
-
 </td>
-
 </tr>
-
 <tr>
-
 <td style="text-align:left;">
-
 Health promotion levy
-
 </td>
-
 <td style="text-align:left;">
-
 January
-
 </td>
-
 <td style="text-align:right;">
-
 1
-
 </td>
-
 <td style="text-align:left;">
-
 2022
-
 </td>
-
 <td style="text-align:left;">
-
 2022
-
 </td>
-
 <td style="text-align:right;">
-
 209,823.0
-
 </td>
-
 </tr>
-
 <tr>
-
 <td style="text-align:left;">
-
 Health promotion levy
-
 </td>
-
 <td style="text-align:left;">
-
 February
-
 </td>
-
 <td style="text-align:right;">
-
 1
-
 </td>
-
 <td style="text-align:left;">
-
 2022
-
 </td>
-
 <td style="text-align:left;">
-
 2022
-
 </td>
-
 <td style="text-align:right;">
-
 170,378.0
-
 </td>
-
 </tr>
-
 <tr>
-
 <td style="text-align:left;">
-
 Health promotion levy
-
 </td>
-
 <td style="text-align:left;">
-
 March
-
 </td>
-
 <td style="text-align:right;">
-
 1
-
 </td>
-
 <td style="text-align:left;">
-
 2022
-
 </td>
-
 <td style="text-align:left;">
-
 2022
-
 </td>
-
 <td style="text-align:right;">
-
 173,378.0
-
 </td>
-
 </tr>
-
 <tr>
-
 <td style="text-align:left;">
-
 Health promotion levy
-
 </td>
-
 <td style="text-align:left;">
-
 April
-
 </td>
-
 <td style="text-align:right;">
-
 2
-
 </td>
-
 <td style="text-align:left;">
-
 2022
-
 </td>
-
 <td style="text-align:left;">
-
 2023
-
 </td>
-
 <td style="text-align:right;">
-
 228,405.8
-
 </td>
-
 </tr>
-
 </tbody>
-
 </table>
 
 Or you can download the annual and monthly data in one spreadsheet.
@@ -598,297 +361,151 @@ SARS_imports_2021 %>%
 ```
 
 <table>
-
 <caption>
-
 Monthly trade data
-
 </caption>
-
 <thead>
-
 <tr>
-
 <th style="text-align:left;">
-
 District
-
 </th>
-
 <th style="text-align:left;">
-
 Origin
-
 </th>
-
 <th style="text-align:left;">
-
 Unit
-
 </th>
-
 <th style="text-align:left;">
-
 YearMonth
-
 </th>
-
 <th style="text-align:left;">
-
 ChapterAndDescription
-
 </th>
-
 <th style="text-align:right;">
-
 Quantity
-
 </th>
-
 <th style="text-align:right;">
-
-Value\_ZAR
-
+Value_ZAR
 </th>
-
 </tr>
-
 </thead>
-
 <tbody>
-
 <tr>
-
 <td style="text-align:left;">
-
 Beit Bridge
-
 </td>
-
 <td style="text-align:left;">
-
 China
-
 </td>
-
 <td style="text-align:left;">
-
 KG
-
 </td>
-
 <td style="text-align:left;">
-
 202102
-
 </td>
-
 <td style="text-align:left;">
-
 90 - Medical and Photographic Equipment
-
 </td>
-
 <td style="text-align:right;">
-
 5.00
-
 </td>
-
 <td style="text-align:right;">
-
 18,870
-
 </td>
-
 </tr>
-
 <tr>
-
 <td style="text-align:left;">
-
 Beit Bridge
-
 </td>
-
 <td style="text-align:left;">
-
 Malawi
-
 </td>
-
 <td style="text-align:left;">
-
 KG
-
 </td>
-
 <td style="text-align:left;">
-
 202102
-
 </td>
-
 <td style="text-align:left;">
-
 03 - Fish and crustaceans
-
 </td>
-
 <td style="text-align:right;">
-
 10,544.00
-
 </td>
-
 <td style="text-align:right;">
-
 62,266
-
 </td>
-
 </tr>
-
 <tr>
-
 <td style="text-align:left;">
-
 Beit Bridge
-
 </td>
-
 <td style="text-align:left;">
-
 Malawi
-
 </td>
-
 <td style="text-align:left;">
-
 KG
-
 </td>
-
 <td style="text-align:left;">
-
 202102
-
 </td>
-
 <td style="text-align:left;">
-
 07 - Edible vegetables and certain roots and tubers
-
 </td>
-
 <td style="text-align:right;">
-
 6,000.00
-
 </td>
-
 <td style="text-align:right;">
-
 4,009
-
 </td>
-
 </tr>
-
 <tr>
-
 <td style="text-align:left;">
-
 Beit Bridge
-
 </td>
-
 <td style="text-align:left;">
-
 Malawi
-
 </td>
-
 <td style="text-align:left;">
-
 KG
-
 </td>
-
 <td style="text-align:left;">
-
 202102
-
 </td>
-
 <td style="text-align:left;">
-
 07 - Edible vegetables and certain roots and tubers
-
 </td>
-
 <td style="text-align:right;">
-
 90,000.00
-
 </td>
-
 <td style="text-align:right;">
-
 1,278,398
-
 </td>
-
 </tr>
-
 <tr>
-
 <td style="text-align:left;">
-
 Beit Bridge
-
 </td>
-
 <td style="text-align:left;">
-
 Italy
-
 </td>
-
 <td style="text-align:left;">
-
 KG
-
 </td>
-
 <td style="text-align:left;">
-
 202102
-
 </td>
-
 <td style="text-align:left;">
-
 40 - Rubber and articles thereof
-
 </td>
-
 <td style="text-align:right;">
-
 0.04
-
 </td>
-
 <td style="text-align:right;">
-
 34
-
 </td>
-
 </tr>
-
 </tbody>
-
 </table>
 
 ## National Treasury
@@ -904,191 +521,98 @@ NT_forecasts %>%
 ```
 
 <table>
-
 <caption>
-
 Tax revenue forecasts (R million)
-
 </caption>
-
 <thead>
-
 <tr>
-
 <th style="text-align:left;">
-
 Source
-
 </th>
-
 <th style="text-align:left;">
-
-Publication\_year
-
+Publication_year
 </th>
-
 <th style="text-align:left;">
-
 Category
-
 </th>
-
 <th style="text-align:left;">
-
-Forecast\_year
-
+Forecast_year
 </th>
-
 <th style="text-align:right;">
-
 Forecast
-
 </th>
-
 </tr>
-
 </thead>
-
 <tbody>
-
 <tr>
-
 <td style="text-align:left;">
-
 Budget
-
 </td>
-
 <td style="text-align:left;">
-
 2022
-
 </td>
-
 <td style="text-align:left;">
-
 Gross tax revenue
-
 </td>
-
 <td style="text-align:left;">
-
 2021/22
-
 </td>
-
 <td style="text-align:right;">
-
 1,547,071
-
 </td>
-
 </tr>
-
 <tr>
-
 <td style="text-align:left;">
-
 Budget
-
 </td>
-
 <td style="text-align:left;">
-
 2022
-
 </td>
-
 <td style="text-align:left;">
-
 Gross tax revenue
-
 </td>
-
 <td style="text-align:left;">
-
 2022/23
-
 </td>
-
 <td style="text-align:right;">
-
 1,598,447
-
 </td>
-
 </tr>
-
 <tr>
-
 <td style="text-align:left;">
-
 Budget
-
 </td>
-
 <td style="text-align:left;">
-
 2022
-
 </td>
-
 <td style="text-align:left;">
-
 Gross tax revenue
-
 </td>
-
 <td style="text-align:left;">
-
 2023/24
-
 </td>
-
 <td style="text-align:right;">
-
 1,694,259
-
 </td>
-
 </tr>
-
 <tr>
-
 <td style="text-align:left;">
-
 Budget
-
 </td>
-
 <td style="text-align:left;">
-
 2022
-
 </td>
-
 <td style="text-align:left;">
-
 Gross tax revenue
-
 </td>
-
 <td style="text-align:left;">
-
 2024/25
-
 </td>
-
 <td style="text-align:right;">
-
 1,807,614
-
 </td>
-
 </tr>
-
 </tbody>
-
 </table>
 
 Or you can download the forecasts in one spreadsheet.
@@ -1110,183 +634,94 @@ SARB_descriptions %>%
 ```
 
 <table>
-
 <thead>
-
 <tr>
-
 <th style="text-align:left;">
-
 Code
-
 </th>
-
 <th style="text-align:left;">
-
-Frequency\_description
-
+Frequency_description
 </th>
-
 <th style="text-align:left;">
-
-Unit\_of\_measure
-
+Unit_of_measure
 </th>
-
 <th style="text-align:left;">
-
-Version\_description
-
+Version_description
 </th>
-
 </tr>
-
 </thead>
-
 <tbody>
-
 <tr>
-
 <td style="text-align:left;">
-
 KBP6006C
-
 </td>
-
 <td style="text-align:left;">
-
 Quarterly
-
 </td>
-
 <td style="text-align:left;">
-
 RMILL
-
 </td>
-
 <td style="text-align:left;">
-
 Constant 2010 prices
-
 </td>
-
 </tr>
-
 <tr>
-
 <td style="text-align:left;">
-
 KBP6006D
-
 </td>
-
 <td style="text-align:left;">
-
 Quarterly
-
 </td>
-
 <td style="text-align:left;">
-
 RMILL
-
 </td>
-
 <td style="text-align:left;">
-
 Constant 2010 prices. Seasonally adjusted at annual rate
-
 </td>
-
 </tr>
-
 <tr>
-
 <td style="text-align:left;">
-
 KBP6006K
-
 </td>
-
 <td style="text-align:left;">
-
 Quarterly
-
 </td>
-
 <td style="text-align:left;">
-
 RMILL
-
 </td>
-
 <td style="text-align:left;">
-
 Current prices
-
 </td>
-
 </tr>
-
 <tr>
-
 <td style="text-align:left;">
-
 KBP6006L
-
 </td>
-
 <td style="text-align:left;">
-
 Quarterly
-
 </td>
-
 <td style="text-align:left;">
-
 RMILL
-
 </td>
-
 <td style="text-align:left;">
-
 Current prices. Seasonally adjusted at annual rate
-
 </td>
-
 </tr>
-
 <tr>
-
 <td style="text-align:left;">
-
 KBP6006S
-
 </td>
-
 <td style="text-align:left;">
-
 Quarterly
-
 </td>
-
 <td style="text-align:left;">
-
 PERC
-
 </td>
-
 <td style="text-align:left;">
-
 1-Term % change
-
 </td>
-
 </tr>
-
 </tbody>
-
 </table>
 
 ``` r
@@ -1298,291 +733,148 @@ SARB %>%
 ```
 
 <table>
-
 <thead>
-
 <tr>
-
 <th style="text-align:left;">
-
 Code
-
 </th>
-
 <th style="text-align:right;">
-
 Date
-
 </th>
-
 <th style="text-align:left;">
-
 Frequency
-
 </th>
-
 <th style="text-align:right;">
-
 Quarter
-
 </th>
-
 <th style="text-align:right;">
-
 Year
-
 </th>
-
 <th style="text-align:right;">
-
-Fiscal\_year
-
+Fiscal_year
 </th>
-
 <th style="text-align:right;">
-
 Value
-
 </th>
-
 </tr>
-
 </thead>
-
 <tbody>
-
 <tr>
-
 <td style="text-align:left;">
-
 KBP6006K
-
 </td>
-
 <td style="text-align:right;">
-
 20200400
-
 </td>
-
 <td style="text-align:left;">
-
 K1
-
 </td>
-
 <td style="text-align:right;">
-
 4
-
 </td>
-
 <td style="text-align:right;">
-
 2020
-
 </td>
-
 <td style="text-align:right;">
-
 2021
-
 </td>
-
 <td style="text-align:right;">
-
 1499180
-
 </td>
-
 </tr>
-
 <tr>
-
 <td style="text-align:left;">
-
 KBP6006K
-
 </td>
-
 <td style="text-align:right;">
-
 20210100
-
 </td>
-
 <td style="text-align:left;">
-
 K1
-
 </td>
-
 <td style="text-align:right;">
-
 1
-
 </td>
-
 <td style="text-align:right;">
-
 2021
-
 </td>
-
 <td style="text-align:right;">
-
 2021
-
 </td>
-
 <td style="text-align:right;">
-
 1464221
-
 </td>
-
 </tr>
-
 <tr>
-
 <td style="text-align:left;">
-
 KBP6006K
-
 </td>
-
 <td style="text-align:right;">
-
 20210200
-
 </td>
-
 <td style="text-align:left;">
-
 K1
-
 </td>
-
 <td style="text-align:right;">
-
 2
-
 </td>
-
 <td style="text-align:right;">
-
 2021
-
 </td>
-
 <td style="text-align:right;">
-
 2022
-
 </td>
-
 <td style="text-align:right;">
-
 1574931
-
 </td>
-
 </tr>
-
 <tr>
-
 <td style="text-align:left;">
-
 KBP6006K
-
 </td>
-
 <td style="text-align:right;">
-
 20210300
-
 </td>
-
 <td style="text-align:left;">
-
 K1
-
 </td>
-
 <td style="text-align:right;">
-
 3
-
 </td>
-
 <td style="text-align:right;">
-
 2021
-
 </td>
-
 <td style="text-align:right;">
-
 2022
-
 </td>
-
 <td style="text-align:right;">
-
 1561183
-
 </td>
-
 </tr>
-
 <tr>
-
 <td style="text-align:left;">
-
 KBP6006K
-
 </td>
-
 <td style="text-align:right;">
-
 20210400
-
 </td>
-
 <td style="text-align:left;">
-
 K1
-
 </td>
-
 <td style="text-align:right;">
-
 4
-
 </td>
-
 <td style="text-align:right;">
-
 2021
-
 </td>
-
 <td style="text-align:right;">
-
 2022
-
 </td>
-
 <td style="text-align:right;">
-
 1605918
-
 </td>
-
 </tr>
-
 </tbody>
-
 </table>
 
 ## Statistics South Africa
@@ -1596,83 +888,44 @@ STATSSA_descriptions %>%
 ```
 
 <table>
-
 <thead>
-
 <tr>
-
 <th style="text-align:left;">
-
 H01
-
 </th>
-
 <th style="text-align:left;">
-
 H02
-
 </th>
-
 <th style="text-align:left;">
-
 H03
-
 </th>
-
 <th style="text-align:left;">
-
 H04
-
 </th>
-
 <th style="text-align:left;">
-
 H13
-
 </th>
-
 </tr>
-
 </thead>
-
 <tbody>
-
 <tr>
-
 <td style="text-align:left;">
-
 P0141
-
 </td>
-
 <td style="text-align:left;">
-
 Consumer Price Index
-
 </td>
-
 <td style="text-align:left;">
-
 CPS00000
-
 </td>
-
 <td style="text-align:left;">
-
 CPI Headline
-
 </td>
-
 <td style="text-align:left;">
-
 All urban areas
-
 </td>
-
 </tr>
-
 </tbody>
-
 </table>
 
 ``` r
@@ -1683,361 +936,424 @@ STATSSA %>%
 ```
 
 <table>
-
 <thead>
-
 <tr>
-
 <th style="text-align:left;">
-
 </th>
-
 <th style="text-align:left;">
-
 H01
-
 </th>
-
 <th style="text-align:left;">
-
 H03
-
 </th>
-
 <th style="text-align:left;">
-
 Date
-
 </th>
-
 <th style="text-align:left;">
-
 Month
-
 </th>
-
 <th style="text-align:right;">
-
 Quarter
-
 </th>
-
 <th style="text-align:right;">
-
 Year
-
 </th>
-
 <th style="text-align:right;">
-
-Fiscal\_year
-
+Fiscal_year
 </th>
-
 <th style="text-align:right;">
-
 Value
-
 </th>
-
 </tr>
-
 </thead>
-
 <tbody>
-
 <tr>
-
 <td style="text-align:left;">
-
-166
-
-</td>
-
-<td style="text-align:left;">
-
-P0141
-
-</td>
-
-<td style="text-align:left;">
-
-CPS00000
-
-</td>
-
-<td style="text-align:left;">
-
-2021 10
-
-</td>
-
-<td style="text-align:left;">
-
-October
-
-</td>
-
-<td style="text-align:right;">
-
-4
-
-</td>
-
-<td style="text-align:right;">
-
-2021
-
-</td>
-
-<td style="text-align:right;">
-
-2022
-
-</td>
-
-<td style="text-align:right;">
-
-99.0
-
-</td>
-
-</tr>
-
-<tr>
-
-<td style="text-align:left;">
-
-167
-
-</td>
-
-<td style="text-align:left;">
-
-P0141
-
-</td>
-
-<td style="text-align:left;">
-
-CPS00000
-
-</td>
-
-<td style="text-align:left;">
-
-2021 11
-
-</td>
-
-<td style="text-align:left;">
-
-November
-
-</td>
-
-<td style="text-align:right;">
-
-4
-
-</td>
-
-<td style="text-align:right;">
-
-2021
-
-</td>
-
-<td style="text-align:right;">
-
-2022
-
-</td>
-
-<td style="text-align:right;">
-
-99.4
-
-</td>
-
-</tr>
-
-<tr>
-
-<td style="text-align:left;">
-
 168
-
 </td>
-
 <td style="text-align:left;">
-
 P0141
-
 </td>
-
 <td style="text-align:left;">
-
 CPS00000
-
 </td>
-
 <td style="text-align:left;">
-
 2021 12
-
 </td>
-
 <td style="text-align:left;">
-
 December
-
 </td>
-
 <td style="text-align:right;">
-
 4
-
 </td>
-
 <td style="text-align:right;">
-
 2021
-
 </td>
-
 <td style="text-align:right;">
-
 2022
-
 </td>
-
 <td style="text-align:right;">
-
 100.0
-
 </td>
-
 </tr>
-
 <tr>
-
 <td style="text-align:left;">
-
 169
-
 </td>
-
 <td style="text-align:left;">
-
 P0141
-
 </td>
-
 <td style="text-align:left;">
-
 CPS00000
-
 </td>
-
 <td style="text-align:left;">
-
 2022 01
-
 </td>
-
 <td style="text-align:left;">
-
 January
-
 </td>
-
 <td style="text-align:right;">
-
 1
-
 </td>
-
 <td style="text-align:right;">
-
 2022
-
 </td>
-
 <td style="text-align:right;">
-
 2022
-
 </td>
-
 <td style="text-align:right;">
-
 100.2
-
 </td>
-
 </tr>
-
 <tr>
-
 <td style="text-align:left;">
-
 170
-
 </td>
-
 <td style="text-align:left;">
-
 P0141
-
 </td>
-
 <td style="text-align:left;">
-
 CPS00000
-
 </td>
-
 <td style="text-align:left;">
-
 2022 02
-
 </td>
-
 <td style="text-align:left;">
-
 February
-
 </td>
-
 <td style="text-align:right;">
-
 1
-
 </td>
-
 <td style="text-align:right;">
-
 2022
-
 </td>
-
 <td style="text-align:right;">
-
 2022
-
 </td>
-
 <td style="text-align:right;">
-
 100.8
-
 </td>
-
 </tr>
-
+<tr>
+<td style="text-align:left;">
+171
+</td>
+<td style="text-align:left;">
+P0141
+</td>
+<td style="text-align:left;">
+CPS00000
+</td>
+<td style="text-align:left;">
+2022 03
+</td>
+<td style="text-align:left;">
+March
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+2022
+</td>
+<td style="text-align:right;">
+2022
+</td>
+<td style="text-align:right;">
+101.8
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+172
+</td>
+<td style="text-align:left;">
+P0141
+</td>
+<td style="text-align:left;">
+CPS00000
+</td>
+<td style="text-align:left;">
+2022 04
+</td>
+<td style="text-align:left;">
+April
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+2022
+</td>
+<td style="text-align:right;">
+2023
+</td>
+<td style="text-align:right;">
+102.4
+</td>
+</tr>
 </tbody>
+</table>
 
+## Department of Mineral Resources and Energy
+
+Note that the `Price` column reflects retail prices for unleaded petrol,
+wholesale list prices for diesel and illuminating paraffin and maximum
+retail price for liquified petroleum gas.
+
+``` r
+# Look for STATSSA inflation data
+DMRE_fuel %>% 
+  select(Fuel_type:General_fuel_levy) %>% 
+  tail(10) %>% 
+  kable()
+```
+
+<table>
+<thead>
+<tr>
+<th style="text-align:left;">
+Fuel_type
+</th>
+<th style="text-align:left;">
+Region
+</th>
+<th style="text-align:left;">
+Date
+</th>
+<th style="text-align:right;">
+Price
+</th>
+<th style="text-align:right;">
+Basic_fuel_price
+</th>
+<th style="text-align:right;">
+General_fuel_levy
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+95_ULP
+</td>
+<td style="text-align:left;">
+Coastal
+</td>
+<td style="text-align:left;">
+2022-06-01
+</td>
+<td style="text-align:right;">
+2352.00
+</td>
+<td style="text-align:right;">
+1507.41
+</td>
+<td style="text-align:right;">
+244
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+95_ULP
+</td>
+<td style="text-align:left;">
+Gauteng
+</td>
+<td style="text-align:left;">
+2022-06-01
+</td>
+<td style="text-align:right;">
+2417.00
+</td>
+<td style="text-align:right;">
+1507.41
+</td>
+<td style="text-align:right;">
+244
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Diesel_0.005
+</td>
+<td style="text-align:left;">
+Coastal
+</td>
+<td style="text-align:left;">
+2022-06-01
+</td>
+<td style="text-align:right;">
+2257.64
+</td>
+<td style="text-align:right;">
+1621.03
+</td>
+<td style="text-align:right;">
+230
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Diesel_0.005
+</td>
+<td style="text-align:left;">
+Gauteng
+</td>
+<td style="text-align:left;">
+2022-06-01
+</td>
+<td style="text-align:right;">
+2322.84
+</td>
+<td style="text-align:right;">
+1621.03
+</td>
+<td style="text-align:right;">
+230
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Diesel_0.05
+</td>
+<td style="text-align:left;">
+Coastal
+</td>
+<td style="text-align:left;">
+2022-06-01
+</td>
+<td style="text-align:right;">
+2244.24
+</td>
+<td style="text-align:right;">
+1607.63
+</td>
+<td style="text-align:right;">
+230
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Diesel_0.05
+</td>
+<td style="text-align:left;">
+Gauteng
+</td>
+<td style="text-align:left;">
+2022-06-01
+</td>
+<td style="text-align:right;">
+2309.44
+</td>
+<td style="text-align:right;">
+1607.63
+</td>
+<td style="text-align:right;">
+230
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Illuminating_Paraffin
+</td>
+<td style="text-align:left;">
+Coastal
+</td>
+<td style="text-align:left;">
+2022-06-01
+</td>
+<td style="text-align:right;">
+1741.89
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Illuminating_Paraffin
+</td>
+<td style="text-align:left;">
+Gauteng
+</td>
+<td style="text-align:left;">
+2022-06-01
+</td>
+<td style="text-align:right;">
+1820.29
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Liquefied_Petroleum_Gas
+</td>
+<td style="text-align:left;">
+Coastal
+</td>
+<td style="text-align:left;">
+2022-06-01
+</td>
+<td style="text-align:right;">
+3472.00
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Liquefied_Petroleum_Gas
+</td>
+<td style="text-align:left;">
+Gauteng
+</td>
+<td style="text-align:left;">
+2022-06-01
+</td>
+<td style="text-align:right;">
+3714.00
+</td>
+<td style="text-align:right;">
+NA
+</td>
+<td style="text-align:right;">
+NA
+</td>
+</tr>
+</tbody>
 </table>
 
 ## Functions
@@ -2071,7 +1387,7 @@ system.time({
     mutate(Simulated_tax = pit(Taxable_income, Age, MTC, Tax_year))
 })
 #>    user  system elapsed 
-#>    0.25    0.04    0.29
+#>    0.23    0.11    0.34
 ```
 
 ## Examples
@@ -2080,7 +1396,6 @@ system.time({
 library(tax4sa)
 library(dplyr)
 library(ggplot2)
-#> Warning: package 'ggplot2' was built under R version 4.0.5
 library(scales)
 
 # Create a tax to GDP chart - revenue per year first
@@ -2088,12 +1403,12 @@ Total_revenue <- SARS_annual %>%
   group_by(Fiscal_year) %>% 
   summarise(Revenue = sum(Revenue))
 
-# Get Nominal GDP across fiscal year by summing per quarter
+# Get nominal GDP across fiscal year by summing per quarter
 GDP_fiscal <- STATSSA %>% 
   filter(H03 == "QNU1000") %>% 
   group_by(Fiscal_year) %>% 
   summarise(GDP = sum(Value)) %>% 
-  filter(Fiscal_year < 2022, Fiscal_year > 1993)
+  filter(Fiscal_year < 2023, Fiscal_year > 1993)
 
 # Join together and create tax to GDP
 Tax_to_GDP <- GDP_fiscal %>% 
@@ -2105,8 +1420,8 @@ Tax_to_GDP <- GDP_fiscal %>%
 ggplot(Tax_to_GDP, aes(x = Fiscal_year, y = Tax_to_GDP)) +
   geom_line() + 
   geom_point() +
-  geom_text(aes(label = ifelse(Fiscal_year == 2021, paste0(round(Tax_to_GDP,3) * 100, "%"),'')),
-            hjust=0.5, vjust=1.8, show.legend = FALSE) +
+  geom_text(aes(label = ifelse(Fiscal_year == 2022, paste0(round(Tax_to_GDP,3) * 100, "%"),'')),
+            hjust=1.2, vjust=0.5, show.legend = FALSE) +
   scale_y_continuous(labels = scales::percent_format(accuracy = 1L)) +
   theme_classic() +
   ylab("Tax to GDP") +
@@ -2116,34 +1431,58 @@ ggplot(Tax_to_GDP, aes(x = Fiscal_year, y = Tax_to_GDP)) +
 
 <img src="man/figures/README-revenue-1.png" width="100%" />
 
+``` r
+library(lubridate)
+
+DMRE_fuel %>% 
+  filter(Fuel_type == "95_ULP",
+         Region == "Gauteng",
+         Date > dmy("01012016")) %>% 
+  ggplot(aes(x = Date, y = Price/100)) + 
+  geom_line() +
+  geom_point() +
+  theme_classic() +
+  ylab("Retail price (R/litre)") +
+  ggtitle("Retail price of 95 unleaded petrol in Gauteng")
+```
+
+<img src="man/figures/README-fuel-1.png" width="100%" />
+
+``` r
+DMRE_fuel %>% 
+  filter(Fuel_type == "95_ULP",
+         Region == "Gauteng",
+         Date > dmy("01012016")) %>% 
+  mutate(Tax = General_fuel_levy + 
+           Road_accident_fund_levy + 
+           Customs_and_excise_levy + 
+           Demand_side_management_levy,
+         Tax_percentage = Tax / Price) %>% 
+  ggplot(aes(x = Date, y = Tax_percentage)) + 
+  geom_line() +
+  geom_point() +
+  theme_classic() +
+  scale_y_continuous(labels = scales::percent_format(accuracy = 1L)) +
+  ylab("Percentage of retail price") +
+  ggtitle("Levies as a percentage of retail price",
+          subtitle = c("Includes the general fuel levy, the Road Accident Fund levy, customs levy and DSML"))
+```
+
+<img src="man/figures/README-fuel-2.png" width="100%" />
+
 <!-- ```{r cpi, message = FALSE} -->
-
 <!-- # Get headline CPI index and check growth -->
-
 <!-- CPI <- STATSSA %>%  -->
-
 <!--   filter(Code == "CPS00000") %>%  -->
-
 <!--   mutate(Value = as.numeric(Value),  -->
-
 <!--          Change = Value / lag(Value, n = 12) - 1) -->
-
 <!-- # Chart -->
-
 <!-- ggplot(CPI, aes(x = Fiscal_year, y = Tax_to_GDP)) + -->
-
 <!--   geom_line(color = "darkblue") +  -->
-
 <!--   geom_point(color = "darkblue") + -->
-
 <!--   scale_y_continuous(labels = scales::percent_format(accuracy = 1L)) + -->
-
 <!--   theme_minimal() + -->
-
 <!--   theme(axis.title.x = element_blank()) + -->
-
 <!--   ylab("Tax to GDP") + -->
-
 <!--   ggtitle("Total tax revenue to GDP") -->
-
 <!-- ``` -->

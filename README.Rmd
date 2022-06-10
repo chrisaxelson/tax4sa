@@ -20,7 +20,7 @@ knitr::opts_chunk$set(
 
 <!-- badges: end -->
 
-This is a minimal package to help with the compilation and analysis of tax and economic data in South Africa. The package only contains six main sets of data, three functions and the personal income tax tables from 1995/96 to 2021/22.
+This is a minimal package to help with the compilation and analysis of tax and economic data in South Africa. The package only contains seven main sets of data, three functions and the personal income tax tables from 1995/96 to 2021/22.
 
 The data includes:
 
@@ -30,7 +30,7 @@ The data includes:
 -   Forecasts of the main tax instruments and GDP from 2005, as published in the [Budget Reviews of the National Treasury](http://www.treasury.gov.za/documents/national%20budget/default.aspx)
 -   Quarterly Bulletin data from the [South African Reserve Bank](https://www.resbank.co.za/en/home/publications/quarterly-bulletin1/download-information-from-xlsx-data-files)
 -   Economic statistics from [Statistics South Africa](http://www.statssa.gov.za/?page_id=1847)
-
+-   Fuel pricing and levies from the [Department of Mineral Resources and Energy](http://www.energy.gov.za/files/esources/petroleum/petroleum_arch.html)
 
 The three functions and the personal income tax tables are intended to help with calculating tax liabilities, particularly when used with the [administrative data from SARS](https://sa-tied.wider.unu.edu/sites/default/files/pdf/SATIED_WP36_Ebrahim_Axelson_March_2019.pdf).
 
@@ -45,11 +45,11 @@ remotes::install_github("chrisaxelson/tax4sa")
 
 ## Data
 
-The data can be accessed by directly entering either `SARS_annual`, `SARS_monthly`, `NT_forecasts`, `STATSSA` or `SARB` and is in a tidy format to ease analysis within R.
+The data can be accessed by directly entering either `SARS_annual`, `SARS_monthly`, `NT_forecasts`, `STATSSA`, `SARB` or `DMRE_fuel` and is in a tidy format to ease analysis within R.
 
 ### South African Revenue Service
 
-The tax revenue data is split by three revenue classifications in columns `T1`, `T2` and `T3` and all figures are in ZAR 000's. 
+The tax revenue data is split by three revenue classifications in columns `T1`, `T2` and `T3` and all figures are in ZAR 000's.
 
 ```{r example, message = FALSE, warning=FALSE}
 library(tax4sa)
@@ -85,7 +85,7 @@ Or you can download the annual and monthly data in one spreadsheet.
 #               "Revenue.xlsx")
 ```
 
-The line-by-line trade data from the South African Revenue Service is too large to be included directly in the package, but can be downloaded separately per year of data and type of trade (imports or exports). Each file is around 20MB. 
+The line-by-line trade data from the South African Revenue Service is too large to be included directly in the package, but can be downloaded separately per year of data and type of trade (imports or exports). Each file is around 20MB.
 
 ```{r trade, message = FALSE}
 # Downloading 2021 imports
@@ -117,7 +117,6 @@ NT_forecasts %>%
   kable(format.args = list(big.mark = ","), 
         caption = "Tax revenue forecasts (R million)")
 ```
-
 
 Or you can download the forecasts in one spreadsheet.
 
@@ -158,6 +157,19 @@ STATSSA %>%
   kable()
 ```
 
+## Department of Mineral Resources and Energy
+
+Note that the `Price` column reflects retail prices for unleaded petrol, wholesale list prices for diesel and illuminating paraffin and maximum retail price for liquified petroleum gas.
+
+```{r dmre, message = FALSE}
+# Look for STATSSA inflation data
+DMRE_fuel %>% 
+  select(Fuel_type:General_fuel_levy) %>% 
+  tail(10) %>% 
+  kable()
+
+```
+
 ## Functions
 
 The three functions are `tax_calculation`, `pit` and `pit_manual`. The first is a generic function to apply a tax table to a value, while the latter two specifically calculate the personal income tax liability in South Africa. `pit_manual` allows for a custom tax table to be applied to cater for modelling the impacts of changes in the personal income tax tables. The package includes a list of historical tax tables to be used in the calculations.
@@ -195,12 +207,12 @@ Total_revenue <- SARS_annual %>%
   group_by(Fiscal_year) %>% 
   summarise(Revenue = sum(Revenue))
 
-# Get Nominal GDP across fiscal year by summing per quarter
+# Get nominal GDP across fiscal year by summing per quarter
 GDP_fiscal <- STATSSA %>% 
   filter(H03 == "QNU1000") %>% 
   group_by(Fiscal_year) %>% 
   summarise(GDP = sum(Value)) %>% 
-  filter(Fiscal_year < 2022, Fiscal_year > 1993)
+  filter(Fiscal_year < 2023, Fiscal_year > 1993)
 
 # Join together and create tax to GDP
 Tax_to_GDP <- GDP_fiscal %>% 
@@ -212,14 +224,49 @@ Tax_to_GDP <- GDP_fiscal %>%
 ggplot(Tax_to_GDP, aes(x = Fiscal_year, y = Tax_to_GDP)) +
   geom_line() + 
   geom_point() +
-  geom_text(aes(label = ifelse(Fiscal_year == 2021, paste0(round(Tax_to_GDP,3) * 100, "%"),'')),
-            hjust=0.5, vjust=1.8, show.legend = FALSE) +
+  geom_text(aes(label = ifelse(Fiscal_year == 2022, paste0(round(Tax_to_GDP,3) * 100, "%"),'')),
+            hjust=1.2, vjust=0.5, show.legend = FALSE) +
   scale_y_continuous(labels = scales::percent_format(accuracy = 1L)) +
   theme_classic() +
   ylab("Tax to GDP") +
   xlab("Fiscal year") +
   ggtitle("Gross tax revenue to GDP")
   
+```
+
+
+```{r fuel, message = FALSE}
+library(lubridate)
+
+DMRE_fuel %>% 
+  filter(Fuel_type == "95_ULP",
+         Region == "Gauteng",
+         Date > dmy("01012016")) %>% 
+  ggplot(aes(x = Date, y = Price/100)) + 
+  geom_line() +
+  geom_point() +
+  theme_classic() +
+  ylab("Retail price (R/litre)") +
+  ggtitle("Retail price of 95 unleaded petrol in Gauteng")
+
+DMRE_fuel %>% 
+  filter(Fuel_type == "95_ULP",
+         Region == "Gauteng",
+         Date > dmy("01012016")) %>% 
+  mutate(Tax = General_fuel_levy + 
+           Road_accident_fund_levy + 
+           Customs_and_excise_levy + 
+           Demand_side_management_levy,
+         Tax_percentage = Tax / Price) %>% 
+  ggplot(aes(x = Date, y = Tax_percentage)) + 
+  geom_line() +
+  geom_point() +
+  theme_classic() +
+  scale_y_continuous(labels = scales::percent_format(accuracy = 1L)) +
+  ylab("Percentage of retail price") +
+  ggtitle("Levies as a percentage of retail price",
+          subtitle = c("Includes the general fuel levy, the Road Accident Fund levy, customs levy and DSML"))
+
 ```
 
 <!-- ```{r cpi, message = FALSE} -->

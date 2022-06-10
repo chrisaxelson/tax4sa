@@ -8,6 +8,8 @@ library(stringr)
 library(tsibble)
 library(lubridate)
 library(rvest)
+library(httr)
+library(readxl)
 
 # STATSSA time series website
 STATSSA_url <- "http://www.statssa.gov.za/?page_id=1847"
@@ -205,6 +207,57 @@ STATSSA_new <- STATSSA_new %>%
                               ifelse(Month %in% c("January", "February", "March"), Year, Year + 1),
                               ifelse(!is.na(Quarter), ifelse(Quarter == 1, Year, Year + 1), NA)))
 
+
+# NB - STATSSA not including GDP data on time series page
+# Need to do it separately
+
+GDP_url <- "https://www.statssa.gov.za/publications/P0441/GDP%20P0441%20-%20GDP%20Time%20series%202022Q1.xlsx"
+
+GET(GDP_url, write_disk(tf <- tempfile(fileext = ".xlsx")))
+GDP_annual <- read_excel(tf, sheet = "Annual")
+GDP_annual_p <- read_excel(tf, sheet = "AnnualP")
+GDP_quarterly <- read_excel(tf, sheet = "Quarterly")
+GDP_quarterly_p <- read_excel(tf, sheet = "QuarterlyP")
+
+names(GDP_quarterly)[names(GDP_quarterly) == '201803...113'] <- '201803'
+names(GDP_quarterly)[names(GDP_quarterly) == '201803...114'] <- '201804'
+
+names(GDP_quarterly_p)[names(GDP_quarterly_p) == '201803...113'] <- '201803'
+names(GDP_quarterly_p)[names(GDP_quarterly_p) == '201803...114'] <- '201804'
+
+# Reshape
+GDP <- GDP_annual %>%
+  pivot_longer(-(H01:H25), names_to = "Date", values_to = "Value") %>%
+  bind_rows(GDP_annual_p %>%
+              pivot_longer(-(H01:H25), names_to = "Date", values_to = "Value")) %>%
+  bind_rows(GDP_quarterly %>%
+              pivot_longer(-(H01:H25), names_to = "Date", values_to = "Value")) %>%
+  bind_rows(GDP_quarterly_p %>%
+              pivot_longer(-(H01:H25), names_to = "Date", values_to = "Value"))
+
+GDP <- GDP %>%
+  mutate(Month = NA,
+         Quarter = ifelse(nchar(Date) > 5, as.numeric(str_sub(Date, 6, 6)), NA),
+         Year = ifelse(str_sub(Date, 1, 1) == "Y", as.numeric(str_sub(Date, 2, 5)),
+                        as.numeric(str_sub(Date, 1, 4))),
+         Fiscal_year = ifelse(!is.na(Quarter), ifelse(Quarter == 1, Year, Year + 1), NA))
+
+# Remove duplicates
+STATSSA_new <- STATSSA_new %>%
+  bind_rows(GDP %>%
+              select(H01, H03, Date, Value, Month, Quarter, Year, Fiscal_year) %>%
+              arrange(H01, H03))
+
+# Create STATSSA_descriptions
+STATSSA_descriptions_new <- STATSSA_descriptions_new %>%
+  bind_rows(GDP %>%
+              select(-(Date:Fiscal_year)) %>%
+              distinct() %>%
+              mutate_all(na_if," ") %>%
+              select_if(colSums(!is.na(.)) > 0) %>%
+              select(sort(tidyselect::peek_vars())) %>%
+              arrange(H01, H03))
+
 # # First time
 # STATSSA <- STATSSA_new
 # STATSSA_descriptions <- STATSSA_descriptions_new
@@ -246,7 +299,6 @@ STATSSA <- STATSSA %>%
 
 STATSSA_descriptions <- STATSSA_descriptions %>%
   mutate_if(is.character, str_trim)
-
 
 save(STATSSA, file = "data-raw/STATSSA/STATSSA.rda", version = 2)
 save(STATSSA_descriptions, file = "data-raw/STATSSA/STATSSA_descriptions.rda", version = 2)
