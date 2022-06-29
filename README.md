@@ -764,29 +764,6 @@ Value
 KBP6006K
 </td>
 <td style="text-align:right;">
-20200400
-</td>
-<td style="text-align:left;">
-K1
-</td>
-<td style="text-align:right;">
-4
-</td>
-<td style="text-align:right;">
-2020
-</td>
-<td style="text-align:right;">
-2021
-</td>
-<td style="text-align:right;">
-1499180
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-KBP6006K
-</td>
-<td style="text-align:right;">
 20210100
 </td>
 <td style="text-align:left;">
@@ -802,7 +779,7 @@ K1
 2021
 </td>
 <td style="text-align:right;">
-1464221
+1465300
 </td>
 </tr>
 <tr>
@@ -825,7 +802,7 @@ K1
 2022
 </td>
 <td style="text-align:right;">
-1574931
+1579121
 </td>
 </tr>
 <tr>
@@ -848,7 +825,7 @@ K1
 2022
 </td>
 <td style="text-align:right;">
-1561183
+1562430
 </td>
 </tr>
 <tr>
@@ -871,7 +848,30 @@ K1
 2022
 </td>
 <td style="text-align:right;">
-1605918
+1618561
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+KBP6006K
+</td>
+<td style="text-align:right;">
+20220100
+</td>
+<td style="text-align:left;">
+K1
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+2022
+</td>
+<td style="text-align:right;">
+2022
+</td>
+<td style="text-align:right;">
+1588157
 </td>
 </tr>
 </tbody>
@@ -967,35 +967,6 @@ Value
 </tr>
 </thead>
 <tbody>
-<tr>
-<td style="text-align:left;">
-168
-</td>
-<td style="text-align:left;">
-P0141
-</td>
-<td style="text-align:left;">
-CPS00000
-</td>
-<td style="text-align:left;">
-2021 12
-</td>
-<td style="text-align:left;">
-December
-</td>
-<td style="text-align:right;">
-4
-</td>
-<td style="text-align:right;">
-2021
-</td>
-<td style="text-align:right;">
-2022
-</td>
-<td style="text-align:right;">
-100.0
-</td>
-</tr>
 <tr>
 <td style="text-align:left;">
 169
@@ -1110,6 +1081,35 @@ April
 </td>
 <td style="text-align:right;">
 102.4
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+173
+</td>
+<td style="text-align:left;">
+P0141
+</td>
+<td style="text-align:left;">
+CPS00000
+</td>
+<td style="text-align:left;">
+2022 05
+</td>
+<td style="text-align:left;">
+May
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:right;">
+2022
+</td>
+<td style="text-align:right;">
+2023
+</td>
+<td style="text-align:right;">
+103.1
 </td>
 </tr>
 </tbody>
@@ -1387,7 +1387,7 @@ system.time({
     mutate(Simulated_tax = pit(Taxable_income, Age, MTC, Tax_year))
 })
 #>    user  system elapsed 
-#>    0.23    0.11    0.34
+#>    0.30    0.05    0.34
 ```
 
 ## Examples

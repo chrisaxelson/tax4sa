@@ -60,7 +60,14 @@ for (j in seq_along(Links_to_import)) {
   unzipped_file_name <- unzip(tmp_file, list=TRUE)$Name
 
   tmp_file2 <- tempfile()
-  tmp_file2 <- unzip(zipfile=tmp_file, files = unzipped_file_name[1], exdir=tempdir())
+
+  # Some zipped files have two underlying txt files
+  if (grepl("Mining Production", unzipped_file_name)) {
+    tmp_file2 <- unzip(zipfile=tmp_file, files = unzipped_file_name[2], exdir=tempdir())
+  } else {
+    tmp_file2 <- unzip(zipfile=tmp_file, files = unzipped_file_name[1], exdir=tempdir())
+  }
+
 
   info <- read.delim(tmp_file2, header = FALSE)
 

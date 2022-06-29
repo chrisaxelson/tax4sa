@@ -13,7 +13,7 @@ usethis::use_data(SARB, overwrite = TRUE)
 
 
 # URL of page to download xlsx data
-SARB_download_url <- "https://www.resbank.co.za/en/home/publications/publication-detail-pages/quarterly-bulletins/download-information-from-xlsx-data-files/2022/Downloadinformationfromxlsxdatafiles0"
+SARB_download_url <- "https://www.resbank.co.za/en/home/publications/publication-detail-pages/quarterly-bulletins/download-information-from-xlsx-data-files/2022/download-information-from-xlsx-data-files"
 
 # Packages
 library(rvest)
