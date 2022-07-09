@@ -49,17 +49,25 @@ remotes::install_github("chrisaxelson/tax4sa")
 
 ## Data
 
-The data can be accessed by directly entering either `SARS_annual`,
+The data can be accessed by entering either `SARS_annual`,
 `SARS_monthly`, `NT_forecasts`, `STATSSA`, `SARB` or `DMRE_fuel` and is
-in a tidy format to ease analysis within R.
+in a tidy format to ease analysis within R. The package needs to be
+reinstalled to update the data. If you would like to load all the data
+into your environment, you can run:
+
+``` r
+library(tax4sa)
+load_tax4sa_data()
+```
 
 ### South African Revenue Service
+
+#### Revenue
 
 The tax revenue data is split by three revenue classifications in
 columns `T1`, `T2` and `T3` and all figures are in ZAR 000’s.
 
 ``` r
-library(tax4sa)
 library(dplyr)
 library(knitr)
 library(kableExtra)
@@ -230,26 +238,6 @@ Revenue
 Health promotion levy
 </td>
 <td style="text-align:left;">
-December
-</td>
-<td style="text-align:right;">
-4
-</td>
-<td style="text-align:left;">
-2021
-</td>
-<td style="text-align:left;">
-2022
-</td>
-<td style="text-align:right;">
-231,748.0
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Health promotion levy
-</td>
-<td style="text-align:left;">
 January
 </td>
 <td style="text-align:right;">
@@ -325,6 +313,26 @@ April
 228,405.8
 </td>
 </tr>
+<tr>
+<td style="text-align:left;">
+Health promotion levy
+</td>
+<td style="text-align:left;">
+May
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:left;">
+2022
+</td>
+<td style="text-align:left;">
+2023
+</td>
+<td style="text-align:right;">
+152,257.8
+</td>
+</tr>
 </tbody>
 </table>
 
@@ -336,25 +344,45 @@ Or you can download the annual and monthly data in one spreadsheet.
 #               "Revenue.xlsx")
 ```
 
+#### Trade data
+
 The line-by-line trade data from the South African Revenue Service is
 too large to be included directly in the package, but can be downloaded
 separately per year of data and type of trade (imports or exports). Each
 file is around 20MB.
 
+The following code downloads the data into your working directory using
+the
+[piggyback](https://cran.r-project.org/web/packages/piggyback/vignettes/intro.html)
+package. The data is likely to be too large to be loaded onto most
+computers, so it is saved as individual
+[parquet](https://www.upsolver.com/blog/apache-parquet-why-use) files
+where you can use [duckdb](https://duckdb.org/) to query all the data
+without moving it into RAM. Any subsequent runs of the code will only
+download updated data files.
+
 ``` r
-# Downloading 2021 imports
-if (!file.exists("SARS_imports_2021.rda")) {
-  download.file("https://github.com/chrisaxelson/tax4sa/releases/download/v0.0.1/SARS_imports_2021.rda",
-              "SARS_imports_2021.rda")
-} 
-# Data is available from 2010 for both imports and exports. File name convention is "SARS_exports_2010.rda", etc. 
+library(piggyback)
 
-load("SARS_imports_2021.rda")
+# Download individual files - can adjust imports to exports and the year
+pb_download("SARS_imports_2021.parquet", 
+            repo = "chrisaxelson/tax4sa")
 
-SARS_imports_2021 %>% 
+# # Or download ALL the trade data from Github - about 600MB
+# # If run again, will only download updated data
+# pb_download(repo = "chrisaxelson/tax4sa")
+
+# Quick example of how to access the data
+library(duckdb)
+
+# Create connection to temporary database in memory
+con <- dbConnect(duckdb())
+
+# Reference from all the parquet files in that folder
+tbl(con, "SARS_*.parquet") %>% 
   head(5) %>% 
   mutate(YearMonth = as.character(YearMonth)) %>% 
-  select(District = DistrictOfficeName, Origin = CountryOfOriginName, Unit = StatisticalUnit,
+  select(TradeType, District = DistrictOfficeName, Origin = CountryOfOriginName, Unit = StatisticalUnit,
          YearMonth, ChapterAndDescription, Quantity = StatisticalQuantity, Value_ZAR = CustomsValue) %>% 
   kable(format.args = list(big.mark = ","),
         caption = "Monthly trade data")
@@ -366,6 +394,9 @@ Monthly trade data
 </caption>
 <thead>
 <tr>
+<th style="text-align:left;">
+TradeType
+</th>
 <th style="text-align:left;">
 District
 </th>
@@ -392,6 +423,9 @@ Value_ZAR
 <tbody>
 <tr>
 <td style="text-align:left;">
+Imports
+</td>
+<td style="text-align:left;">
 Beit Bridge
 </td>
 <td style="text-align:left;">
@@ -414,6 +448,9 @@ KG
 </td>
 </tr>
 <tr>
+<td style="text-align:left;">
+Imports
+</td>
 <td style="text-align:left;">
 Beit Bridge
 </td>
@@ -438,6 +475,9 @@ KG
 </tr>
 <tr>
 <td style="text-align:left;">
+Imports
+</td>
+<td style="text-align:left;">
 Beit Bridge
 </td>
 <td style="text-align:left;">
@@ -461,6 +501,9 @@ KG
 </tr>
 <tr>
 <td style="text-align:left;">
+Imports
+</td>
+<td style="text-align:left;">
 Beit Bridge
 </td>
 <td style="text-align:left;">
@@ -483,6 +526,9 @@ KG
 </td>
 </tr>
 <tr>
+<td style="text-align:left;">
+Imports
+</td>
 <td style="text-align:left;">
 Beit Bridge
 </td>
@@ -1387,7 +1433,7 @@ system.time({
     mutate(Simulated_tax = pit(Taxable_income, Age, MTC, Tax_year))
 })
 #>    user  system elapsed 
-#>    0.30    0.05    0.34
+#>    0.28    0.07    0.35
 ```
 
 ## Examples
