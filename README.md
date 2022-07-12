@@ -423,10 +423,10 @@ Value_ZAR
 <tbody>
 <tr>
 <td style="text-align:left;">
-Imports
+Exports
 </td>
 <td style="text-align:left;">
-Beit Bridge
+Alexanderbay
 </td>
 <td style="text-align:left;">
 China
@@ -435,120 +435,120 @@ China
 KG
 </td>
 <td style="text-align:left;">
-202102
+201001
 </td>
 <td style="text-align:left;">
-90 - Medical and Photographic Equipment
+61 - Clothing and accessories, knitted or crocheted
 </td>
 <td style="text-align:right;">
-5.00
+57
 </td>
 <td style="text-align:right;">
-18,870
+930
 </td>
 </tr>
 <tr>
 <td style="text-align:left;">
-Imports
+Exports
 </td>
 <td style="text-align:left;">
-Beit Bridge
+Alexanderbay
 </td>
 <td style="text-align:left;">
-Malawi
+China
 </td>
 <td style="text-align:left;">
-KG
+NO
 </td>
 <td style="text-align:left;">
-202102
+201001
 </td>
 <td style="text-align:left;">
-03 - Fish and crustaceans
+61 - Clothing and accessories, knitted or crocheted
 </td>
 <td style="text-align:right;">
-10,544.00
+7
 </td>
 <td style="text-align:right;">
-62,266
+634
 </td>
 </tr>
 <tr>
 <td style="text-align:left;">
-Imports
+Exports
 </td>
 <td style="text-align:left;">
-Beit Bridge
+Alexanderbay
 </td>
 <td style="text-align:left;">
-Malawi
+Bangladesh
 </td>
 <td style="text-align:left;">
-KG
+NO
 </td>
 <td style="text-align:left;">
-202102
+201001
 </td>
 <td style="text-align:left;">
-07 - Edible vegetables and certain roots and tubers
+61 - Clothing and accessories, knitted or crocheted
 </td>
 <td style="text-align:right;">
-6,000.00
+8
 </td>
 <td style="text-align:right;">
-4,009
+288
 </td>
 </tr>
 <tr>
 <td style="text-align:left;">
-Imports
+Exports
 </td>
 <td style="text-align:left;">
-Beit Bridge
+Alexanderbay
 </td>
 <td style="text-align:left;">
-Malawi
+China
 </td>
 <td style="text-align:left;">
-KG
+NO
 </td>
 <td style="text-align:left;">
-202102
+201001
 </td>
 <td style="text-align:left;">
-07 - Edible vegetables and certain roots and tubers
+62 - Clothing and accessories, not knitted or crocheted
 </td>
 <td style="text-align:right;">
-90,000.00
+51
 </td>
 <td style="text-align:right;">
-1,278,398
+7,979
 </td>
 </tr>
 <tr>
 <td style="text-align:left;">
-Imports
+Exports
 </td>
 <td style="text-align:left;">
-Beit Bridge
+Alexanderbay
 </td>
 <td style="text-align:left;">
-Italy
+China
 </td>
 <td style="text-align:left;">
-KG
+NO
 </td>
 <td style="text-align:left;">
-202102
+201001
 </td>
 <td style="text-align:left;">
-40 - Rubber and articles thereof
+62 - Clothing and accessories, not knitted or crocheted
 </td>
 <td style="text-align:right;">
-0.04
+96
 </td>
 <td style="text-align:right;">
-34
+7,930
 </td>
 </tr>
 </tbody>
@@ -1207,16 +1207,16 @@ General_fuel_levy
 Coastal
 </td>
 <td style="text-align:left;">
-2022-06-01
+2022-07-06
 </td>
 <td style="text-align:right;">
-2352.00
+2609.00
 </td>
 <td style="text-align:right;">
-1507.41
+1689.41
 </td>
 <td style="text-align:right;">
-244
+319
 </td>
 </tr>
 <tr>
@@ -1227,16 +1227,16 @@ Coastal
 Gauteng
 </td>
 <td style="text-align:left;">
-2022-06-01
+2022-07-06
 </td>
 <td style="text-align:right;">
-2417.00
+2674.00
 </td>
 <td style="text-align:right;">
-1507.41
+1689.41
 </td>
 <td style="text-align:right;">
-244
+319
 </td>
 </tr>
 <tr>
@@ -1247,16 +1247,16 @@ Diesel_0.005
 Coastal
 </td>
 <td style="text-align:left;">
-2022-06-01
+2022-07-06
 </td>
 <td style="text-align:right;">
-2257.64
+2487.64
 </td>
 <td style="text-align:right;">
-1621.03
+1776.03
 </td>
 <td style="text-align:right;">
-230
+305
 </td>
 </tr>
 <tr>
@@ -1267,16 +1267,16 @@ Diesel_0.005
 Gauteng
 </td>
 <td style="text-align:left;">
-2022-06-01
+2022-07-06
 </td>
 <td style="text-align:right;">
-2322.84
+2552.84
 </td>
 <td style="text-align:right;">
-1621.03
+1776.03
 </td>
 <td style="text-align:right;">
-230
+305
 </td>
 </tr>
 <tr>
@@ -1287,16 +1287,16 @@ Diesel_0.05
 Coastal
 </td>
 <td style="text-align:left;">
-2022-06-01
+2022-07-06
 </td>
 <td style="text-align:right;">
-2244.24
+2475.24
 </td>
 <td style="text-align:right;">
-1607.63
+1763.63
 </td>
 <td style="text-align:right;">
-230
+305
 </td>
 </tr>
 <tr>
@@ -1307,16 +1307,16 @@ Diesel_0.05
 Gauteng
 </td>
 <td style="text-align:left;">
-2022-06-01
+2022-07-06
 </td>
 <td style="text-align:right;">
-2309.44
+2540.44
 </td>
 <td style="text-align:right;">
-1607.63
+1763.63
 </td>
 <td style="text-align:right;">
-230
+305
 </td>
 </tr>
 <tr>
@@ -1327,10 +1327,10 @@ Illuminating_Paraffin
 Coastal
 </td>
 <td style="text-align:left;">
-2022-06-01
+2022-07-06
 </td>
 <td style="text-align:right;">
-1741.89
+1907.89
 </td>
 <td style="text-align:right;">
 NA
@@ -1347,10 +1347,10 @@ Illuminating_Paraffin
 Gauteng
 </td>
 <td style="text-align:left;">
-2022-06-01
+2022-07-06
 </td>
 <td style="text-align:right;">
-1820.29
+1986.29
 </td>
 <td style="text-align:right;">
 NA
@@ -1367,10 +1367,10 @@ Liquefied_Petroleum_Gas
 Coastal
 </td>
 <td style="text-align:left;">
-2022-06-01
+2022-07-06
 </td>
 <td style="text-align:right;">
-3472.00
+3255.00
 </td>
 <td style="text-align:right;">
 NA
@@ -1387,10 +1387,10 @@ Liquefied_Petroleum_Gas
 Gauteng
 </td>
 <td style="text-align:left;">
-2022-06-01
+2022-07-06
 </td>
 <td style="text-align:right;">
-3714.00
+3496.00
 </td>
 <td style="text-align:right;">
 NA
@@ -1433,7 +1433,7 @@ system.time({
     mutate(Simulated_tax = pit(Taxable_income, Age, MTC, Tax_year))
 })
 #>    user  system elapsed 
-#>    0.28    0.07    0.35
+#>    0.38    0.16    0.74
 ```
 
 ## Examples
@@ -1489,7 +1489,10 @@ DMRE_fuel %>%
   geom_point() +
   theme_classic() +
   ylab("Retail price (R/litre)") +
-  ggtitle("Retail price of 95 unleaded petrol in Gauteng")
+  ggtitle("Retail price of 95 unleaded petrol in Gauteng") +
+  geom_text(aes(label = ifelse(Date == "2022-07-06", 
+                               paste0("R", Price/100),'')),
+            hjust=1.2, vjust=0.5, show.legend = FALSE)
 ```
 
 <img src="man/figures/README-fuel-1.png" width="100%" />
@@ -1511,10 +1514,47 @@ DMRE_fuel %>%
   scale_y_continuous(labels = scales::percent_format(accuracy = 1L)) +
   ylab("Percentage of retail price") +
   ggtitle("Levies as a percentage of retail price",
-          subtitle = c("Includes the general fuel levy, the Road Accident Fund levy, customs levy and DSML"))
+          subtitle = c("Includes the general fuel levy, the Road Accident Fund levy, customs levy and DSML")) +
+    geom_text(aes(label = ifelse(Date == "2022-07-06", 
+                               paste0(round(Tax_percentage*100 , 1), "%"),'')),
+            hjust=0.25, vjust=-1, show.legend = FALSE)
 ```
 
 <img src="man/figures/README-fuel-2.png" width="100%" />
+
+``` r
+# Quick example of how to access the data
+library(duckdb)
+
+# Create connection to temporary database in memory
+con <- dbConnect(duckdb())
+
+# Generate the annual trade balance from the micro data
+system.time(
+  Trade_statistics <- tbl(con, "SARS_*.parquet") %>%
+  group_by(CalendarYear) %>%
+  summarise(Exports = sum(ifelse(TradeType == "Exports", CustomsValue, 0)),
+            Imports = sum(ifelse(TradeType == "Imports", CustomsValue, 0))) %>%
+  collect() %>%
+  arrange(CalendarYear) %>%
+  mutate(CalendarYear = as.character(CalendarYear),
+         Trade_Balance = Exports - Imports)
+)
+#>    user  system elapsed 
+#>    3.73    0.42    1.80
+
+ggplot(Trade_statistics, aes(x = CalendarYear, y = Trade_Balance/1e9)) +
+  geom_bar(stat = "identity") +
+  theme_classic() +
+  xlab("Year") +
+  ylab("Trade balance (R billions)") +
+  ggtitle("Trade balance (exports - imports) in nominal terms") +
+      geom_text(aes(label = ifelse(CalendarYear == "2021", 
+                               paste0("R", round(Trade_Balance/1e9, 1), "bn"),'')),
+            vjust = -0.5, show.legend = FALSE)
+```
+
+<img src="man/figures/README-trade_plot-1.png" width="100%" />
 
 <!-- ```{r cpi, message = FALSE} -->
 <!-- # Get headline CPI index and check growth -->

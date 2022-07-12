@@ -2,3 +2,6 @@
 .Rhistory
 .RData
 .Ruserdata
+*.parquet
+*.pdf
+SARS_imports_2021.parquet

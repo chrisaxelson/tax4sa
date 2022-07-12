@@ -458,7 +458,6 @@ DMRE_fuel <- DMRE_fuel %>%
          Fuel_type = str_squish(Fuel_type),
          Fuel_type = str_replace_all(Fuel_type, " ", "_"))
 
-
 DMRE_fuel <- DMRE_fuel %>%
   mutate(Fuel_type = str_replace_all(Fuel_type, "_", " "))
 

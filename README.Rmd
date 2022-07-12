@@ -267,7 +267,10 @@ DMRE_fuel %>%
   geom_point() +
   theme_classic() +
   ylab("Retail price (R/litre)") +
-  ggtitle("Retail price of 95 unleaded petrol in Gauteng")
+  ggtitle("Retail price of 95 unleaded petrol in Gauteng") +
+  geom_text(aes(label = ifelse(Date == "2022-07-06", 
+                               paste0("R", Price/100),'')),
+            hjust=1.2, vjust=0.5, show.legend = FALSE)
 
 DMRE_fuel %>% 
   filter(Fuel_type == "95_ULP",
@@ -285,9 +288,45 @@ DMRE_fuel %>%
   scale_y_continuous(labels = scales::percent_format(accuracy = 1L)) +
   ylab("Percentage of retail price") +
   ggtitle("Levies as a percentage of retail price",
-          subtitle = c("Includes the general fuel levy, the Road Accident Fund levy, customs levy and DSML"))
+          subtitle = c("Includes the general fuel levy, the Road Accident Fund levy, customs levy and DSML")) +
+    geom_text(aes(label = ifelse(Date == "2022-07-06", 
+                               paste0(round(Tax_percentage*100 , 1), "%"),'')),
+            hjust=0.25, vjust=-1, show.legend = FALSE)
 
 ```
+
+```{r trade_plot, message = FALSE, warning = FALSE}
+
+# Quick example of how to access the data
+library(duckdb)
+
+# Create connection to temporary database in memory
+con <- dbConnect(duckdb())
+
+# Generate the annual trade balance from the micro data
+system.time(
+  Trade_statistics <- tbl(con, "SARS_*.parquet") %>%
+  group_by(CalendarYear) %>%
+  summarise(Exports = sum(ifelse(TradeType == "Exports", CustomsValue, 0)),
+            Imports = sum(ifelse(TradeType == "Imports", CustomsValue, 0))) %>%
+  collect() %>%
+  arrange(CalendarYear) %>%
+  mutate(CalendarYear = as.character(CalendarYear),
+         Trade_Balance = Exports - Imports)
+)
+
+ggplot(Trade_statistics, aes(x = CalendarYear, y = Trade_Balance/1e9)) +
+  geom_bar(stat = "identity") +
+  theme_classic() +
+  xlab("Year") +
+  ylab("Trade balance (R billions)") +
+  ggtitle("Trade balance (exports - imports) in nominal terms") +
+      geom_text(aes(label = ifelse(CalendarYear == "2021", 
+                               paste0("R", round(Trade_Balance/1e9, 1), "bn"),'')),
+            vjust = -0.5, show.legend = FALSE)
+
+```
+
 
 <!-- ```{r cpi, message = FALSE} -->
 
