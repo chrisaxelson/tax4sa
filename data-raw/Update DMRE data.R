@@ -10,7 +10,7 @@ library(fuzzyjoin)
 
 # Scraping from SAPIA -----------------------------------------------------
 
-content <- read_html("https://www.sapia.org.za/Overview/Old-fuel-prices")
+content <- read_html("https://www.sapia.org.za/fuel-prices")
 
 tables <- content %>% html_table(fill = TRUE)
 
@@ -19,18 +19,22 @@ table_i <- tables[[1]]
 # Last few tables have a shorter length - need variable to get correct rows
 table_i_rows <- nrow(table_i)
 
+table_year <- colnames(table_i)[1]
+
 # Only keep rows with data
-Coastal <- table_i[c(3:8),]
-colnames(Coastal) <- c("Fuel_type", table_i[1, 2:13])
+Coastal <- table_i[c(3:7),]
+colnames(Coastal) <- c("Fuel_type", colnames(Coastal)[-1])
 Coastal <- Coastal %>%
   mutate(Region = "Coastal") %>%
-  pivot_longer(contains("-"), names_to = "Date", values_to = "Price")
+  pivot_longer(contains(" "), names_to = "Date", values_to = "Price") %>%
+  mutate(Date = paste(Date, table_year))
 
-Gauteng <- table_i[c(10:table_i_rows), ]
-colnames(Gauteng) <- c("Fuel_type", table_i[1, 2:13])
+Gauteng <- table_i[c(9:15), ]
+colnames(Gauteng) <- c("Fuel_type", colnames(Gauteng)[-1])
 Gauteng <- Gauteng %>%
   mutate(Region = "Gauteng") %>%
-  pivot_longer(contains("-"), names_to = "Date", values_to = "Price")
+  pivot_longer(contains(" "), names_to = "Date", values_to = "Price") %>%
+  mutate(Date = paste(Date, table_year))
 
 Fuel_prices <- bind_rows(Coastal, Gauteng) %>%
   mutate(Date = dmy(Date)) %>%
@@ -47,7 +51,7 @@ Fuel_prices <- Fuel_prices %>%
 
 # Scraping petrol taxes from DMRE -----------------------------------------
 
-download.file("http://www.energy.gov.za/files/esources/petroleum/July2022/Petrol-margins.pdf",
+download.file("https://www.energy.gov.za/files/esources/petroleum/November2022/Petrol-margins.pdf",
               "data-raw/DMRE/DMRE_levies_2022.pdf", mode = "wb")
 
 # Actual pdf data
@@ -58,7 +62,10 @@ year_i <- 2022
 clean_table <- str_split(raw_text[[1]], "\n", simplify = TRUE)
 
 table_start <- stringr::str_which(clean_table, "Jan ")
-table_end <- stringr::str_which(clean_table, "Jul ")
+table_end <- stringr::str_which(clean_table, "Nov ")
+
+# Problem with DMRE table
+clean_table[20] <- paste0("Sep", clean_table[20])
 
 table <- clean_table[1, table_start:table_end] %>%
   as_tibble() %>%
@@ -78,7 +85,8 @@ table <- clean_table[1, table_start:table_end] %>%
                     "Retail_margin",
                     "Slate_levy",
                     "Delivery_cost",
-                    "Demand_side_management_levy"))
+                    "Demand_side_management_levy")) %>%
+  filter(!is.na(Basic_fuel_price))
 
 table <- table %>%
   mutate(across(Basic_fuel_price:Demand_side_management_levy, as.numeric),
@@ -97,7 +105,7 @@ Fuel_prices_petrol <- fuzzy_left_join(Fuel_prices %>%
 
 # Scraping diesel taxes from DMRE  ----------------------------------------
 
-download.file("http://www.energy.gov.za/files/esources/petroleum/July2022/Diesel-margins.pdf",
+download.file("https://www.energy.gov.za/files/esources/petroleum/November2022/Diesel-margins.pdf",
               "data-raw/DMRE/DMRE_diesel_levies_2022.pdf", mode = "wb")
 
 # Actual pdf data
@@ -108,11 +116,11 @@ year_i <- 2022
 clean_table <- str_split(raw_text, "\n")
 
 table_start <- c(str_which(clean_table[[1]], "Jan "), str_which(clean_table[[2]], "Jan "))
-table_end <- c(str_which(clean_table[[1]], "Jul "), str_which(clean_table[[2]], "Jul "))
+table_end <- c(str_which(clean_table[[1]], "Nov "), str_which(clean_table[[2]], "Nov "))
 
 # Problem with DMRE table
 clean_table[[1]][19] <- paste0("May", clean_table[[1]][19])
-
+clean_table[[1]][26] <- paste0("Sep", clean_table[[1]][26])
 
     table <- clean_table[[1]][table_start[1]:table_end[1]] %>%
       as_tibble() %>%

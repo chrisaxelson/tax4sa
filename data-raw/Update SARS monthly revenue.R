@@ -2,8 +2,8 @@
 # Update SARS monthly data ------------------------------------------------
 
 # Latest information - UPDATE THIS EACH MONTH
-Latest_link <- "http://www.treasury.gov.za/comm_media/press/monthly/2207/Hardcoded%20database%20May%202022.xlsx"
-Latest_month <- "May"
+Latest_link <- "http://www.treasury.gov.za/comm_media/press/monthly/2211/Hardcoded%20database%20September%202022.xlsx"
+Latest_month <- "September"
 Latest_year <- "2022"
 
 # This should run the same way each month ---------------------------------
@@ -20,7 +20,10 @@ library(openxlsx)
 # Download and import data - NB CHANGE THE EXTENSION IF CHANGES TO XLSX or vice versa
 GET(Latest_link, write_disk(S32 <- tempfile(fileext = sub('.*\\.', '', Latest_link))))
 
-SARS_temp <- read_excel(S32, sheet = "Table1", range = "A4:T148")
+SARS_temp <- read_excel(S32, sheet = "Table 1", range = "A4:T148")
+
+# If xls and doesn't parse, then can save as xlsx and bring in manually
+# SARS_temp <- read_excel("Hardcoded database August 2022.xlsx", sheet = "Table1", range = "A4:T148")
 
 SARS_temp <- SARS_temp %>%
   mutate(Tax_category = case_when(
