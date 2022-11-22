@@ -78,14 +78,20 @@ SARS_temp <- SARS_temp %>%
 SARS_temp <- SARS_temp %>%
   rename(!!New_column_name := Amount)
 
+# Adjust names
+
 # Bring in current monthly data
 SARS_monthly <- read_excel(path = "data-raw/SARS/Revenue.xlsx", sheet = "Monthly")
 
 SARS_monthly_new <- SARS_monthly %>%
   left_join(SARS_temp, by = c("T1", "T2", "T3"))
 
-SARS_monthly_new %>% select(T1, T2, T3,last_col())
+SARS_monthly_new %>% select(T1, T2, T3, last_col())
 
+# Check that all rows are completed
+SARS_monthly_new %>%
+  select(last_col(offset = 1), last_col()) %>%
+  summarise_all(list(~ sum(is.na(.))))
 
 # Write to xlsx
 wb2 <- loadWorkbook(file = "data-raw/SARS/Revenue.xlsx")
