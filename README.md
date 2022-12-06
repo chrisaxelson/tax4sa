@@ -238,26 +238,6 @@ Revenue
 Health promotion levy
 </td>
 <td style="text-align:left;">
-May
-</td>
-<td style="text-align:right;">
-2
-</td>
-<td style="text-align:left;">
-2022
-</td>
-<td style="text-align:left;">
-2023
-</td>
-<td style="text-align:right;">
-152,257.8
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Health promotion levy
-</td>
-<td style="text-align:left;">
 June
 </td>
 <td style="text-align:right;">
@@ -331,6 +311,26 @@ September
 </td>
 <td style="text-align:right;">
 175,700.0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Health promotion levy
+</td>
+<td style="text-align:left;">
+October
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:left;">
+2022
+</td>
+<td style="text-align:left;">
+2023
+</td>
+<td style="text-align:right;">
+184,407.0
 </td>
 </tr>
 </tbody>
@@ -1433,7 +1433,7 @@ system.time({
     mutate(Simulated_tax = pit(Taxable_income, Age, MTC, Tax_year))
 })
 #>    user  system elapsed 
-#>    0.28    0.10    0.37
+#>    0.30    0.08    0.39
 ```
 
 ## Examples
@@ -1541,7 +1541,7 @@ system.time(
          Trade_Balance = Exports - Imports)
 )
 #>    user  system elapsed 
-#>    3.25    0.37    1.11
+#>    3.29    0.45    1.34
 
 ggplot(Trade_statistics, aes(x = CalendarYear, y = Trade_Balance/1e9)) +
   geom_bar(stat = "identity") +
