@@ -20,7 +20,7 @@ knitr::opts_chunk$set(
 
 <!-- badges: end -->
 
-This is a minimal package to help with the compilation and analysis of tax and economic data in South Africa. The package only contains seven main sets of data, three functions and the personal income tax tables from 1995/96 to 2021/22.
+This is a minimal package to help with the compilation and analysis of tax and economic data in South Africa. The package only contains seven main sets of data, three functions and the personal income tax tables from 1995/96 to 2023/24.
 
 The data includes:
 
@@ -131,7 +131,7 @@ tbl(con, "SARS_*.parquet") %>%
 ```{r forecasts, message = FALSE}
 # Check revenue data
 NT_forecasts %>% 
-  filter(Publication_year == 2022,
+  filter(Publication_year == 2023,
          Category == "Gross tax revenue") %>% 
    mutate(Publication_year = as.character(Publication_year)) %>% 
   kable(format.args = list(big.mark = ","), 
@@ -196,10 +196,10 @@ The three functions are `tax_calculation`, `pit` and `pit_manual`. The first is 
 
 ```{r tax, message = FALSE}
 # Accessing tax tables
-tax_calculation(100000, Tax_tables$PIT_brackets_2021)
+tax_calculation(100000, Tax_tables$PIT_brackets_2024)
 
 # Calculate personal income tax
-pit(income = 1000000, age = 53, mtc = 2550, tax_year = 2021)
+pit(income = 1000000, age = 53, mtc = 2550, tax_year = 2024)
 
 # Same calculation in a relatively large dataframe with differing variables
 individuals <- 1e6

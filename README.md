@@ -9,7 +9,7 @@
 This is a minimal package to help with the compilation and analysis of
 tax and economic data in South Africa. The package only contains seven
 main sets of data, three functions and the personal income tax tables
-from 1995/96 to 2021/22.
+from 1995/96 to 2023/24.
 
 The data includes:
 
@@ -238,66 +238,6 @@ Revenue
 Health promotion levy
 </td>
 <td style="text-align:left;">
-June
-</td>
-<td style="text-align:right;">
-2
-</td>
-<td style="text-align:left;">
-2022
-</td>
-<td style="text-align:left;">
-2023
-</td>
-<td style="text-align:right;">
-155,509.6
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Health promotion levy
-</td>
-<td style="text-align:left;">
-July
-</td>
-<td style="text-align:right;">
-3
-</td>
-<td style="text-align:left;">
-2022
-</td>
-<td style="text-align:left;">
-2023
-</td>
-<td style="text-align:right;">
-125,970.0
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Health promotion levy
-</td>
-<td style="text-align:left;">
-August
-</td>
-<td style="text-align:right;">
-3
-</td>
-<td style="text-align:left;">
-2022
-</td>
-<td style="text-align:left;">
-2023
-</td>
-<td style="text-align:right;">
-127,097.7
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Health promotion levy
-</td>
-<td style="text-align:left;">
 September
 </td>
 <td style="text-align:right;">
@@ -331,6 +271,66 @@ October
 </td>
 <td style="text-align:right;">
 184,407.0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Health promotion levy
+</td>
+<td style="text-align:left;">
+November
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:left;">
+2022
+</td>
+<td style="text-align:left;">
+2023
+</td>
+<td style="text-align:right;">
+232,587.7
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Health promotion levy
+</td>
+<td style="text-align:left;">
+December
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:left;">
+2022
+</td>
+<td style="text-align:left;">
+2023
+</td>
+<td style="text-align:right;">
+209,198.2
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Health promotion levy
+</td>
+<td style="text-align:left;">
+January
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:left;">
+2023
+</td>
+<td style="text-align:left;">
+2023
+</td>
+<td style="text-align:right;">
+220,373.0
 </td>
 </tr>
 </tbody>
@@ -559,7 +559,7 @@ NO
 ``` r
 # Check revenue data
 NT_forecasts %>% 
-  filter(Publication_year == 2022,
+  filter(Publication_year == 2023,
          Category == "Gross tax revenue") %>% 
    mutate(Publication_year = as.character(Publication_year)) %>% 
   kable(format.args = list(big.mark = ","), 
@@ -595,24 +595,7 @@ Forecast
 Budget
 </td>
 <td style="text-align:left;">
-2022
-</td>
-<td style="text-align:left;">
-Gross tax revenue
-</td>
-<td style="text-align:left;">
-2021/22
-</td>
-<td style="text-align:right;">
-1,547,071
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Budget
-</td>
-<td style="text-align:left;">
-2022
+2023
 </td>
 <td style="text-align:left;">
 Gross tax revenue
@@ -621,7 +604,7 @@ Gross tax revenue
 2022/23
 </td>
 <td style="text-align:right;">
-1,598,447
+1,692,177
 </td>
 </tr>
 <tr>
@@ -629,7 +612,7 @@ Gross tax revenue
 Budget
 </td>
 <td style="text-align:left;">
-2022
+2023
 </td>
 <td style="text-align:left;">
 Gross tax revenue
@@ -638,7 +621,7 @@ Gross tax revenue
 2023/24
 </td>
 <td style="text-align:right;">
-1,694,259
+1,787,456
 </td>
 </tr>
 <tr>
@@ -646,7 +629,7 @@ Gross tax revenue
 Budget
 </td>
 <td style="text-align:left;">
-2022
+2023
 </td>
 <td style="text-align:left;">
 Gross tax revenue
@@ -655,7 +638,24 @@ Gross tax revenue
 2024/25
 </td>
 <td style="text-align:right;">
-1,807,614
+1,907,727
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Budget
+</td>
+<td style="text-align:left;">
+2023
+</td>
+<td style="text-align:left;">
+Gross tax revenue
+</td>
+<td style="text-align:left;">
+2025/26
+</td>
+<td style="text-align:right;">
+2,043,456
 </td>
 </tr>
 </tbody>
@@ -810,29 +810,6 @@ Value
 KBP6006K
 </td>
 <td style="text-align:right;">
-20210200
-</td>
-<td style="text-align:left;">
-K1
-</td>
-<td style="text-align:right;">
-2
-</td>
-<td style="text-align:right;">
-2021
-</td>
-<td style="text-align:right;">
-2022
-</td>
-<td style="text-align:right;">
-1579121
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-KBP6006K
-</td>
-<td style="text-align:right;">
 20210300
 </td>
 <td style="text-align:left;">
@@ -917,7 +894,30 @@ K1
 2023
 </td>
 <td style="text-align:right;">
-1658995
+1667225
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+KBP6006K
+</td>
+<td style="text-align:right;">
+20220300
+</td>
+<td style="text-align:left;">
+K1
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:right;">
+2022
+</td>
+<td style="text-align:right;">
+2023
+</td>
+<td style="text-align:right;">
+1693232
 </td>
 </tr>
 </tbody>
@@ -1015,122 +1015,6 @@ Value
 <tbody>
 <tr>
 <td style="text-align:left;">
-173
-</td>
-<td style="text-align:left;">
-P0141
-</td>
-<td style="text-align:left;">
-CPS00000
-</td>
-<td style="text-align:left;">
-2022 05
-</td>
-<td style="text-align:left;">
-May
-</td>
-<td style="text-align:right;">
-2
-</td>
-<td style="text-align:right;">
-2022
-</td>
-<td style="text-align:right;">
-2023
-</td>
-<td style="text-align:right;">
-103.1
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-174
-</td>
-<td style="text-align:left;">
-P0141
-</td>
-<td style="text-align:left;">
-CPS00000
-</td>
-<td style="text-align:left;">
-2022 06
-</td>
-<td style="text-align:left;">
-June
-</td>
-<td style="text-align:right;">
-2
-</td>
-<td style="text-align:right;">
-2022
-</td>
-<td style="text-align:right;">
-2023
-</td>
-<td style="text-align:right;">
-104.2
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-175
-</td>
-<td style="text-align:left;">
-P0141
-</td>
-<td style="text-align:left;">
-CPS00000
-</td>
-<td style="text-align:left;">
-2022 07
-</td>
-<td style="text-align:left;">
-July
-</td>
-<td style="text-align:right;">
-3
-</td>
-<td style="text-align:right;">
-2022
-</td>
-<td style="text-align:right;">
-2023
-</td>
-<td style="text-align:right;">
-105.8
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-176
-</td>
-<td style="text-align:left;">
-P0141
-</td>
-<td style="text-align:left;">
-CPS00000
-</td>
-<td style="text-align:left;">
-2022 08
-</td>
-<td style="text-align:left;">
-August
-</td>
-<td style="text-align:right;">
-3
-</td>
-<td style="text-align:right;">
-2022
-</td>
-<td style="text-align:right;">
-2023
-</td>
-<td style="text-align:right;">
-106.0
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
 177
 </td>
 <td style="text-align:left;">
@@ -1156,6 +1040,122 @@ September
 </td>
 <td style="text-align:right;">
 106.1
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+178
+</td>
+<td style="text-align:left;">
+P0141
+</td>
+<td style="text-align:left;">
+CPS00000
+</td>
+<td style="text-align:left;">
+2022 10
+</td>
+<td style="text-align:left;">
+October
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+2022
+</td>
+<td style="text-align:right;">
+2023
+</td>
+<td style="text-align:right;">
+106.5
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+179
+</td>
+<td style="text-align:left;">
+P0141
+</td>
+<td style="text-align:left;">
+CPS00000
+</td>
+<td style="text-align:left;">
+2022 11
+</td>
+<td style="text-align:left;">
+November
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+2022
+</td>
+<td style="text-align:right;">
+2023
+</td>
+<td style="text-align:right;">
+106.8
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+180
+</td>
+<td style="text-align:left;">
+P0141
+</td>
+<td style="text-align:left;">
+CPS00000
+</td>
+<td style="text-align:left;">
+2022 12
+</td>
+<td style="text-align:left;">
+December
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+2022
+</td>
+<td style="text-align:right;">
+2023
+</td>
+<td style="text-align:right;">
+107.2
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+181
+</td>
+<td style="text-align:left;">
+P0141
+</td>
+<td style="text-align:left;">
+CPS00000
+</td>
+<td style="text-align:left;">
+2023 01
+</td>
+<td style="text-align:left;">
+January
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+2023
+</td>
+<td style="text-align:right;">
+2023
+</td>
+<td style="text-align:right;">
+107.1
 </td>
 </tr>
 </tbody>
@@ -1207,16 +1207,16 @@ General_fuel_levy
 Coastal
 </td>
 <td style="text-align:left;">
-2022-11-02
+2023-03-01
 </td>
 <td style="text-align:right;">
-2222.000
+2230.000
 </td>
 <td style="text-align:right;">
-1209.89
+1
 </td>
 <td style="text-align:right;">
-394
+244.85
 </td>
 </tr>
 <tr>
@@ -1227,16 +1227,16 @@ Coastal
 Gauteng
 </td>
 <td style="text-align:left;">
-2022-11-02
+2023-03-01
 </td>
 <td style="text-align:right;">
-2287.000
+2295.000
 </td>
 <td style="text-align:right;">
-1209.89
+1
 </td>
 <td style="text-align:right;">
-394
+244.85
 </td>
 </tr>
 <tr>
@@ -1247,16 +1247,16 @@ Diesel_0.005
 Coastal
 </td>
 <td style="text-align:left;">
-2022-11-02
+2023-03-01
 </td>
 <td style="text-align:right;">
-2509.160
+2106.610
 </td>
 <td style="text-align:right;">
-1705.03
+1
 </td>
 <td style="text-align:right;">
-380
+350.03
 </td>
 </tr>
 <tr>
@@ -1267,16 +1267,16 @@ Diesel_0.005
 Gauteng
 </td>
 <td style="text-align:left;">
-2022-11-02
+2023-03-01
 </td>
 <td style="text-align:right;">
-2574.360
+2171.810
 </td>
 <td style="text-align:right;">
-1705.03
+1
 </td>
 <td style="text-align:right;">
-380
+350.03
 </td>
 </tr>
 <tr>
@@ -1287,16 +1287,16 @@ Diesel_0.05
 Coastal
 </td>
 <td style="text-align:left;">
-2022-11-02
+2023-03-01
 </td>
 <td style="text-align:right;">
-2483.760
+2097.210
 </td>
 <td style="text-align:right;">
-1679.63
+1
 </td>
 <td style="text-align:right;">
-380
+340.63
 </td>
 </tr>
 <tr>
@@ -1307,16 +1307,16 @@ Diesel_0.05
 Gauteng
 </td>
 <td style="text-align:left;">
-2022-11-02
+2023-03-01
 </td>
 <td style="text-align:right;">
-2548.960
+2162.410
 </td>
 <td style="text-align:right;">
-1679.63
+1
 </td>
 <td style="text-align:right;">
-380
+340.63
 </td>
 </tr>
 <tr>
@@ -1327,10 +1327,10 @@ Illuminating_Paraffin
 Coastal
 </td>
 <td style="text-align:left;">
-2022-11-02
+2023-03-01
 </td>
 <td style="text-align:right;">
-1697.088
+1517.758
 </td>
 <td style="text-align:right;">
 NA
@@ -1347,10 +1347,10 @@ Illuminating_Paraffin
 Gauteng
 </td>
 <td style="text-align:left;">
-2022-11-02
+2023-03-01
 </td>
 <td style="text-align:right;">
-1776.288
+1596.958
 </td>
 <td style="text-align:right;">
 NA
@@ -1367,10 +1367,10 @@ Liquefied_Petroleum_Gas
 Coastal
 </td>
 <td style="text-align:left;">
-2022-11-02
+2023-03-01
 </td>
 <td style="text-align:right;">
-3068.000
+3610.000
 </td>
 <td style="text-align:right;">
 NA
@@ -1387,10 +1387,10 @@ Liquefied_Petroleum_Gas
 Gauteng
 </td>
 <td style="text-align:left;">
-2022-11-02
+2023-03-01
 </td>
 <td style="text-align:right;">
-3309.000
+3868.000
 </td>
 <td style="text-align:right;">
 NA
@@ -1414,12 +1414,12 @@ in the calculations.
 
 ``` r
 # Accessing tax tables
-tax_calculation(100000, Tax_tables$PIT_brackets_2021)
+tax_calculation(100000, Tax_tables$PIT_brackets_2024)
 #> [1] 18000
 
 # Calculate personal income tax
-pit(income = 1000000, age = 53, mtc = 2550, tax_year = 2021)
-#> [1] 305263
+pit(income = 1000000, age = 53, mtc = 2550, tax_year = 2024)
+#> [1] 289734
 
 # Same calculation in a relatively large dataframe with differing variables
 individuals <- 1e6
@@ -1433,7 +1433,7 @@ system.time({
     mutate(Simulated_tax = pit(Taxable_income, Age, MTC, Tax_year))
 })
 #>    user  system elapsed 
-#>    0.30    0.08    0.39
+#>    0.42    0.03    0.45
 ```
 
 ## Examples
@@ -1541,7 +1541,7 @@ system.time(
          Trade_Balance = Exports - Imports)
 )
 #>    user  system elapsed 
-#>    3.29    0.45    1.34
+#>    3.28    0.32    1.42
 
 ggplot(Trade_statistics, aes(x = CalendarYear, y = Trade_Balance/1e9)) +
   geom_bar(stat = "identity") +

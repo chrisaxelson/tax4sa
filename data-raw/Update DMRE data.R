@@ -51,21 +51,22 @@ Fuel_prices <- Fuel_prices %>%
 
 # Scraping petrol taxes from DMRE -----------------------------------------
 
-download.file("https://www.energy.gov.za/files/esources/petroleum/November2022/Petrol-margins.pdf",
-              "data-raw/DMRE/DMRE_levies_2022.pdf", mode = "wb")
+Month_latest <- "Mar "
+year_i <- 2023
+
+download.file("https://www.energy.gov.za/files/esources/petroleum/March2023/Petrol-margins.pdf",
+              "data-raw/DMRE/DMRE_levies_2023.pdf", mode = "wb")
 
 # Actual pdf data
-raw_text <- pdf_text("data-raw/DMRE/DMRE_levies_2022.pdf")
-
-year_i <- 2022
+raw_text <- pdf_text("data-raw/DMRE/DMRE_levies_2023.pdf")
 
 clean_table <- str_split(raw_text[[1]], "\n", simplify = TRUE)
 
 table_start <- stringr::str_which(clean_table, "Jan ")
-table_end <- stringr::str_which(clean_table, "Nov ")
+table_end <- stringr::str_which(clean_table, Month_latest)
 
 # Problem with DMRE table
-clean_table[20] <- paste0("Sep", clean_table[20])
+# clean_table[20] <- paste0("Sep", clean_table[20])
 
 table <- clean_table[1, table_start:table_end] %>%
   as_tibble() %>%
@@ -105,22 +106,20 @@ Fuel_prices_petrol <- fuzzy_left_join(Fuel_prices %>%
 
 # Scraping diesel taxes from DMRE  ----------------------------------------
 
-download.file("https://www.energy.gov.za/files/esources/petroleum/November2022/Diesel-margins.pdf",
-              "data-raw/DMRE/DMRE_diesel_levies_2022.pdf", mode = "wb")
+download.file("https://www.energy.gov.za/files/esources/petroleum/March2023/Diesel-margins.pdf",
+              "data-raw/DMRE/DMRE_diesel_levies_2023.pdf", mode = "wb")
 
 # Actual pdf data
-raw_text <- pdf_text("data-raw/DMRE/DMRE_diesel_levies_2022.pdf")
-
-year_i <- 2022
+raw_text <- pdf_text("data-raw/DMRE/DMRE_diesel_levies_2023.pdf")
 
 clean_table <- str_split(raw_text, "\n")
 
 table_start <- c(str_which(clean_table[[1]], "Jan "), str_which(clean_table[[2]], "Jan "))
-table_end <- c(str_which(clean_table[[1]], "Nov "), str_which(clean_table[[2]], "Nov "))
+table_end <- c(str_which(clean_table[[1]], Month_latest), str_which(clean_table[[2]], Month_latest))
 
-# Problem with DMRE table
-clean_table[[1]][19] <- paste0("May", clean_table[[1]][19])
-clean_table[[1]][26] <- paste0("Sep", clean_table[[1]][26])
+# # Problem with DMRE table
+# clean_table[[1]][19] <- paste0("May", clean_table[[1]][19])
+# clean_table[[1]][26] <- paste0("Sep", clean_table[[1]][26])
 
     table <- clean_table[[1]][table_start[1]:table_end[1]] %>%
       as_tibble() %>%
@@ -219,7 +218,7 @@ DMRE_fuel <- bind_rows(DMRE_fuel, DMRE_fuel_data_to_add)
 
 # Save data
 save(DMRE_fuel, file = "data-raw/DMRE/DMRE_fuel.rda", version = 2)
-load(file = "data-raw/SARB/SARB.rda")
+load(file = "data-raw/DMRE/DMRE_fuel.rda")
 
 usethis::use_data(DMRE_fuel, overwrite = TRUE)
 

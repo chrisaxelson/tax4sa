@@ -14,12 +14,13 @@ library(readxl)
 # STATSSA time series website
 STATSSA_url <- "http://www.statssa.gov.za/?page_id=1847"
 
+
 # Extract links from that page that contain the data
 STATSSA_links <- read_html(STATSSA_url) %>%
   html_nodes(xpath = "//*/table[@id = 'mine']//a") %>%
   html_attr("href")
 STATSSA_links <- STATSSA_links[grepl("Ascii", STATSSA_links)]
-STATSSA_links <- str_replace(STATSSA_links, " http://www.statssa.gov.za/wp-content/../", "")
+STATSSA_links <- str_replace(STATSSA_links, " https://www.statssa.gov.za/../", "")
 
 # Only keep updated data
 Data_to_include <- c(
@@ -40,6 +41,8 @@ Imported_files <- readRDS("data-raw/STATSSA/Imported_files.rds")
 # Only keep names that are new
 Files_to_import <- Available_files_on_website[!(Available_files_on_website %in% Imported_files)]
 
+Files_to_import <- Files_to_import[!(grepl("BK", Files_to_import))]
+
 Links_to_import <- str_replace_all(Files_to_import, " ", "%20")
 
 # Loop through all links to get the data
@@ -49,7 +52,7 @@ for (j in seq_along(Links_to_import)) {
   tmp_file <- tempfile()
   link_error <- FALSE
   tryCatch(
-    expr = {download.file(url = paste0("http://www.statssa.gov.za/", Links_to_import[j]),
+    expr = {download.file(url = paste0("https://www.statssa.gov.za/", Links_to_import[j]),
                           destfile = tmp_file)},
     error = function(e) {
       cat(paste0("\n", Files_to_import[j], " link not found. Moving to next link.\n"))
@@ -61,12 +64,12 @@ for (j in seq_along(Links_to_import)) {
 
   tmp_file2 <- tempfile()
 
-  # Some zipped files have two underlying txt files
-  if (grepl("Mining Production", unzipped_file_name)) {
-    tmp_file2 <- unzip(zipfile=tmp_file, files = unzipped_file_name[2], exdir=tempdir())
-  } else {
+  # # Some zipped files have two underlying txt files
+  # if (grepl("Mining Production and Sales annual", unzipped_file_name)) {
+  #   tmp_file2 <- unzip(zipfile=tmp_file, files = unzipped_file_name[1], exdir=tempdir())
+  # } else {
     tmp_file2 <- unzip(zipfile=tmp_file, files = unzipped_file_name[1], exdir=tempdir())
-  }
+  # }
 
 
   info <- read.delim(tmp_file2, header = FALSE)
@@ -218,7 +221,7 @@ STATSSA_new <- STATSSA_new %>%
 # NB - STATSSA not including GDP data on time series page
 # Need to do it separately
 
-GDP_url <- "https://www.statssa.gov.za/publications/P0441/GDP%20P0441%20-%20GDP%20Time%20series%202022Q1.xlsx"
+GDP_url <- "https://www.statssa.gov.za/publications/P0441/GDP%20P0441%20-%20GDP%20Time%20series%202022Q3.xlsx"
 
 GET(GDP_url, write_disk(tf <- tempfile(fileext = ".xlsx")))
 GDP_annual <- read_excel(tf, sheet = "Annual")
