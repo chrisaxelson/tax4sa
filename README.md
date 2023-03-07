@@ -365,7 +365,7 @@ download updated data files.
 library(piggyback)
 
 # Download individual files - can adjust imports to exports and the year
-pb_download("SARS_imports_2021.parquet", 
+pb_download("SARS_imports_2022.parquet", 
             repo = "chrisaxelson/tax4sa")
 
 # # Or download ALL the trade data from Github - about 600MB
@@ -1433,7 +1433,7 @@ system.time({
     mutate(Simulated_tax = pit(Taxable_income, Age, MTC, Tax_year))
 })
 #>    user  system elapsed 
-#>    0.42    0.03    0.45
+#>    0.31    0.09    0.42
 ```
 
 ## Examples
@@ -1541,7 +1541,7 @@ system.time(
          Trade_Balance = Exports - Imports)
 )
 #>    user  system elapsed 
-#>    3.28    0.32    1.42
+#>    3.43    0.52    1.72
 
 ggplot(Trade_statistics, aes(x = CalendarYear, y = Trade_Balance/1e9)) +
   geom_bar(stat = "identity") +

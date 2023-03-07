@@ -102,7 +102,7 @@ The following code downloads the data into your working directory using the [pig
 library(piggyback)
 
 # Download individual files - can adjust imports to exports and the year
-pb_download("SARS_imports_2021.parquet", 
+pb_download("SARS_imports_2022.parquet", 
             repo = "chrisaxelson/tax4sa")
 
 # # Or download ALL the trade data from Github - about 600MB

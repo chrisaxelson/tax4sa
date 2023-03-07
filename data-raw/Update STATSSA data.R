@@ -221,7 +221,7 @@ STATSSA_new <- STATSSA_new %>%
 # NB - STATSSA not including GDP data on time series page
 # Need to do it separately
 
-GDP_url <- "https://www.statssa.gov.za/publications/P0441/GDP%20P0441%20-%20GDP%20Time%20series%202022Q3.xlsx"
+GDP_url <- "https://www.statssa.gov.za/publications/P0441/GDP%20P0441%20-%20GDP%20Time%20series%202022Q4.xlsx"
 
 GET(GDP_url, write_disk(tf <- tempfile(fileext = ".xlsx")))
 GDP_annual <- read_excel(tf, sheet = "Annual")
@@ -257,6 +257,11 @@ STATSSA_new <- STATSSA_new %>%
   bind_rows(GDP %>%
               select(H01, H03, Date, Value, Month, Quarter, Year, Fiscal_year) %>%
               arrange(H01, H03))
+
+STATSSA_new <- GDP %>%
+              select(H01, H03, Date, Value, Month, Quarter, Year, Fiscal_year) %>%
+              arrange(H01, H03)
+
 
 # Create STATSSA_descriptions
 STATSSA_descriptions_new <- STATSSA_descriptions_new %>%
