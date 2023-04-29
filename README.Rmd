@@ -66,7 +66,7 @@ library(kableExtra)
 
 # Check revenue data
 SARS_annual %>% 
-  filter(Fiscal_year == 2022) %>%  
+  filter(Fiscal_year == 2023) %>%  
   select(T1:T3, Year, Revenue) %>% 
   mutate(Revenue = round(Revenue,0)) %>% 
   head(5) %>% 

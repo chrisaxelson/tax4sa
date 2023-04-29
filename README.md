@@ -13,25 +13,24 @@ from 1995/96 to 2023/24.
 
 The data includes:
 
--   Annual tax revenue collections from 1983/84, as published in the
-    [Budget Reviews of the National
-    Treasury](http://www.treasury.gov.za/documents/national%20budget/default.aspx)
--   Monthly tax revenue collections from April 2002, as published in the
-    [monthly financing statements of the National
-    Treasury](http://www.treasury.gov.za/comm_media/press/monthly/default.aspx)
--   Monthly trade data on imports and exports from January 2010 from the
-    [South African Revenue
-    Service](https://tools.sars.gov.za/tradestatsportal/data_download.aspx)
--   Forecasts of the main tax instruments and GDP from 2005, as
-    published in the [Budget Reviews of the National
-    Treasury](http://www.treasury.gov.za/documents/national%20budget/default.aspx)
--   Quarterly Bulletin data from the [South African Reserve
-    Bank](https://www.resbank.co.za/en/home/publications/quarterly-bulletin1/download-information-from-xlsx-data-files)
--   Economic statistics from [Statistics South
-    Africa](http://www.statssa.gov.za/?page_id=1847)
--   Fuel pricing and levies from the [Department of Mineral Resources
-    and
-    Energy](http://www.energy.gov.za/files/esources/petroleum/petroleum_arch.html)
+- Annual tax revenue collections from 1983/84, as published in the
+  [Budget Reviews of the National
+  Treasury](http://www.treasury.gov.za/documents/national%20budget/default.aspx)
+- Monthly tax revenue collections from April 2002, as published in the
+  [monthly financing statements of the National
+  Treasury](http://www.treasury.gov.za/comm_media/press/monthly/default.aspx)
+- Monthly trade data on imports and exports from January 2010 from the
+  [South African Revenue
+  Service](https://tools.sars.gov.za/tradestatsportal/data_download.aspx)
+- Forecasts of the main tax instruments and GDP from 2005, as published
+  in the [Budget Reviews of the National
+  Treasury](http://www.treasury.gov.za/documents/national%20budget/default.aspx)
+- Quarterly Bulletin data from the [South African Reserve
+  Bank](https://www.resbank.co.za/en/home/publications/quarterly-bulletin1/download-information-from-xlsx-data-files)
+- Economic statistics from [Statistics South
+  Africa](http://www.statssa.gov.za/?page_id=1847)
+- Fuel pricing and levies from the [Department of Mineral Resources and
+  Energy](http://www.energy.gov.za/files/esources/petroleum/petroleum_arch.html)
 
 The three functions and the personal income tax tables are intended to
 help with calculating tax liabilities, particularly when used with the
@@ -74,7 +73,7 @@ library(kableExtra)
 
 # Check revenue data
 SARS_annual %>% 
-  filter(Fiscal_year == 2022) %>%  
+  filter(Fiscal_year == 2023) %>%  
   select(T1:T3, Year, Revenue) %>% 
   mutate(Revenue = round(Revenue,0)) %>% 
   head(5) %>% 
@@ -117,10 +116,10 @@ Personal income tax
 Personal income tax
 </td>
 <td style="text-align:left;">
-2021/22
+2022/23
 </td>
 <td style="text-align:right;">
-553,951,488
+600,366,808
 </td>
 </tr>
 <tr>
@@ -134,10 +133,10 @@ Tax on corporate income
 Corporate income tax
 </td>
 <td style="text-align:left;">
-2021/22
+2022/23
 </td>
 <td style="text-align:right;">
-320,446,871
+344,659,912
 </td>
 </tr>
 <tr>
@@ -151,10 +150,10 @@ Tax on corporate income
 Secondary tax on companies/dividend withholding tax
 </td>
 <td style="text-align:left;">
-2021/22
+2022/23
 </td>
 <td style="text-align:right;">
-33,429,472
+38,118,709
 </td>
 </tr>
 <tr>
@@ -168,10 +167,10 @@ Tax on corporate income
 Interest withholding tax
 </td>
 <td style="text-align:left;">
-2021/22
+2022/23
 </td>
 <td style="text-align:right;">
-468,752
+725,925
 </td>
 </tr>
 <tr>
@@ -185,16 +184,17 @@ Other
 Interest on overdue income tax
 </td>
 <td style="text-align:left;">
-2021/22
+2022/23
 </td>
 <td style="text-align:right;">
-4,573,663
+4,633,907
 </td>
 </tr>
 </tbody>
 </table>
 
 ``` r
+
 # And monthly
 SARS_monthly %>% 
   filter(T3 == "Health promotion levy") %>% 
@@ -233,46 +233,6 @@ Revenue
 </tr>
 </thead>
 <tbody>
-<tr>
-<td style="text-align:left;">
-Health promotion levy
-</td>
-<td style="text-align:left;">
-September
-</td>
-<td style="text-align:right;">
-3
-</td>
-<td style="text-align:left;">
-2022
-</td>
-<td style="text-align:left;">
-2023
-</td>
-<td style="text-align:right;">
-175,700.0
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Health promotion levy
-</td>
-<td style="text-align:left;">
-October
-</td>
-<td style="text-align:right;">
-4
-</td>
-<td style="text-align:left;">
-2022
-</td>
-<td style="text-align:left;">
-2023
-</td>
-<td style="text-align:right;">
-184,407.0
-</td>
-</tr>
 <tr>
 <td style="text-align:left;">
 Health promotion levy
@@ -331,6 +291,46 @@ January
 </td>
 <td style="text-align:right;">
 220,373.0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Health promotion levy
+</td>
+<td style="text-align:left;">
+February
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:left;">
+2023
+</td>
+<td style="text-align:left;">
+2023
+</td>
+<td style="text-align:right;">
+185,385.2
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Health promotion levy
+</td>
+<td style="text-align:left;">
+March
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:left;">
+2023
+</td>
+<td style="text-align:left;">
+2023
+</td>
+<td style="text-align:right;">
+197,807.8
 </td>
 </tr>
 </tbody>
@@ -423,10 +423,10 @@ Value_ZAR
 <tbody>
 <tr>
 <td style="text-align:left;">
-Exports
+Imports
 </td>
 <td style="text-align:left;">
-Alexanderbay
+Beit Bridge
 </td>
 <td style="text-align:left;">
 China
@@ -435,120 +435,120 @@ China
 KG
 </td>
 <td style="text-align:left;">
-201001
+202102
 </td>
 <td style="text-align:left;">
-61 - Clothing and accessories, knitted or crocheted
+90 - Medical and Photographic Equipment
 </td>
 <td style="text-align:right;">
-57
+5.00
 </td>
 <td style="text-align:right;">
-930
+18,870
 </td>
 </tr>
 <tr>
 <td style="text-align:left;">
-Exports
+Imports
 </td>
 <td style="text-align:left;">
-Alexanderbay
+Beit Bridge
 </td>
 <td style="text-align:left;">
-China
+Malawi
 </td>
 <td style="text-align:left;">
-NO
+KG
 </td>
 <td style="text-align:left;">
-201001
+202102
 </td>
 <td style="text-align:left;">
-61 - Clothing and accessories, knitted or crocheted
+03 - Fish and crustaceans
 </td>
 <td style="text-align:right;">
-7
+10,544.00
 </td>
 <td style="text-align:right;">
-634
+62,266
 </td>
 </tr>
 <tr>
 <td style="text-align:left;">
-Exports
+Imports
 </td>
 <td style="text-align:left;">
-Alexanderbay
+Beit Bridge
 </td>
 <td style="text-align:left;">
-Bangladesh
+Malawi
 </td>
 <td style="text-align:left;">
-NO
+KG
 </td>
 <td style="text-align:left;">
-201001
+202102
 </td>
 <td style="text-align:left;">
-61 - Clothing and accessories, knitted or crocheted
+07 - Edible vegetables and certain roots and tubers
 </td>
 <td style="text-align:right;">
-8
+6,000.00
 </td>
 <td style="text-align:right;">
-288
+4,009
 </td>
 </tr>
 <tr>
 <td style="text-align:left;">
-Exports
+Imports
 </td>
 <td style="text-align:left;">
-Alexanderbay
+Beit Bridge
 </td>
 <td style="text-align:left;">
-China
+Malawi
 </td>
 <td style="text-align:left;">
-NO
+KG
 </td>
 <td style="text-align:left;">
-201001
+202102
 </td>
 <td style="text-align:left;">
-62 - Clothing and accessories, not knitted or crocheted
+07 - Edible vegetables and certain roots and tubers
 </td>
 <td style="text-align:right;">
-51
+90,000.00
 </td>
 <td style="text-align:right;">
-7,979
+1,278,398
 </td>
 </tr>
 <tr>
 <td style="text-align:left;">
-Exports
+Imports
 </td>
 <td style="text-align:left;">
-Alexanderbay
+Beit Bridge
 </td>
 <td style="text-align:left;">
-China
+Italy
 </td>
 <td style="text-align:left;">
-NO
+KG
 </td>
 <td style="text-align:left;">
-201001
+202102
 </td>
 <td style="text-align:left;">
-62 - Clothing and accessories, not knitted or crocheted
+40 - Rubber and articles thereof
 </td>
 <td style="text-align:right;">
-96
+0.04
 </td>
 <td style="text-align:right;">
-7,930
+34
 </td>
 </tr>
 </tbody>
@@ -1433,7 +1433,7 @@ system.time({
     mutate(Simulated_tax = pit(Taxable_income, Age, MTC, Tax_year))
 })
 #>    user  system elapsed 
-#>    0.31    0.09    0.42
+#>    0.10    0.01    0.15
 ```
 
 ## Examples
@@ -1442,7 +1442,9 @@ system.time({
 library(tax4sa)
 library(dplyr)
 library(ggplot2)
+#> Warning: package 'ggplot2' was built under R version 4.2.3
 library(scales)
+#> Warning: package 'scales' was built under R version 4.2.3
 
 # Create a tax to GDP chart - revenue per year first
 Total_revenue <- SARS_annual %>% 
@@ -1479,6 +1481,7 @@ ggplot(Tax_to_GDP, aes(x = Fiscal_year, y = Tax_to_GDP)) +
 
 ``` r
 library(lubridate)
+#> Warning: package 'lubridate' was built under R version 4.2.3
 
 DMRE_fuel %>% 
   filter(Fuel_type == "95_ULP",
@@ -1498,6 +1501,7 @@ DMRE_fuel %>%
 <img src="man/figures/README-fuel-1.png" width="100%" />
 
 ``` r
+
 DMRE_fuel %>% 
   filter(Fuel_type == "95_ULP",
          Region == "Gauteng",
@@ -1523,6 +1527,7 @@ DMRE_fuel %>%
 <img src="man/figures/README-fuel-2.png" width="100%" />
 
 ``` r
+
 # Quick example of how to access the data
 library(duckdb)
 
@@ -1541,7 +1546,7 @@ system.time(
          Trade_Balance = Exports - Imports)
 )
 #>    user  system elapsed 
-#>    3.43    0.52    1.72
+#>    0.19    0.08    0.25
 
 ggplot(Trade_statistics, aes(x = CalendarYear, y = Trade_Balance/1e9)) +
   geom_bar(stat = "identity") +
