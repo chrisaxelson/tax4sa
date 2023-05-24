@@ -10,8 +10,7 @@ library(lubridate)
 library(usethis)
 library(tax4sa)
 
-system("docker run -d -p 4448:4444 -p 7909:7900 -e SE_NODE_SESSION_TIMEOUT=57868143 --shm-size 2g selenium/standalone-chrome:4.2.2")
-Sys.sleep(10)
+# Check if there are any docker containers running and remove them
 con <- pipe("docker ps")
 docker_df <- read.fwf(file = con, widths = c(12, 300))
 rm(con)
@@ -21,6 +20,27 @@ container_id <- docker_df %>%
   head(1) %>%
   pull(V1)
 
+system(paste0("docker kill ", container_id))
+system(paste0("docker rm ", container_id))
+
+docker_check <- system("docker ps", intern = TRUE)
+
+# Start new container
+if (!any(str_detect(docker_check, "0:4448"))) {
+  system("docker run -d -p 4448:4444 -p 7909:7900 -e SE_NODE_SESSION_TIMEOUT=57868143 --shm-size 2g selenium/standalone-chrome:4.2.2")
+  Sys.sleep(10)
+}
+
+con <- pipe("docker ps")
+docker_df <- read.fwf(file = con, widths = c(12, 300))
+rm(con)
+
+container_id <- docker_df %>%
+  filter(grepl("4448", V2)) %>%
+  head(1) %>%
+  pull(V1)
+
+# Open site
 remDr <-  remoteDriver(port = 4448L, browserName = "chrome")
 remDr$open(silent = TRUE)
 remDr$maxWindowSize()
