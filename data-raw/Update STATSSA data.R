@@ -11,12 +11,14 @@ library(rvest)
 library(httr)
 library(readxl)
 
+#mine > tbody > tr:nth-child(1) > td:nth-child(3) > a
+
 # STATSSA time series website
 STATSSA_url <- "http://www.statssa.gov.za/?page_id=1847"
 
-
 # Extract links from that page that contain the data
 STATSSA_links <- read_html(STATSSA_url) %>%
+  # html_nodes("iframe") %>%
   html_nodes(xpath = "//*/table[@id = 'mine']//a") %>%
   html_attr("href")
 STATSSA_links <- STATSSA_links[grepl("Ascii", STATSSA_links)]
