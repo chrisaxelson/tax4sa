@@ -55,18 +55,30 @@ STATSSA_links <- STATSSA_html %>%
 STATSSA_links <- STATSSA_links[grepl("Excel", STATSSA_links)]
 
 # Specific details for each file to download
+# file_number is the file you need from the unzipped folder
+# sheet_number is the sheet in the excel file
+# final column is the one just before the date
 Data_info <- tribble(
-  ~file_id, ~file_number, ~sheet_number, ~final_column, ~name,
-  "P0141.*urban", 1, 1, "H08", "P0141_CPI_urban",
-  "P0141.*Province", 1, 1, "Province_code", "P0141_CPI_province",
-  "P0141.*digit", 1, 1, "Weight (All urban)", "P0141_CPI_digit",
-  "P0141.*COICOP", 1, 1, "H25", "P0141_CPI_COICOP",
-  "P6410", 1, 1, "H25", "P6410_tourists",
-  "P5041", 2, 1, "H25", "P5041.1_building",
-  "P0151.*Construction", 1, 1, "H25", "P0151.1_construction",
-  "P4141.*Electricity", 3, 1, "H25", "P4141_electricity",
-  "P0142.*Export", 1, 1, "H25", "P0142.7_trade",
-  "P6420.*Food", 1, 1, "H18", "P6420_food")
+  ~file_id, ~file_number, ~sheet_number, ~final_column, ~name, ~file_name,
+  "P0141.*urban", 1, 1, "H08", "P0141_CPI_urban", "P0141 - CPI Average Prices All urban",
+  "P0141.*Province", 1, 1, "Province_code", "P0141_CPI_province", "P0141 - CPI Average Prices Provinces",
+  "P0141.*digit", 1, 1, "Weight (All urban)", "P0141_CPI_digit", "P0141 - CPI(5 and 8 digit) from Jan 2017",
+  "P0141.*COICOP", 1, 1, "H25", "P0141_CPI_COICOP", "P0141 - CPI(COICOP) from Jan 2008",
+  "P6410", 1, 1, "H25", "P6410_tourists", "P6410 - Tourist Accomodation",
+  "P5041", 2, 1, "H25", "P5041.1_building", "P5041.1 Building Statistics",
+  "P0151.*Construction", 1, 1, "H25", "P0151.1_construction", "P0151.1 Construction Materials Price Indices, 2006-2023",
+  "P4141.*Electricity", 3, 1, "H25", "P4141_electricity", "P4141 Electricity generated and available for distribution",
+  "P0142.*Export", 1, 1, "H25", "P0142.7_trade", "P0142.7 Export and import unit value indices",
+  "P6420.*Food", 1, 1, "H18", "P6420_food", "P6420 Food and beverages",
+  "P7162", 1, 1, "_LABEL_", "P7162_transport","P7162 Land transport survey",
+  "P0043\\.", 1, 1, "H25", "P0043.1_liquidations","P0043.1 Liquidations",
+  "P0043.*insolvencies", 1, 1, "H25", "P0043_insolvencies","P0043 Liquidations and insolvencies",
+  "P3041", 1, 1, "H25", "P3041.2_manufacturing","P3041.2 Manufacturing: Production and sales",
+  "P2041.*\\(", 2, 1, "H25", "P2041_mining","P2041 Mining Production and sales",
+  "P6343.*\\(20", 2, 1, "H25", "P6343.2_vehicles","P6343.2 Motor trade sales",
+  "P0142\\.1.*New", 1, 1, "H25", "P0142.1_PPI","P0142.1 PPI New series from 2013",
+  "P6242.*New", 1, 1, "H25", "P6242.1_retail","P6242.1 Retail trade sales from January 2002",
+  "P6141\\.2", 2, 1, "H25", "P6141.2_wholesale","P6141.2 Wholesale trade sales")
 
 # Check which data has been downloaded already
 # Load all STATSSA datasets
@@ -83,16 +95,18 @@ Package_links <- bind_rows(STATSSA_P0141_CPI_urban,
   select(Link) %>%
   distinct()
 
-Data_to_include <- Data_info$file_id
-
-Links_to_check <- STATSSA_links[grepl(paste(Data_to_include, collapse = "|"), STATSSA_links)]
+Links_to_check <- STATSSA_links[grepl(paste(Data_info$file_id, collapse = "|"), STATSSA_links)]
 Links_to_check <- Links_to_check[!grepl("discontinued", Links_to_check)]
+Links_to_check <- Links_to_check[!grepl("Previous", Links_to_check)]
 
 Links_df <- tibble(Original_links = Links_to_check,
                    Link = str_replace(Links_to_check, " https://www.statssa.gov.za/../timeseriesdata/Excel/", ""))
 
 Links_to_download <- Links_df %>%
   anti_join(Package_links, by = "Link")
+
+# Get name of file without date
+Updated_files <- str_sub(Links_to_download$Link, 1, 20)
 
 if (nrow(Links_to_download) == 0) {
 
@@ -102,8 +116,7 @@ if (nrow(Links_to_download) == 0) {
 
   # Only keep rows where new data is available
   Data_info <- Data_info %>%
-    mutate(Download = grepl(paste(str_sub(Links_to_download$Link, 1, 5),collapse = "|"), Data_info$file_id)) %>%
-    filter(Download)
+    filter(str_detect(file_name, paste(Updated_files, collapse = "|")))
 
   # Remove all files that are there already
   unlink("data-raw/STATSSA/Downloads/*")
@@ -194,18 +207,5 @@ if (nrow(Links_to_download) == 0) {
   unlink("data-raw/STATSSA/Unzipped/Excel/*")
 
 }
-
-# Remaining tables to import
-
-# P7162 Land transport ----------------------------------------------------
-# P0043.1 Liquidations ----------------------------------------------------
-# P0043 Liquidation and insolvencies -------------------------------------
-# P3043 Manufacturing utilisation -----------------------------------------
-# P3041.2 Manufacturing production and sales ------------------------------
-# P2041 Mining production and sales ---------------------------------------
-# P6343.2 Motor trade sales ---------------------------------------------
-# P0142.1 PPI -------------------------------------------------------------
-# P6242.1 Retail trade sales ----------------------------------------------
-# P6141.2 Wholesale trade sales -------------------------------------------
 
 
