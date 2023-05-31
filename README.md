@@ -49,10 +49,11 @@ remotes::install_github("chrisaxelson/tax4sa")
 ## Data
 
 The data can be accessed by entering either `NT_Budget_revenue`,
-`SARS_monthly`, `NT_forecasts`, `STATSSA`, `SARB` or `DMRE_fuel` and is
-in a tidy format to ease analysis within R. The package needs to be
-reinstalled to update the data. If you would like to load all the data
-into your environment to check what is available, you can run:
+`NT_S32_revenue`, `SARB_Quarterly_Bulletin`,
+`STATSSA_P0441_GDP`,`DMRE_fuel`, etc. and is in a tidy format to ease
+analysis within R. The package needs to be reinstalled to update the
+data. If you would like to load all the data into your environment to
+check what is available, you can run:
 
 ``` r
 library(tax4sa)
@@ -1391,7 +1392,7 @@ system.time({
     mutate(Simulated_tax = pit(Taxable_income, Age, MTC, Tax_year))
 })
 #>    user  system elapsed 
-#>    0.17    0.00    0.30
+#>    0.17    0.00    0.27
 ```
 
 ## Examples
