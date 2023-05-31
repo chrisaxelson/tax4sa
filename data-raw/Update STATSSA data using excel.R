@@ -91,9 +91,19 @@ Package_links <- bind_rows(STATSSA_P0141_CPI_urban,
                            STATSSA_P0151.1_construction,
                            STATSSA_P4141_electricity,
                            STATSSA_P0142.7_trade,
-                           STATSSA_P6420_food) %>%
+                           STATSSA_P6420_food,
+                           STATSSA_P0043.1_liquidations,
+                           STATSSA_P0043_insolvencies,
+                           STATSSA_P0142.1_PPI,
+                           STATSSA_P2041_mining,
+                           STATSSA_P3041.2_manufacturing,
+                           STATSSA_P6141.2_wholesale,
+                           STATSSA_P6242.1_retail,
+                           STATSSA_P6343.2_vehicles,
+                           STATSSA_P7162_transport) %>%
   select(Link) %>%
-  distinct()
+  distinct() %>%
+  mutate(Link = str_replace(Link, "_ ", ": "))
 
 Links_to_check <- STATSSA_links[grepl(paste(Data_info$file_id, collapse = "|"), STATSSA_links)]
 Links_to_check <- Links_to_check[!grepl("discontinued", Links_to_check)]

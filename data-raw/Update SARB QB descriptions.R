@@ -80,5 +80,7 @@ SARB_descriptions <- SARB_descriptions %>%
 
 save(SARB_descriptions, file = "data-raw/SARB/SARB_descriptions.rda", version = 2)
 
-usethis::use_data(SARB_descriptions, overwrite = TRUE)
+
+SARB_Quarterly_Bulletin_info <- SARB_descriptions
+usethis::use_data(SARB_Quarterly_Bulletin_info, overwrite = TRUE)
 

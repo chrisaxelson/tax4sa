@@ -46,8 +46,8 @@ pit <- function(income, age, mtc, tax_year) {
   if (length(Years_in_data) == 1) {
 
     # Get tax tables for that year - use data from package
-    Brackets <- PIT_brackets[PIT_brackets$Tax_year == Years_in_data, c("Bracket", "Tax_rate")]
-    Rebates <- PIT_rebates[PIT_rebates$Tax_year == Years_in_data, c("Age", "Rebate")]
+    Brackets <- NT_Budget_PIT_brackets[NT_Budget_PIT_brackets$Tax_year == Years_in_data, c("Bracket", "Tax_rate")]
+    Rebates <- NT_Budget_PIT_rebates[NT_Budget_PIT_rebates$Tax_year == Years_in_data, c("Age", "Rebate")]
 
     # Easier to create lagged columns for the cumulative calculation
     Brackets$Lagged_bracket <- c(NA, head(Brackets$Bracket, -1))
@@ -88,8 +88,8 @@ pit <- function(income, age, mtc, tax_year) {
       out_index <- tax_year == i
 
       # Get tax tables for that year - use data from package
-      Brackets <- PIT_brackets[PIT_brackets$Tax_year == i, c("Bracket", "Tax_rate")]
-      Rebates <- PIT_rebates[PIT_rebates$Tax_year == i, c("Age", "Rebate")]
+      Brackets <- NT_Budget_PIT_brackets[NT_Budget_PIT_brackets$Tax_year == i, c("Bracket", "Tax_rate")]
+      Rebates <- NT_Budget_PIT_rebates[NT_Budget_PIT_rebates$Tax_year == i, c("Age", "Rebate")]
 
       # Easier to create lagged columns for the cumulative calculation
       Brackets$Lagged_bracket <- c(NA, head(Brackets$Bracket, -1))

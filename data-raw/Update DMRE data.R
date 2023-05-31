@@ -51,10 +51,10 @@ Fuel_prices <- Fuel_prices %>%
 
 # Scraping petrol taxes from DMRE -----------------------------------------
 
-Month_latest <- "Mar "
+Month_latest <- "May "
 year_i <- 2023
 
-download.file("https://www.energy.gov.za/files/esources/petroleum/March2023/Petrol-margins.pdf",
+download.file("https://www.energy.gov.za/files/esources/petroleum/May2023/Petrol-margins.pdf",
               "data-raw/DMRE/DMRE_levies_2023.pdf", mode = "wb")
 
 # Actual pdf data
@@ -70,7 +70,8 @@ table_end <- stringr::str_which(clean_table, Month_latest)
 
 table <- clean_table[1, table_start:table_end] %>%
   as_tibble() %>%
-  mutate(value = str_squish(value)) %>%
+  mutate(value = str_replace(value, "1 ", "1"),
+         value = str_squish(value)) %>%
   separate(value, sep = " ",
            into = c("Month",
                     "Basic_fuel_price",
@@ -85,12 +86,11 @@ table <- clean_table[1, table_start:table_end] %>%
                     "Secondary_distribution",
                     "Retail_margin",
                     "Slate_levy",
-                    "Delivery_cost",
-                    "Demand_side_management_levy")) %>%
+                    "Delivery_cost")) %>%
   filter(!is.na(Basic_fuel_price))
 
 table <- table %>%
-  mutate(across(Basic_fuel_price:Demand_side_management_levy, as.numeric),
+  mutate(across(Basic_fuel_price:Delivery_cost, as.numeric),
          Date_begin = dmy(paste0("01", Month, year_i)),
          Date_end = dmy(paste0("07", Month, year_i)))
 
@@ -99,14 +99,11 @@ Fuel_prices_petrol <- fuzzy_left_join(Fuel_prices %>%
                                  table,
                                  by = c("Date" = "Date_begin",
                                         "Date" = "Date_end"),
-                                 match_fun = list(`>=`, `<=`)) %>%
-  mutate(Demand_side_management_levy = if_else(grepl("LRP|ULP", Fuel_type) &
-                                                 (grepl("93", Fuel_type) | Region == "Coastal"), 0,
-                                               Demand_side_management_levy))
+                                 match_fun = list(`>=`, `<=`))
 
 # Scraping diesel taxes from DMRE  ----------------------------------------
 
-download.file("https://www.energy.gov.za/files/esources/petroleum/March2023/Diesel-margins.pdf",
+download.file("https://www.energy.gov.za/files/esources/petroleum/May2023/Diesel-margins.pdf",
               "data-raw/DMRE/DMRE_diesel_levies_2023.pdf", mode = "wb")
 
 # Actual pdf data
@@ -123,7 +120,8 @@ table_end <- c(str_which(clean_table[[1]], Month_latest), str_which(clean_table[
 
     table <- clean_table[[1]][table_start[1]:table_end[1]] %>%
       as_tibble() %>%
-      mutate(value = str_squish(value)) %>%
+      mutate(value = str_replace(value, "1 ", "1"),
+             value = str_squish(value)) %>%
       separate(value, sep = " ",
                into = c("Month",
                         "Basic_fuel_price",
@@ -149,7 +147,8 @@ table_end <- c(str_which(clean_table[[1]], Month_latest), str_which(clean_table[
 
     table2 <- clean_table[[2]][table_start[2]:table_end[2]]%>%
       as_tibble() %>%
-      mutate(value = str_squish(value)) %>%
+      mutate(value = str_replace(value, "1 ", "1"),
+             value = str_squish(value)) %>%
       separate(value, sep = " ",
                into = c("Month",
                         "Basic_fuel_price",
@@ -205,8 +204,7 @@ DMRE_fuel_update <- DMRE_fuel_update %>%
          Fuel_type = str_replace_all(Fuel_type, " ", "_"))
 
 DMRE_fuel_update <- DMRE_fuel_update %>%
-  mutate(Demand_side_management_levy = if_else(Date == "2019-12-04" & Fuel_type == "95_ULP" & Region == "Gauteng",
-                                               10, Demand_side_management_levy),
+  mutate(Demand_side_management_levy = NA,
          Inland_transport_cost = NA)
 
 load("data/DMRE_fuel.rda")

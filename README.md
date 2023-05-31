@@ -19,15 +19,15 @@ The data includes:
 - Monthly tax revenue collections from April 2002, as published in the
   [monthly financing statements of the National
   Treasury](http://www.treasury.gov.za/comm_media/press/monthly/default.aspx)
-- Monthly trade data on imports and exports from January 2010 from the
-  [South African Revenue
-  Service](https://tools.sars.gov.za/tradestatsportal/data_download.aspx)
 - Forecasts of the main tax instruments and GDP from 2005, as published
   in the [Budget Reviews of the National
   Treasury](http://www.treasury.gov.za/documents/national%20budget/default.aspx)
+- Monthly trade data on imports and exports from January 2010 from the
+  [South African Revenue
+  Service](https://tools.sars.gov.za/tradestatsportal/data_download.aspx)
 - Quarterly Bulletin data from the [South African Reserve
   Bank](https://www.resbank.co.za/en/home/publications/quarterly-bulletin1/download-information-from-xlsx-data-files)
-- Economic statistics from [Statistics South
+- Montly releases of economic statistics from [Statistics South
   Africa](http://www.statssa.gov.za/?page_id=1847)
 - Fuel pricing and levies from the [Department of Mineral Resources and
   Energy](http://www.energy.gov.za/files/esources/petroleum/petroleum_arch.html)
@@ -48,18 +48,18 @@ remotes::install_github("chrisaxelson/tax4sa")
 
 ## Data
 
-The data can be accessed by entering either `SARS_annual`,
+The data can be accessed by entering either `NT_Budget_revenue`,
 `SARS_monthly`, `NT_forecasts`, `STATSSA`, `SARB` or `DMRE_fuel` and is
 in a tidy format to ease analysis within R. The package needs to be
 reinstalled to update the data. If you would like to load all the data
-into your environment, you can run:
+into your environment to check what is available, you can run:
 
 ``` r
 library(tax4sa)
 load_tax4sa_data()
 ```
 
-### South African Revenue Service
+### National Treasury
 
 #### Revenue
 
@@ -72,7 +72,7 @@ library(knitr)
 library(kableExtra)
 
 # Check revenue data
-SARS_annual %>% 
+NT_Budget_revenue %>% 
   filter(Fiscal_year == 2023) %>%  
   select(T1:T3, Year, Revenue) %>% 
   mutate(Revenue = round(Revenue,0)) %>% 
@@ -196,7 +196,7 @@ Interest on overdue income tax
 ``` r
 
 # And monthly
-SARS_monthly %>% 
+NT_S32_revenue %>% 
   filter(T3 == "Health promotion levy") %>% 
   select(Tax = T3, Month, Quarter, Year, Fiscal_year, Revenue) %>% 
   mutate(Year = as.character(Year),
@@ -233,26 +233,6 @@ Revenue
 </tr>
 </thead>
 <tbody>
-<tr>
-<td style="text-align:left;">
-Health promotion levy
-</td>
-<td style="text-align:left;">
-November
-</td>
-<td style="text-align:right;">
-4
-</td>
-<td style="text-align:left;">
-2022
-</td>
-<td style="text-align:left;">
-2023
-</td>
-<td style="text-align:right;">
-232,587.7
-</td>
-</tr>
 <tr>
 <td style="text-align:left;">
 Health promotion levy
@@ -333,6 +313,26 @@ March
 197,807.8
 </td>
 </tr>
+<tr>
+<td style="text-align:left;">
+Health promotion levy
+</td>
+<td style="text-align:left;">
+April
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:left;">
+2023
+</td>
+<td style="text-align:left;">
+2024
+</td>
+<td style="text-align:right;">
+218,081.5
+</td>
+</tr>
 </tbody>
 </table>
 
@@ -340,225 +340,16 @@ Or you can download the annual and monthly data in one spreadsheet.
 
 ``` r
 # This saves it in your current working directory
-# download.file("https://raw.githubusercontent.com/chrisaxelson/tax4sa/master/data-raw/SARS/Revenue.xlsx",
+# download.file("https://raw.githubusercontent.com/chrisaxelson/tax4sa/master/data-raw/NT/Revenue.xlsx",
 #               "Revenue.xlsx")
 ```
 
-#### Trade data
-
-The line-by-line trade data from the South African Revenue Service is
-too large to be included directly in the package, but can be downloaded
-separately per year of data and type of trade (imports or exports). Each
-file is around 20MB.
-
-The following code downloads the data into your working directory using
-the
-[piggyback](https://cran.r-project.org/web/packages/piggyback/vignettes/intro.html)
-package. The data is likely to be too large to be loaded onto most
-computers, so it is saved as individual
-[parquet](https://www.upsolver.com/blog/apache-parquet-why-use) files
-where you can use [duckdb](https://duckdb.org/) to query all the data
-without moving it into RAM. Any subsequent runs of the code will only
-download updated data files.
-
-``` r
-library(piggyback)
-
-# Download individual files - can adjust imports to exports and the year
-pb_download("SARS_imports_2022.parquet", 
-            repo = "chrisaxelson/tax4sa")
-
-# # Or download ALL the trade data from Github - about 600MB
-# # If run again, will only download updated data
-# pb_download(repo = "chrisaxelson/tax4sa")
-
-# Quick example of how to access the data
-library(duckdb)
-
-# Create connection to temporary database in memory
-con <- dbConnect(duckdb())
-
-# Reference from all the parquet files in that folder
-tbl(con, "SARS_*.parquet") %>% 
-  head(5) %>% 
-  mutate(YearMonth = as.character(YearMonth)) %>% 
-  select(TradeType, District = DistrictOfficeName, Origin = CountryOfOriginName, Unit = StatisticalUnit,
-         YearMonth, ChapterAndDescription, Quantity = StatisticalQuantity, Value_ZAR = CustomsValue) %>% 
-  kable(format.args = list(big.mark = ","),
-        caption = "Monthly trade data")
-```
-
-<table>
-<caption>
-Monthly trade data
-</caption>
-<thead>
-<tr>
-<th style="text-align:left;">
-TradeType
-</th>
-<th style="text-align:left;">
-District
-</th>
-<th style="text-align:left;">
-Origin
-</th>
-<th style="text-align:left;">
-Unit
-</th>
-<th style="text-align:left;">
-YearMonth
-</th>
-<th style="text-align:left;">
-ChapterAndDescription
-</th>
-<th style="text-align:right;">
-Quantity
-</th>
-<th style="text-align:right;">
-Value_ZAR
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:left;">
-Imports
-</td>
-<td style="text-align:left;">
-Beit Bridge
-</td>
-<td style="text-align:left;">
-China
-</td>
-<td style="text-align:left;">
-KG
-</td>
-<td style="text-align:left;">
-202102
-</td>
-<td style="text-align:left;">
-90 - Medical and Photographic Equipment
-</td>
-<td style="text-align:right;">
-5.00
-</td>
-<td style="text-align:right;">
-18,870
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Imports
-</td>
-<td style="text-align:left;">
-Beit Bridge
-</td>
-<td style="text-align:left;">
-Malawi
-</td>
-<td style="text-align:left;">
-KG
-</td>
-<td style="text-align:left;">
-202102
-</td>
-<td style="text-align:left;">
-03 - Fish and crustaceans
-</td>
-<td style="text-align:right;">
-10,544.00
-</td>
-<td style="text-align:right;">
-62,266
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Imports
-</td>
-<td style="text-align:left;">
-Beit Bridge
-</td>
-<td style="text-align:left;">
-Malawi
-</td>
-<td style="text-align:left;">
-KG
-</td>
-<td style="text-align:left;">
-202102
-</td>
-<td style="text-align:left;">
-07 - Edible vegetables and certain roots and tubers
-</td>
-<td style="text-align:right;">
-6,000.00
-</td>
-<td style="text-align:right;">
-4,009
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Imports
-</td>
-<td style="text-align:left;">
-Beit Bridge
-</td>
-<td style="text-align:left;">
-Malawi
-</td>
-<td style="text-align:left;">
-KG
-</td>
-<td style="text-align:left;">
-202102
-</td>
-<td style="text-align:left;">
-07 - Edible vegetables and certain roots and tubers
-</td>
-<td style="text-align:right;">
-90,000.00
-</td>
-<td style="text-align:right;">
-1,278,398
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Imports
-</td>
-<td style="text-align:left;">
-Beit Bridge
-</td>
-<td style="text-align:left;">
-Italy
-</td>
-<td style="text-align:left;">
-KG
-</td>
-<td style="text-align:left;">
-202102
-</td>
-<td style="text-align:left;">
-40 - Rubber and articles thereof
-</td>
-<td style="text-align:right;">
-0.04
-</td>
-<td style="text-align:right;">
-34
-</td>
-</tr>
-</tbody>
-</table>
-
-## National Treasury
+Similarly, you can access the forecasts that were made in the annual
+Budget Reviews below.
 
 ``` r
 # Check revenue data
-NT_forecasts %>% 
+NT_Budget_forecasts %>% 
   filter(Publication_year == 2023,
          Category == "Gross tax revenue") %>% 
    mutate(Publication_year = as.character(Publication_year)) %>% 
@@ -669,11 +460,241 @@ Or you can download the forecasts in one spreadsheet.
 #               "Forecasts.xlsx")
 ```
 
+### South African Revenue Service
+
+#### Trade data
+
+The line-by-line trade data from the South African Revenue Service is
+too large to be included directly in the package, but can be downloaded
+separately per year of data and type of trade (imports or exports). Each
+file is around 20MB.
+
+The following code downloads the data into your working directory using
+the
+[piggyback](https://cran.r-project.org/web/packages/piggyback/vignettes/intro.html)
+package. The data is likely to be too large to be loaded into R on most
+computers, so it is saved as individual
+[parquet](https://www.upsolver.com/blog/apache-parquet-why-use) files
+where you can use [duckdb](https://duckdb.org/) to query all the data
+without moving it into RAM. Any subsequent runs of the code will only
+download updated data files.
+
+``` r
+library(piggyback)
+
+# # Download individual files - can adjust imports to exports and the year
+# pb_download("SARS_imports_2022.parquet", 
+#             repo = "chrisaxelson/tax4sa")
+
+# # Or download ALL the trade data from Github - about 600MB
+# # If run again, will only download updated data
+# pb_download(repo = "chrisaxelson/tax4sa")
+
+# Quick example of how to access the data
+library(duckdb)
+
+# Create connection to temporary database in memory
+con <- dbConnect(duckdb())
+
+# Reference from all the parquet files in that folder
+tbl(con, "SARS_*.parquet") %>% 
+  head(5) %>% 
+  mutate(YearMonth = as.character(YearMonth)) %>% 
+  select(TradeType, District = DistrictOfficeName, Origin = CountryOfOriginName, Destination  = CountryOfDestinationName, Unit = StatisticalUnit,
+         YearMonth, ChapterAndDescription, Quantity = StatisticalQuantity, Value_ZAR = CustomsValue) %>% 
+  kable(format.args = list(big.mark = ","),
+        caption = "Monthly trade data")
+```
+
+<table>
+<caption>
+Monthly trade data
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+TradeType
+</th>
+<th style="text-align:left;">
+District
+</th>
+<th style="text-align:left;">
+Origin
+</th>
+<th style="text-align:left;">
+Destination
+</th>
+<th style="text-align:left;">
+Unit
+</th>
+<th style="text-align:left;">
+YearMonth
+</th>
+<th style="text-align:left;">
+ChapterAndDescription
+</th>
+<th style="text-align:right;">
+Quantity
+</th>
+<th style="text-align:right;">
+Value_ZAR
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Exports
+</td>
+<td style="text-align:left;">
+Beit Bridge
+</td>
+<td style="text-align:left;">
+South Africa
+</td>
+<td style="text-align:left;">
+Mozambique
+</td>
+<td style="text-align:left;">
+NO
+</td>
+<td style="text-align:left;">
+202301
+</td>
+<td style="text-align:left;">
+85 - Cellphones, Electrical Equipment and Machinery
+</td>
+<td style="text-align:right;">
+1.00
+</td>
+<td style="text-align:right;">
+430,000
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Exports
+</td>
+<td style="text-align:left;">
+Beit Bridge
+</td>
+<td style="text-align:left;">
+South Africa
+</td>
+<td style="text-align:left;">
+Tanzania
+</td>
+<td style="text-align:left;">
+KG
+</td>
+<td style="text-align:left;">
+202303
+</td>
+<td style="text-align:left;">
+68 - Stone, plaster, cement and Asbestos
+</td>
+<td style="text-align:right;">
+522.77
+</td>
+<td style="text-align:right;">
+10,888
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Exports
+</td>
+<td style="text-align:left;">
+Beit Bridge
+</td>
+<td style="text-align:left;">
+South Africa
+</td>
+<td style="text-align:left;">
+Tanzania
+</td>
+<td style="text-align:left;">
+KG
+</td>
+<td style="text-align:left;">
+202301
+</td>
+<td style="text-align:left;">
+39 - Plastics and articles thereof
+</td>
+<td style="text-align:right;">
+1,593.60
+</td>
+<td style="text-align:right;">
+254,518
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Exports
+</td>
+<td style="text-align:left;">
+Beit Bridge
+</td>
+<td style="text-align:left;">
+South Africa
+</td>
+<td style="text-align:left;">
+Mozambique
+</td>
+<td style="text-align:left;">
+NO
+</td>
+<td style="text-align:left;">
+202303
+</td>
+<td style="text-align:left;">
+85 - Cellphones, Electrical Equipment and Machinery
+</td>
+<td style="text-align:right;">
+1.00
+</td>
+<td style="text-align:right;">
+1,138,889
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Exports
+</td>
+<td style="text-align:left;">
+Beit Bridge
+</td>
+<td style="text-align:left;">
+South Africa
+</td>
+<td style="text-align:left;">
+Mozambique
+</td>
+<td style="text-align:left;">
+NO
+</td>
+<td style="text-align:left;">
+202302
+</td>
+<td style="text-align:left;">
+90 - Medical and Photographic Equipment
+</td>
+<td style="text-align:right;">
+2.00
+</td>
+<td style="text-align:right;">
+3,859
+</td>
+</tr>
+</tbody>
+</table>
+
 ## South African Reserve Bank
 
 ``` r
 # Look for SARB economic data on GDP
-SARB_descriptions %>% 
+SARB_Quarterly_Bulletin_info %>% 
   filter(grepl("Gross domestic product at market prices", Description), Frequency == "K1") %>%
   select(-Description, -Frequency) %>% 
   kable()
@@ -771,7 +792,8 @@ PERC
 </table>
 
 ``` r
-SARB %>% 
+
+SARB_Quarterly_Bulletin %>% 
   filter(Code == "KBP6006K") %>% 
   select(-Month) %>% 
   tail(5) %>% 
@@ -802,32 +824,21 @@ Fiscal_year
 <th style="text-align:right;">
 Value
 </th>
+<th style="text-align:left;">
+Description
+</th>
+<th style="text-align:left;">
+Frequency_description
+</th>
+<th style="text-align:left;">
+Unit_of_measure
+</th>
+<th style="text-align:left;">
+Version_description
+</th>
 </tr>
 </thead>
 <tbody>
-<tr>
-<td style="text-align:left;">
-KBP6006K
-</td>
-<td style="text-align:right;">
-20210300
-</td>
-<td style="text-align:left;">
-K1
-</td>
-<td style="text-align:right;">
-3
-</td>
-<td style="text-align:right;">
-2021
-</td>
-<td style="text-align:right;">
-2022
-</td>
-<td style="text-align:right;">
-1551077
-</td>
-</tr>
 <tr>
 <td style="text-align:left;">
 KBP6006K
@@ -850,6 +861,18 @@ K1
 <td style="text-align:right;">
 1596999
 </td>
+<td style="text-align:left;">
+Gross domestic product at market prices
+</td>
+<td style="text-align:left;">
+Quarterly
+</td>
+<td style="text-align:left;">
+RMILL
+</td>
+<td style="text-align:left;">
+Current prices
+</td>
 </tr>
 <tr>
 <td style="text-align:left;">
@@ -871,7 +894,19 @@ K1
 2022
 </td>
 <td style="text-align:right;">
-1560424
+1566140
+</td>
+<td style="text-align:left;">
+Gross domestic product at market prices
+</td>
+<td style="text-align:left;">
+Quarterly
+</td>
+<td style="text-align:left;">
+RMILL
+</td>
+<td style="text-align:left;">
+Current prices
 </td>
 </tr>
 <tr>
@@ -894,7 +929,19 @@ K1
 2023
 </td>
 <td style="text-align:right;">
-1667225
+1666304
+</td>
+<td style="text-align:left;">
+Gross domestic product at market prices
+</td>
+<td style="text-align:left;">
+Quarterly
+</td>
+<td style="text-align:left;">
+RMILL
+</td>
+<td style="text-align:left;">
+Current prices
 </td>
 </tr>
 <tr>
@@ -917,7 +964,54 @@ K1
 2023
 </td>
 <td style="text-align:right;">
-1693232
+1702461
+</td>
+<td style="text-align:left;">
+Gross domestic product at market prices
+</td>
+<td style="text-align:left;">
+Quarterly
+</td>
+<td style="text-align:left;">
+RMILL
+</td>
+<td style="text-align:left;">
+Current prices
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+KBP6006K
+</td>
+<td style="text-align:right;">
+20220400
+</td>
+<td style="text-align:left;">
+K1
+</td>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:right;">
+2022
+</td>
+<td style="text-align:right;">
+2023
+</td>
+<td style="text-align:right;">
+1703441
+</td>
+<td style="text-align:left;">
+Gross domestic product at market prices
+</td>
+<td style="text-align:left;">
+Quarterly
+</td>
+<td style="text-align:left;">
+RMILL
+</td>
+<td style="text-align:left;">
+Current prices
 </td>
 </tr>
 </tbody>
@@ -927,56 +1021,9 @@ K1
 
 ``` r
 # Look for STATSSA inflation data
-STATSSA_descriptions %>% 
+STATSSA_P0141_CPI_COICOP %>% 
   filter(H04 == "CPI Headline") %>%
-  select(H01, H02, H03, H04, H13) %>% 
-  kable()
-```
-
-<table>
-<thead>
-<tr>
-<th style="text-align:left;">
-H01
-</th>
-<th style="text-align:left;">
-H02
-</th>
-<th style="text-align:left;">
-H03
-</th>
-<th style="text-align:left;">
-H04
-</th>
-<th style="text-align:left;">
-H13
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:left;">
-P0141
-</td>
-<td style="text-align:left;">
-Consumer Price Index
-</td>
-<td style="text-align:left;">
-CPS00000
-</td>
-<td style="text-align:left;">
-CPI Headline
-</td>
-<td style="text-align:left;">
-All urban areas
-</td>
-</tr>
-</tbody>
-</table>
-
-``` r
-STATSSA %>% 
-  filter(H03 == "CPS00000") %>% 
+  select(H01, H04, Date_original, Value) %>% 
   tail(5) %>% 
   kable()
 ```
@@ -985,29 +1032,15 @@ STATSSA %>%
 <thead>
 <tr>
 <th style="text-align:left;">
-</th>
-<th style="text-align:left;">
 H01
 </th>
 <th style="text-align:left;">
-H03
+H04
 </th>
 <th style="text-align:left;">
-Date
+Date_original
 </th>
 <th style="text-align:left;">
-Month
-</th>
-<th style="text-align:right;">
-Quarter
-</th>
-<th style="text-align:right;">
-Year
-</th>
-<th style="text-align:right;">
-Fiscal_year
-</th>
-<th style="text-align:right;">
 Value
 </th>
 </tr>
@@ -1015,147 +1048,72 @@ Value
 <tbody>
 <tr>
 <td style="text-align:left;">
-177
-</td>
-<td style="text-align:left;">
 P0141
 </td>
 <td style="text-align:left;">
-CPS00000
+CPI Headline
 </td>
 <td style="text-align:left;">
-2022 09
+MO122022
 </td>
 <td style="text-align:left;">
-September
-</td>
-<td style="text-align:right;">
-3
-</td>
-<td style="text-align:right;">
-2022
-</td>
-<td style="text-align:right;">
-2023
-</td>
-<td style="text-align:right;">
-106.1
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-178
-</td>
-<td style="text-align:left;">
-P0141
-</td>
-<td style="text-align:left;">
-CPS00000
-</td>
-<td style="text-align:left;">
-2022 10
-</td>
-<td style="text-align:left;">
-October
-</td>
-<td style="text-align:right;">
-4
-</td>
-<td style="text-align:right;">
-2022
-</td>
-<td style="text-align:right;">
-2023
-</td>
-<td style="text-align:right;">
-106.5
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-179
-</td>
-<td style="text-align:left;">
-P0141
-</td>
-<td style="text-align:left;">
-CPS00000
-</td>
-<td style="text-align:left;">
-2022 11
-</td>
-<td style="text-align:left;">
-November
-</td>
-<td style="text-align:right;">
-4
-</td>
-<td style="text-align:right;">
-2022
-</td>
-<td style="text-align:right;">
-2023
-</td>
-<td style="text-align:right;">
-106.8
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-180
-</td>
-<td style="text-align:left;">
-P0141
-</td>
-<td style="text-align:left;">
-CPS00000
-</td>
-<td style="text-align:left;">
-2022 12
-</td>
-<td style="text-align:left;">
-December
-</td>
-<td style="text-align:right;">
-4
-</td>
-<td style="text-align:right;">
-2022
-</td>
-<td style="text-align:right;">
-2023
-</td>
-<td style="text-align:right;">
 107.2
 </td>
 </tr>
 <tr>
 <td style="text-align:left;">
-181
+P0141
 </td>
+<td style="text-align:left;">
+CPI Headline
+</td>
+<td style="text-align:left;">
+MO012023
+</td>
+<td style="text-align:left;">
+107.1
+</td>
+</tr>
+<tr>
 <td style="text-align:left;">
 P0141
 </td>
 <td style="text-align:left;">
-CPS00000
+CPI Headline
 </td>
 <td style="text-align:left;">
-2023 01
+MO022023
 </td>
 <td style="text-align:left;">
-January
+107.9
 </td>
-<td style="text-align:right;">
-1
+</tr>
+<tr>
+<td style="text-align:left;">
+P0141
 </td>
-<td style="text-align:right;">
-2023
+<td style="text-align:left;">
+CPI Headline
 </td>
-<td style="text-align:right;">
-2023
+<td style="text-align:left;">
+MO032023
 </td>
-<td style="text-align:right;">
-107.1
+<td style="text-align:left;">
+109
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+P0141
+</td>
+<td style="text-align:left;">
+CPI Headline
+</td>
+<td style="text-align:left;">
+MO042023
+</td>
+<td style="text-align:left;">
+109.4
 </td>
 </tr>
 </tbody>
@@ -1207,16 +1165,16 @@ General_fuel_levy
 Coastal
 </td>
 <td style="text-align:left;">
-2023-03-01
+2023-05-03
 </td>
 <td style="text-align:right;">
-2230.000
+2262.000
 </td>
 <td style="text-align:right;">
-1
+1295.97
 </td>
 <td style="text-align:right;">
-244.85
+396
 </td>
 </tr>
 <tr>
@@ -1227,16 +1185,16 @@ Coastal
 Gauteng
 </td>
 <td style="text-align:left;">
-2023-03-01
+2023-05-03
 </td>
 <td style="text-align:right;">
-2295.000
+2334.000
 </td>
 <td style="text-align:right;">
-1
+1295.97
 </td>
 <td style="text-align:right;">
-244.85
+396
 </td>
 </tr>
 <tr>
@@ -1247,16 +1205,16 @@ Diesel_0.005
 Coastal
 </td>
 <td style="text-align:left;">
-2023-03-01
+2023-05-03
 </td>
 <td style="text-align:right;">
-2106.610
+1977.490
 </td>
 <td style="text-align:right;">
-1
+1240.03
 </td>
 <td style="text-align:right;">
-350.03
+382
 </td>
 </tr>
 <tr>
@@ -1267,16 +1225,16 @@ Diesel_0.005
 Gauteng
 </td>
 <td style="text-align:left;">
-2023-03-01
+2023-05-03
 </td>
 <td style="text-align:right;">
-2171.810
+2049.690
 </td>
 <td style="text-align:right;">
-1
+1240.03
 </td>
 <td style="text-align:right;">
-350.03
+382
 </td>
 </tr>
 <tr>
@@ -1287,16 +1245,16 @@ Diesel_0.05
 Coastal
 </td>
 <td style="text-align:left;">
-2023-03-01
+2023-05-03
 </td>
 <td style="text-align:right;">
-2097.210
+1943.090
 </td>
 <td style="text-align:right;">
-1
+1205.63
 </td>
 <td style="text-align:right;">
-340.63
+382
 </td>
 </tr>
 <tr>
@@ -1307,16 +1265,16 @@ Diesel_0.05
 Gauteng
 </td>
 <td style="text-align:left;">
-2023-03-01
+2023-05-03
 </td>
 <td style="text-align:right;">
-2162.410
+2015.290
 </td>
 <td style="text-align:right;">
-1
+1205.63
 </td>
 <td style="text-align:right;">
-340.63
+382
 </td>
 </tr>
 <tr>
@@ -1327,10 +1285,10 @@ Illuminating_Paraffin
 Coastal
 </td>
 <td style="text-align:left;">
-2023-03-01
+2023-05-03
 </td>
 <td style="text-align:right;">
-1517.758
+1346.558
 </td>
 <td style="text-align:right;">
 NA
@@ -1347,10 +1305,10 @@ Illuminating_Paraffin
 Gauteng
 </td>
 <td style="text-align:left;">
-2023-03-01
+2023-05-03
 </td>
 <td style="text-align:right;">
-1596.958
+1439.058
 </td>
 <td style="text-align:right;">
 NA
@@ -1367,10 +1325,10 @@ Liquefied_Petroleum_Gas
 Coastal
 </td>
 <td style="text-align:left;">
-2023-03-01
+2023-05-03
 </td>
 <td style="text-align:right;">
-3610.000
+3073.000
 </td>
 <td style="text-align:right;">
 NA
@@ -1387,10 +1345,10 @@ Liquefied_Petroleum_Gas
 Gauteng
 </td>
 <td style="text-align:left;">
-2023-03-01
+2023-05-03
 </td>
 <td style="text-align:right;">
-3868.000
+3332.000
 </td>
 <td style="text-align:right;">
 NA
@@ -1433,7 +1391,7 @@ system.time({
     mutate(Simulated_tax = pit(Taxable_income, Age, MTC, Tax_year))
 })
 #>    user  system elapsed 
-#>    0.10    0.01    0.15
+#>    0.17    0.00    0.30
 ```
 
 ## Examples
@@ -1442,17 +1400,15 @@ system.time({
 library(tax4sa)
 library(dplyr)
 library(ggplot2)
-#> Warning: package 'ggplot2' was built under R version 4.2.3
 library(scales)
-#> Warning: package 'scales' was built under R version 4.2.3
 
 # Create a tax to GDP chart - revenue per year first
-Total_revenue <- SARS_annual %>% 
+Total_revenue <- NT_Budget_revenue %>% 
   group_by(Fiscal_year) %>% 
   summarise(Revenue = sum(Revenue))
 
 # Get nominal GDP across fiscal year by summing per quarter
-GDP_fiscal <- STATSSA %>% 
+GDP_fiscal <- STATSSA_P0441_GDP %>% 
   filter(H03 == "QNU1000") %>% 
   group_by(Fiscal_year) %>% 
   summarise(GDP = sum(Value)) %>% 
@@ -1481,7 +1437,6 @@ ggplot(Tax_to_GDP, aes(x = Fiscal_year, y = Tax_to_GDP)) +
 
 ``` r
 library(lubridate)
-#> Warning: package 'lubridate' was built under R version 4.2.3
 
 DMRE_fuel %>% 
   filter(Fuel_type == "95_ULP",
@@ -1518,48 +1473,12 @@ DMRE_fuel %>%
   scale_y_continuous(labels = scales::percent_format(accuracy = 1L)) +
   ylab("Percentage of retail price") +
   ggtitle("Levies as a percentage of retail price",
-          subtitle = c("Includes the general fuel levy, the Road Accident Fund levy, customs levy and DSML")) +
-    geom_text(aes(label = ifelse(Date == "2022-07-06", 
-                               paste0(round(Tax_percentage*100 , 1), "%"),'')),
-            hjust=0.25, vjust=-1, show.legend = FALSE)
+          subtitle = c("Includes the general fuel levy, the Road Accident Fund levy, customs levy and DSML")) 
+#> Warning: Removed 2 rows containing missing values (`geom_line()`).
+#> Warning: Removed 2 rows containing missing values (`geom_point()`).
 ```
 
 <img src="man/figures/README-fuel-2.png" width="100%" />
-
-``` r
-
-# Quick example of how to access the data
-library(duckdb)
-
-# Create connection to temporary database in memory
-con <- dbConnect(duckdb())
-
-# Generate the annual trade balance from the micro data
-system.time(
-  Trade_statistics <- tbl(con, "SARS_*.parquet") %>%
-  group_by(CalendarYear) %>%
-  summarise(Exports = sum(ifelse(TradeType == "Exports", CustomsValue, 0)),
-            Imports = sum(ifelse(TradeType == "Imports", CustomsValue, 0))) %>%
-  collect() %>%
-  arrange(CalendarYear) %>%
-  mutate(CalendarYear = as.character(CalendarYear),
-         Trade_Balance = Exports - Imports)
-)
-#>    user  system elapsed 
-#>    0.19    0.08    0.25
-
-ggplot(Trade_statistics, aes(x = CalendarYear, y = Trade_Balance/1e9)) +
-  geom_bar(stat = "identity") +
-  theme_classic() +
-  xlab("Year") +
-  ylab("Trade balance (R billions)") +
-  ggtitle("Trade balance (exports - imports) in nominal terms") +
-      geom_text(aes(label = ifelse(CalendarYear == "2021", 
-                               paste0("R", round(Trade_Balance/1e9, 1), "bn"),'')),
-            vjust = -0.5, show.legend = FALSE)
-```
-
-<img src="man/figures/README-trade_plot-1.png" width="100%" />
 
 <!-- ```{r cpi, message = FALSE} -->
 <!-- # Get headline CPI index and check growth -->

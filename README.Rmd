@@ -26,10 +26,10 @@ The data includes:
 
 -   Annual tax revenue collections from 1983/84, as published in the [Budget Reviews of the National Treasury](http://www.treasury.gov.za/documents/national%20budget/default.aspx)
 -   Monthly tax revenue collections from April 2002, as published in the [monthly financing statements of the National Treasury](http://www.treasury.gov.za/comm_media/press/monthly/default.aspx)
--   Monthly trade data on imports and exports from January 2010 from the [South African Revenue Service](https://tools.sars.gov.za/tradestatsportal/data_download.aspx)
 -   Forecasts of the main tax instruments and GDP from 2005, as published in the [Budget Reviews of the National Treasury](http://www.treasury.gov.za/documents/national%20budget/default.aspx)
+-   Monthly trade data on imports and exports from January 2010 from the [South African Revenue Service](https://tools.sars.gov.za/tradestatsportal/data_download.aspx)
 -   Quarterly Bulletin data from the [South African Reserve Bank](https://www.resbank.co.za/en/home/publications/quarterly-bulletin1/download-information-from-xlsx-data-files)
--   Economic statistics from [Statistics South Africa](http://www.statssa.gov.za/?page_id=1847)
+-   Montly releases of economic statistics from [Statistics South Africa](http://www.statssa.gov.za/?page_id=1847)
 -   Fuel pricing and levies from the [Department of Mineral Resources and Energy](http://www.energy.gov.za/files/esources/petroleum/petroleum_arch.html)
 
 The three functions and the personal income tax tables are intended to help with calculating tax liabilities, particularly when used with the [administrative data from SARS](https://sa-tied.wider.unu.edu/sites/default/files/pdf/SATIED_WP36_Ebrahim_Axelson_March_2019.pdf).
@@ -45,7 +45,7 @@ remotes::install_github("chrisaxelson/tax4sa")
 
 ## Data
 
-The data can be accessed by entering either `SARS_annual`, `SARS_monthly`, `NT_forecasts`, `STATSSA`, `SARB` or `DMRE_fuel` and is in a tidy format to ease analysis within R. The package needs to be reinstalled to update the data. If you would like to load all the data into your environment, you can run:
+The data can be accessed by entering either `NT_Budget_revenue`, `SARS_monthly`, `NT_forecasts`, `STATSSA`, `SARB` or `DMRE_fuel` and is in a tidy format to ease analysis within R. The package needs to be reinstalled to update the data. If you would like to load all the data into your environment to check what is available, you can run:
 
 ```{r}
 library(tax4sa)
@@ -53,7 +53,7 @@ load_tax4sa_data()
 ```
 
 
-### South African Revenue Service
+### National Treasury
 
 #### Revenue
 
@@ -65,7 +65,7 @@ library(knitr)
 library(kableExtra)
 
 # Check revenue data
-SARS_annual %>% 
+NT_Budget_revenue %>% 
   filter(Fiscal_year == 2023) %>%  
   select(T1:T3, Year, Revenue) %>% 
   mutate(Revenue = round(Revenue,0)) %>% 
@@ -74,7 +74,7 @@ SARS_annual %>%
         caption = "Annual tax revenue (R'000s)")
 
 # And monthly
-SARS_monthly %>% 
+NT_S32_revenue %>% 
   filter(T3 == "Health promotion levy") %>% 
   select(Tax = T3, Month, Quarter, Year, Fiscal_year, Revenue) %>% 
   mutate(Year = as.character(Year),
@@ -88,49 +88,15 @@ Or you can download the annual and monthly data in one spreadsheet.
 
 ```{r download1, message = FALSE}
 # This saves it in your current working directory
-# download.file("https://raw.githubusercontent.com/chrisaxelson/tax4sa/master/data-raw/SARS/Revenue.xlsx",
+# download.file("https://raw.githubusercontent.com/chrisaxelson/tax4sa/master/data-raw/NT/Revenue.xlsx",
 #               "Revenue.xlsx")
 ```
 
-#### Trade data
-
-The line-by-line trade data from the South African Revenue Service is too large to be included directly in the package, but can be downloaded separately per year of data and type of trade (imports or exports). Each file is around 20MB. 
-
-The following code downloads the data into your working directory using the [piggyback](https://cran.r-project.org/web/packages/piggyback/vignettes/intro.html) package. The data is likely to be too large to be loaded onto most computers, so it is saved as individual [parquet](https://www.upsolver.com/blog/apache-parquet-why-use) files where you can use [duckdb](https://duckdb.org/) to query all the data without moving it into RAM. Any subsequent runs of the code will only download updated data files.
-
-```{r trade, message = FALSE, warning = FALSE}
-library(piggyback)
-
-# Download individual files - can adjust imports to exports and the year
-pb_download("SARS_imports_2022.parquet", 
-            repo = "chrisaxelson/tax4sa")
-
-# # Or download ALL the trade data from Github - about 600MB
-# # If run again, will only download updated data
-# pb_download(repo = "chrisaxelson/tax4sa")
-
-# Quick example of how to access the data
-library(duckdb)
-
-# Create connection to temporary database in memory
-con <- dbConnect(duckdb())
-
-# Reference from all the parquet files in that folder
-tbl(con, "SARS_*.parquet") %>% 
-  head(5) %>% 
-  mutate(YearMonth = as.character(YearMonth)) %>% 
-  select(TradeType, District = DistrictOfficeName, Origin = CountryOfOriginName, Unit = StatisticalUnit,
-         YearMonth, ChapterAndDescription, Quantity = StatisticalQuantity, Value_ZAR = CustomsValue) %>% 
-  kable(format.args = list(big.mark = ","),
-        caption = "Monthly trade data")
-
-```
-
-## National Treasury
+Similarly, you can access the forecasts that were made in the annual Budget Reviews below.
 
 ```{r forecasts, message = FALSE}
 # Check revenue data
-NT_forecasts %>% 
+NT_Budget_forecasts %>% 
   filter(Publication_year == 2023,
          Category == "Gross tax revenue") %>% 
    mutate(Publication_year = as.character(Publication_year)) %>% 
@@ -147,15 +113,53 @@ Or you can download the forecasts in one spreadsheet.
 
 ```
 
+
+### South African Revenue Service
+
+#### Trade data
+
+The line-by-line trade data from the South African Revenue Service is too large to be included directly in the package, but can be downloaded separately per year of data and type of trade (imports or exports). Each file is around 20MB. 
+
+The following code downloads the data into your working directory using the [piggyback](https://cran.r-project.org/web/packages/piggyback/vignettes/intro.html) package. The data is likely to be too large to be loaded into R on most computers, so it is saved as individual [parquet](https://www.upsolver.com/blog/apache-parquet-why-use) files where you can use [duckdb](https://duckdb.org/) to query all the data without moving it into RAM. Any subsequent runs of the code will only download updated data files.
+
+```{r trade, message = FALSE, warning = FALSE}
+library(piggyback)
+
+# # Download individual files - can adjust imports to exports and the year
+# pb_download("SARS_imports_2022.parquet", 
+#             repo = "chrisaxelson/tax4sa")
+
+# # Or download ALL the trade data from Github - about 600MB
+# # If run again, will only download updated data
+# pb_download(repo = "chrisaxelson/tax4sa")
+
+# Quick example of how to access the data
+library(duckdb)
+
+# Create connection to temporary database in memory
+con <- dbConnect(duckdb())
+
+# Reference from all the parquet files in that folder
+tbl(con, "SARS_*.parquet") %>% 
+  head(5) %>% 
+  mutate(YearMonth = as.character(YearMonth)) %>% 
+  select(TradeType, District = DistrictOfficeName, Origin = CountryOfOriginName, Destination  = CountryOfDestinationName, Unit = StatisticalUnit,
+         YearMonth, ChapterAndDescription, Quantity = StatisticalQuantity, Value_ZAR = CustomsValue) %>% 
+  kable(format.args = list(big.mark = ","),
+        caption = "Monthly trade data")
+
+```
+
 ## South African Reserve Bank
 
 ```{r sarb, message = FALSE}
 # Look for SARB economic data on GDP
-SARB_descriptions %>% 
+SARB_Quarterly_Bulletin_info %>% 
   filter(grepl("Gross domestic product at market prices", Description), Frequency == "K1") %>%
   select(-Description, -Frequency) %>% 
   kable()
-SARB %>% 
+
+SARB_Quarterly_Bulletin %>% 
   filter(Code == "KBP6006K") %>% 
   select(-Month) %>% 
   tail(5) %>% 
@@ -167,12 +171,9 @@ SARB %>%
 
 ```{r sars, message = FALSE}
 # Look for STATSSA inflation data
-STATSSA_descriptions %>% 
+STATSSA_P0141_CPI_COICOP %>% 
   filter(H04 == "CPI Headline") %>%
-  select(H01, H02, H03, H04, H13) %>% 
-  kable()
-STATSSA %>% 
-  filter(H03 == "CPS00000") %>% 
+  select(H01, H04, Date_original, Value) %>% 
   tail(5) %>% 
   kable()
 ```
@@ -223,12 +224,12 @@ library(ggplot2)
 library(scales)
 
 # Create a tax to GDP chart - revenue per year first
-Total_revenue <- SARS_annual %>% 
+Total_revenue <- NT_Budget_revenue %>% 
   group_by(Fiscal_year) %>% 
   summarise(Revenue = sum(Revenue))
 
 # Get nominal GDP across fiscal year by summing per quarter
-GDP_fiscal <- STATSSA %>% 
+GDP_fiscal <- STATSSA_P0441_GDP %>% 
   filter(H03 == "QNU1000") %>% 
   group_by(Fiscal_year) %>% 
   summarise(GDP = sum(Value)) %>% 
@@ -288,44 +289,10 @@ DMRE_fuel %>%
   scale_y_continuous(labels = scales::percent_format(accuracy = 1L)) +
   ylab("Percentage of retail price") +
   ggtitle("Levies as a percentage of retail price",
-          subtitle = c("Includes the general fuel levy, the Road Accident Fund levy, customs levy and DSML")) +
-    geom_text(aes(label = ifelse(Date == "2022-07-06", 
-                               paste0(round(Tax_percentage*100 , 1), "%"),'')),
-            hjust=0.25, vjust=-1, show.legend = FALSE)
+          subtitle = c("Includes the general fuel levy, the Road Accident Fund levy, customs levy and DSML")) 
 
 ```
 
-```{r trade_plot, message = FALSE, warning = FALSE}
-
-# Quick example of how to access the data
-library(duckdb)
-
-# Create connection to temporary database in memory
-con <- dbConnect(duckdb())
-
-# Generate the annual trade balance from the micro data
-system.time(
-  Trade_statistics <- tbl(con, "SARS_*.parquet") %>%
-  group_by(CalendarYear) %>%
-  summarise(Exports = sum(ifelse(TradeType == "Exports", CustomsValue, 0)),
-            Imports = sum(ifelse(TradeType == "Imports", CustomsValue, 0))) %>%
-  collect() %>%
-  arrange(CalendarYear) %>%
-  mutate(CalendarYear = as.character(CalendarYear),
-         Trade_Balance = Exports - Imports)
-)
-
-ggplot(Trade_statistics, aes(x = CalendarYear, y = Trade_Balance/1e9)) +
-  geom_bar(stat = "identity") +
-  theme_classic() +
-  xlab("Year") +
-  ylab("Trade balance (R billions)") +
-  ggtitle("Trade balance (exports - imports) in nominal terms") +
-      geom_text(aes(label = ifelse(CalendarYear == "2021", 
-                               paste0("R", round(Trade_Balance/1e9, 1), "bn"),'')),
-            vjust = -0.5, show.legend = FALSE)
-
-```
 
 
 <!-- ```{r cpi, message = FALSE} -->

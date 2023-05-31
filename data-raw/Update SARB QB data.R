@@ -169,8 +169,11 @@ SARB <- SARB %>%
 
 # Save data
 save(SARB, file = "data-raw/SARB/SARB.rda", version = 2)
+
+# Change name
 load(file = "data-raw/SARB/SARB.rda")
 
-usethis::use_data(SARB, overwrite = TRUE)
+SARB_Quarterly_Bulletin <- SARB
+usethis::use_data(SARB_Quarterly_Bulletin, overwrite = TRUE)
 
 

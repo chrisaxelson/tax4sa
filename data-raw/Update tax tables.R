@@ -192,5 +192,9 @@ colnames(PIT_rebates) <- c("Tax_year", "Age", "Rebate")
 save(PIT_brackets, file = "data-raw/SARS/PIT_brackets.rda", version = 2)
 save(PIT_rebates, file = "data-raw/SARS/PIT_rebates.rda", version = 2)
 
-usethis::use_data(PIT_brackets, overwrite = TRUE)
-usethis::use_data(PIT_rebates, overwrite = TRUE)
+# Change name
+NT_Budget_PIT_brackets <- PIT_brackets
+NT_Budget_PIT_rebates <- PIT_rebates
+
+usethis::use_data(NT_Budget_PIT_brackets, overwrite = TRUE)
+usethis::use_data(NT_Budget_PIT_rebates, overwrite = TRUE)

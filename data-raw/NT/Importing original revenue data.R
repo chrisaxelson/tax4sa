@@ -7,9 +7,9 @@ library(tidyr)
 library(stringr)
 
 # Annual sheet
-SARS_annual <- read_excel(path = "data-raw/SARS/Revenue.xlsx", sheet = "Annual")
+NT_Budget_revenue <- read_excel(path = "data-raw/NT/Revenue.xlsx", sheet = "Annual")
 
-SARS_annual <- SARS_annual %>%
+NT_Budget_revenue <- NT_Budget_revenue %>%
   pivot_longer(cols = !(T1:T3), names_to = "Year", values_to = "Revenue") %>%
   mutate(Fiscal_year = as.numeric(paste0(str_sub(Year, 1, 2), str_sub(Year, 6, 7))),
          Fiscal_year = if_else(Fiscal_year == 1900, 2000, Fiscal_year)) %>%
@@ -17,7 +17,7 @@ SARS_annual <- SARS_annual %>%
   relocate(Revenue, .after = "Fiscal_year")
 
 # Create subset where sum equals the total
-SARS_annual <- SARS_annual %>%
+NT_Budget_revenue <- NT_Budget_revenue %>%
   filter(!(T1 == T3 & T3 != "State miscellaneous revenue"),
          !(T3 %in% c("Tax on corporate income","Specific excise duties")),
          !(Fiscal_year > 2009 & T3 %in% c("Value-added tax")),
@@ -25,18 +25,20 @@ SARS_annual <- SARS_annual %>%
          !grepl("SACU", T3))
 
 # Check revenue per year
-x <- SARS_annual %>%
+x <- NT_Budget_revenue %>%
   group_by(Fiscal_year) %>%
   summarise(sum(Revenue))
 
-save(SARS_annual, file = "data-raw/SARS/SARS_annual.rda", version = 2)
-usethis::use_data(SARS_annual, overwrite = TRUE)
+save(NT_Budget_revenue, file = "data-raw/NT/NT_Budget_revenue.rda", version = 2)
+
+# Change name
+usethis::use_data(NT_Budget_revenue, overwrite = TRUE)
 
 
 # Monthly sheet
-SARS_monthly <- read_excel(path = "data-raw/SARS/Revenue.xlsx", sheet = "Monthly")
+NT_S32_revenue <- read_excel(path = "data-raw/NT/Revenue.xlsx", sheet = "Monthly")
 
-SARS_monthly <- SARS_monthly %>%
+NT_S32_revenue <- NT_S32_revenue %>%
   pivot_longer(cols = !(T1:T3), names_to = "Month", values_to = "Revenue") %>%
   rename(Month_year = Month) %>%
   separate(Month_year, into = c("Month", "Year"), remove = FALSE) %>%
@@ -51,7 +53,7 @@ SARS_monthly <- SARS_monthly %>%
   filter(!is.na(Revenue))
 
 # Subset which sums to total revenue
-SARS_monthly <- SARS_monthly %>%
+NT_S32_revenue <- NT_S32_revenue %>%
   filter(!(T1 == T3 & T3 != "State miscellaneous revenue"),
          !(T3 %in% c("Tax on corporate income",
                      "Estate, inheritance and gift taxes", "Taxes on financial and capital transactions",
@@ -66,16 +68,18 @@ SARS_monthly <- SARS_monthly %>%
          !grepl("Total", T3),
          !grepl("SACU", T3))
 
-SARS_monthly <- SARS_monthly %>%
+NT_S32_revenue <- NT_S32_revenue %>%
   mutate(Month = factor(Month, levels = c("April", "May", "June", "July", "August", "September",
                                           "October", "November", "December", "January", "February",
                                           "March")))
 
 # Check revenue per year
-y <- SARS_monthly %>%
+y <- NT_S32_revenue %>%
   # filter(Fiscal_year == 2006) %>%
   group_by(Fiscal_year) %>%
   summarise(sum(Revenue))
 
-save(SARS_monthly, file = "data-raw/SARS/SARS_monthly.rda", version = 2)
-usethis::use_data(SARS_monthly, overwrite = TRUE)
+save(NT_S32_revenue, file = "data-raw/NT/NT_S32_revenue.rda", version = 2)
+
+# Change name
+usethis::use_data(NT_S32_revenue, overwrite = TRUE)
