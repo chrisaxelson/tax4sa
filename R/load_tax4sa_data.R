@@ -38,6 +38,18 @@ load_tax4sa_data <- function() {
   data("STATSSA_P7162_transport")
   data("STATSSA_P0441_GDP")
 
+  data("SARB_monthly_Banks_and_mutual_banks")
+  data("SARB_monthly_Capital_market")
+  data("SARB_monthly_Counterparts_of_M3")
+  data("SARB_monthly_Credit_aggregates")
+  data("SARB_monthly_Credit_detail")
+  data("SARB_monthly_Deposit_detail")
+  data("SARB_monthly_Economic_indicators")
+  data("SARB_monthly_International_economic_data")
+  data("SARB_monthly_Money_and_banking")
+  data("SARB_monthly_National_government_finance")
+  data("SARB_monthly_Securitisation")
+
   invisible(force(NT_Budget_forecasts))
   invisible(force(NT_Budget_revenue))
   invisible(force(NT_Budget_PIT_rebates))
@@ -66,5 +78,18 @@ load_tax4sa_data <- function() {
   invisible(force(STATSSA_P6343.2_vehicles))
   invisible(force(STATSSA_P7162_transport))
   invisible(force(STATSSA_P0441_GDP))
+
+  invisible(force(SARB_monthly_Banks_and_mutual_banks))
+  invisible(force(SARB_monthly_Capital_market))
+  invisible(force(SARB_monthly_Counterparts_of_M3))
+  invisible(force(SARB_monthly_Credit_aggregates))
+  invisible(force(SARB_monthly_Credit_detail))
+  invisible(force(SARB_monthly_Deposit_detail))
+  invisible(force(SARB_monthly_Economic_indicators))
+  invisible(force(SARB_monthly_International_economic_data))
+  invisible(force(SARB_monthly_Money_and_banking))
+  invisible(force(SARB_monthly_National_government_finance))
+  invisible(force(SARB_monthly_Securitisation))
+
 
 }

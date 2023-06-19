@@ -1160,22 +1160,42 @@ General_fuel_levy
 <tbody>
 <tr>
 <td style="text-align:left;">
+93_ULP
+</td>
+<td style="text-align:left;">
+Gauteng
+</td>
+<td style="text-align:left;">
+2023-06-07
+</td>
+<td style="text-align:right;">
+2230.000
+</td>
+<td style="text-align:right;">
+1225.97
+</td>
+<td style="text-align:right;">
+395
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
 95_ULP
 </td>
 <td style="text-align:left;">
 Coastal
 </td>
 <td style="text-align:left;">
-2023-05-03
+2023-06-07
 </td>
 <td style="text-align:right;">
-2262.000
+2191.000
 </td>
 <td style="text-align:right;">
-1295.97
+1225.97
 </td>
 <td style="text-align:right;">
-396
+395
 </td>
 </tr>
 <tr>
@@ -1186,16 +1206,16 @@ Coastal
 Gauteng
 </td>
 <td style="text-align:left;">
-2023-05-03
+2023-06-07
 </td>
 <td style="text-align:right;">
-2334.000
+2263.000
 </td>
 <td style="text-align:right;">
-1295.97
+1225.97
 </td>
 <td style="text-align:right;">
-396
+395
 </td>
 </tr>
 <tr>
@@ -1206,16 +1226,16 @@ Diesel_0.005
 Coastal
 </td>
 <td style="text-align:left;">
-2023-05-03
+2023-06-07
 </td>
 <td style="text-align:right;">
-1977.490
+1897.490
 </td>
 <td style="text-align:right;">
-1240.03
+1161.03
 </td>
 <td style="text-align:right;">
-382
+381
 </td>
 </tr>
 <tr>
@@ -1226,16 +1246,16 @@ Diesel_0.005
 Gauteng
 </td>
 <td style="text-align:left;">
-2023-05-03
+2023-06-07
 </td>
 <td style="text-align:right;">
-2049.690
+1969.690
 </td>
 <td style="text-align:right;">
-1240.03
+1161.03
 </td>
 <td style="text-align:right;">
-382
+381
 </td>
 </tr>
 <tr>
@@ -1246,16 +1266,16 @@ Diesel_0.05
 Coastal
 </td>
 <td style="text-align:left;">
-2023-05-03
+2023-06-07
 </td>
 <td style="text-align:right;">
-1943.090
+1859.090
 </td>
 <td style="text-align:right;">
-1205.63
+1122.63
 </td>
 <td style="text-align:right;">
-382
+381
 </td>
 </tr>
 <tr>
@@ -1266,16 +1286,16 @@ Diesel_0.05
 Gauteng
 </td>
 <td style="text-align:left;">
-2023-05-03
+2023-06-07
 </td>
 <td style="text-align:right;">
-2015.290
+1931.290
 </td>
 <td style="text-align:right;">
-1205.63
+1122.63
 </td>
 <td style="text-align:right;">
-382
+381
 </td>
 </tr>
 <tr>
@@ -1286,10 +1306,10 @@ Illuminating_Paraffin
 Coastal
 </td>
 <td style="text-align:left;">
-2023-05-03
+2023-06-07
 </td>
 <td style="text-align:right;">
-1346.558
+1303.558
 </td>
 <td style="text-align:right;">
 NA
@@ -1306,10 +1326,10 @@ Illuminating_Paraffin
 Gauteng
 </td>
 <td style="text-align:left;">
-2023-05-03
+2023-06-07
 </td>
 <td style="text-align:right;">
-1439.058
+1396.058
 </td>
 <td style="text-align:right;">
 NA
@@ -1326,30 +1346,10 @@ Liquefied_Petroleum_Gas
 Coastal
 </td>
 <td style="text-align:left;">
-2023-05-03
+2023-06-07
 </td>
 <td style="text-align:right;">
-3073.000
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Liquefied_Petroleum_Gas
-</td>
-<td style="text-align:left;">
-Gauteng
-</td>
-<td style="text-align:left;">
-2023-05-03
-</td>
-<td style="text-align:right;">
-3332.000
+3148.000
 </td>
 <td style="text-align:right;">
 NA
@@ -1392,7 +1392,7 @@ system.time({
     mutate(Simulated_tax = pit(Taxable_income, Age, MTC, Tax_year))
 })
 #>    user  system elapsed 
-#>    0.17    0.00    0.27
+#>    0.14    0.01    0.26
 ```
 
 ## Examples
@@ -1413,7 +1413,7 @@ GDP_fiscal <- STATSSA_P0441_GDP %>%
   filter(H03 == "QNU1000") %>% 
   group_by(Fiscal_year) %>% 
   summarise(GDP = sum(Value)) %>% 
-  filter(Fiscal_year < 2023, Fiscal_year > 1993)
+  filter(Fiscal_year < 2024, Fiscal_year > 1993)
 
 # Join together and create tax to GDP
 Tax_to_GDP <- GDP_fiscal %>% 
@@ -1425,8 +1425,8 @@ Tax_to_GDP <- GDP_fiscal %>%
 ggplot(Tax_to_GDP, aes(x = Fiscal_year, y = Tax_to_GDP)) +
   geom_line() + 
   geom_point() +
-  geom_text(aes(label = ifelse(Fiscal_year == 2022, paste0(round(Tax_to_GDP,3) * 100, "%"),'')),
-            hjust=1.2, vjust=0.5, show.legend = FALSE) +
+  geom_text(aes(label = ifelse(Fiscal_year == 2023, paste0(round(Tax_to_GDP,4) * 100, "%"),'')),
+            hjust=0.5, vjust=-0.5, show.legend = FALSE) +
   scale_y_continuous(labels = scales::percent_format(accuracy = 1L)) +
   theme_classic() +
   ylab("Tax to GDP") +
@@ -1475,8 +1475,8 @@ DMRE_fuel %>%
   ylab("Percentage of retail price") +
   ggtitle("Levies as a percentage of retail price",
           subtitle = c("Includes the general fuel levy, the Road Accident Fund levy, customs levy and DSML")) 
-#> Warning: Removed 2 rows containing missing values (`geom_line()`).
-#> Warning: Removed 2 rows containing missing values (`geom_point()`).
+#> Warning: Removed 3 rows containing missing values (`geom_line()`).
+#> Warning: Removed 3 rows containing missing values (`geom_point()`).
 ```
 
 <img src="man/figures/README-fuel-2.png" width="100%" />

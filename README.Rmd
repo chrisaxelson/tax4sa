@@ -233,7 +233,7 @@ GDP_fiscal <- STATSSA_P0441_GDP %>%
   filter(H03 == "QNU1000") %>% 
   group_by(Fiscal_year) %>% 
   summarise(GDP = sum(Value)) %>% 
-  filter(Fiscal_year < 2023, Fiscal_year > 1993)
+  filter(Fiscal_year < 2024, Fiscal_year > 1993)
 
 # Join together and create tax to GDP
 Tax_to_GDP <- GDP_fiscal %>% 
@@ -245,8 +245,8 @@ Tax_to_GDP <- GDP_fiscal %>%
 ggplot(Tax_to_GDP, aes(x = Fiscal_year, y = Tax_to_GDP)) +
   geom_line() + 
   geom_point() +
-  geom_text(aes(label = ifelse(Fiscal_year == 2022, paste0(round(Tax_to_GDP,3) * 100, "%"),'')),
-            hjust=1.2, vjust=0.5, show.legend = FALSE) +
+  geom_text(aes(label = ifelse(Fiscal_year == 2023, paste0(round(Tax_to_GDP,4) * 100, "%"),'')),
+            hjust=0.5, vjust=-0.5, show.legend = FALSE) +
   scale_y_continuous(labels = scales::percent_format(accuracy = 1L)) +
   theme_classic() +
   ylab("Tax to GDP") +

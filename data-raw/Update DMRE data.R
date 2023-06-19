@@ -51,10 +51,10 @@ Fuel_prices <- Fuel_prices %>%
 
 # Scraping petrol taxes from DMRE -----------------------------------------
 
-Month_latest <- "May "
+Month_latest <- "Jun "
 year_i <- 2023
 
-download.file("https://www.energy.gov.za/files/esources/petroleum/May2023/Petrol-margins.pdf",
+download.file("https://www.energy.gov.za/files/esources/petroleum/June2023/Petrol-margins.pdf",
               "data-raw/DMRE/DMRE_levies_2023.pdf", mode = "wb")
 
 # Actual pdf data
@@ -103,7 +103,7 @@ Fuel_prices_petrol <- fuzzy_left_join(Fuel_prices %>%
 
 # Scraping diesel taxes from DMRE  ----------------------------------------
 
-download.file("https://www.energy.gov.za/files/esources/petroleum/May2023/Diesel-margins.pdf",
+download.file("https://www.energy.gov.za/files/esources/petroleum/June2023/Diesel-margins.pdf",
               "data-raw/DMRE/DMRE_diesel_levies_2023.pdf", mode = "wb")
 
 # Actual pdf data
