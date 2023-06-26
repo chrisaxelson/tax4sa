@@ -3,6 +3,7 @@
 
 library(RSelenium)
 library(tidyverse)
+library(tidyr)
 library(readxl)
 library(rvest)
 library(janitor)
@@ -116,7 +117,7 @@ Links_to_download <- Links_df %>%
   anti_join(Package_links, by = "Link")
 
 # Get name of file without date
-Updated_files <- str_sub(Links_to_download$Link, 1, 20)
+Updated_files <- str_sub(Links_to_download$Link, 1, 11)
 
 if (nrow(Links_to_download) == 0) {
 
@@ -208,6 +209,67 @@ if (nrow(Links_to_download) == 0) {
       assign(temp_name, data_xlsx_long)
 
       do.call("use_data", list(as.name(temp_name), overwrite = TRUE))
+
+  }
+
+  # Add groups to inflation items
+  if (any(grepl("P0141_CPI_digit", Data_info$name))) {
+
+    STATSSA_weights <- read_excel("data-raw/STATSSA/STATSSA_weights.xlsx")
+
+    STATSSA_weights <- STATSSA_weights %>%
+      fill(Product_type, .direction = "up")
+
+    STATSSA_weights <- STATSSA_weights %>%
+      group_by(Product_type) %>%
+      fill(Durable_type, .direction = "up") %>%
+      ungroup()
+
+    STATSSA_P0141_CPI_digit <- STATSSA_P0141_CPI_digit %>%
+      mutate(code1 = str_sub(H03, 1, 2),
+             code2 = str_sub(H03, 1, 3),
+             code3 = str_sub(H03, 1, 4),
+             code4 = str_sub(H03, 1, 5))
+
+    STATSSA_P0141_CPI_digit <- STATSSA_P0141_CPI_digit %>%
+      left_join(STATSSA_weights %>%
+                  select(prod, Group1 = prod2), by = c("code1" = "prod"))
+
+    STATSSA_P0141_CPI_digit <- STATSSA_P0141_CPI_digit %>%
+      left_join(STATSSA_weights %>%
+                  select(prod, Group2 = prod2), by = c("code2" = "prod"))
+
+    STATSSA_P0141_CPI_digit <- STATSSA_P0141_CPI_digit %>%
+      left_join(STATSSA_weights %>%
+                  select(prod, Group3 = prod2), by = c("code3" = "prod"))
+
+    STATSSA_P0141_CPI_digit <- STATSSA_P0141_CPI_digit %>%
+      left_join(STATSSA_weights %>%
+                  select(prod, Group4 = prod2), by = c("code4" = "prod"))
+
+    STATSSA_P0141_CPI_digit <- STATSSA_P0141_CPI_digit %>%
+      mutate(Group5 = H04,
+             Group1 = str_to_sentence(Group1),
+             Group2 = str_to_sentence(Group2),
+             Group3 = str_to_sentence(Group3),
+             Group4 = str_to_sentence(Group4),
+             Group5 = str_to_sentence(Group5)) %>%
+      select(-(code1:code4))
+
+    STATSSA_P0141_CPI_digit <- STATSSA_P0141_CPI_digit %>%
+      left_join(STATSSA_weights %>% select(prod, Product_type, Durable_type, VAT_free),
+                by = c("H03" = "prod"))
+
+    STATSSA_P0141_CPI_digit <- STATSSA_P0141_CPI_digit %>%
+      mutate(Product_type = if_else(Product_type == "G", "Goods", "Services"),
+             Durable_type = case_when(
+               Durable_type == "ND" ~ "Non-durable",
+               Durable_type == "SD" ~ "Semi-durable",
+               Durable_type == "D" ~ "Durable"
+             ),
+             VAT_free = if_else(is.na(VAT_free), FALSE, TRUE))
+
+    use_data(STATSSA_P0141_CPI_digit, overwrite = TRUE)
 
   }
 

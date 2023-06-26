@@ -1055,20 +1055,6 @@ P0141
 CPI Headline
 </td>
 <td style="text-align:left;">
-MO122022
-</td>
-<td style="text-align:left;">
-107.2
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-P0141
-</td>
-<td style="text-align:left;">
-CPI Headline
-</td>
-<td style="text-align:left;">
 MO012023
 </td>
 <td style="text-align:left;">
@@ -1115,6 +1101,20 @@ MO042023
 </td>
 <td style="text-align:left;">
 109.4
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+P0141
+</td>
+<td style="text-align:left;">
+CPI Headline
+</td>
+<td style="text-align:left;">
+MO052023
+</td>
+<td style="text-align:left;">
+109.6
 </td>
 </tr>
 </tbody>
@@ -1392,7 +1392,7 @@ system.time({
     mutate(Simulated_tax = pit(Taxable_income, Age, MTC, Tax_year))
 })
 #>    user  system elapsed 
-#>    0.14    0.01    0.26
+#>    0.11    0.04    0.31
 ```
 
 ## Examples
