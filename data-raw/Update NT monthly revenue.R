@@ -2,8 +2,8 @@
 # Update NT monthly data ------------------------------------------------
 
 # Latest information - UPDATE THIS EACH MONTH
-Latest_link <- "https://www.treasury.gov.za/comm_media/press/monthly/2306/Hardcoded%20April%202023.xlsx"
-Latest_month <- "April"
+Latest_link <- "https://www.treasury.gov.za/comm_media/press/monthly/2307/Hardcoded%20database%20May%202023.xlsx"
+Latest_month <- "May"
 Latest_year <- "2023"
 
 # This should run the same way each month ---------------------------------

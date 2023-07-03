@@ -239,26 +239,6 @@ Revenue
 Health promotion levy
 </td>
 <td style="text-align:left;">
-December
-</td>
-<td style="text-align:right;">
-4
-</td>
-<td style="text-align:left;">
-2022
-</td>
-<td style="text-align:left;">
-2023
-</td>
-<td style="text-align:right;">
-209,198.2
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Health promotion levy
-</td>
-<td style="text-align:left;">
 January
 </td>
 <td style="text-align:right;">
@@ -332,6 +312,26 @@ April
 </td>
 <td style="text-align:right;">
 218,081.5
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Health promotion levy
+</td>
+<td style="text-align:left;">
+May
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:left;">
+2023
+</td>
+<td style="text-align:left;">
+2024
+</td>
+<td style="text-align:right;">
+190,794.5
 </td>
 </tr>
 </tbody>
@@ -1392,7 +1392,7 @@ system.time({
     mutate(Simulated_tax = pit(Taxable_income, Age, MTC, Tax_year))
 })
 #>    user  system elapsed 
-#>    0.11    0.04    0.31
+#>    0.14    0.04    0.59
 ```
 
 ## Examples
