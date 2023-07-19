@@ -167,11 +167,17 @@ if (nrow(Links_to_download) == 0) {
 
   }
 
+  # for (i in 5:11) {
   for (i in seq_len(nrow(Data_info))) {
 
     data_xlsx <- unzip_and_read(Data_info$file_id[i],
                                 Data_info$file_number[i],
                                 Data_info$sheet_number[i])
+
+    # # Had to manually save corrupt file
+    # data_xlsx <- read_excel("data-raw/STATSSA/Unzipped/Excel - CPI(COICOP) from January 2008 (202306).xlsx",
+    #                         sheet = 1) %>%
+    #   mutate(across(everything(), as.character))
 
       data_xlsx_long <- data_xlsx %>%
         pivot_longer(-(H01:Data_info$final_column[i]), names_to = "Date_original", values_to = "Value") %>%
