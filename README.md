@@ -1025,6 +1025,8 @@ Current prices
 STATSSA_P0141_CPI_COICOP %>% 
   filter(H04 == "CPI Headline") %>%
   select(H01, H04, Date_original, Value) %>% 
+  mutate(Annual_inflation = as.numeric(Value) / as.numeric(lag(Value, 12)) - 1,
+         Annual_inflation = round(Annual_inflation * 100, 3)) %>% 
   tail(5) %>% 
   kable()
 ```
@@ -1044,23 +1046,12 @@ Date_original
 <th style="text-align:left;">
 Value
 </th>
+<th style="text-align:right;">
+Annual_inflation
+</th>
 </tr>
 </thead>
 <tbody>
-<tr>
-<td style="text-align:left;">
-P0141
-</td>
-<td style="text-align:left;">
-CPI Headline
-</td>
-<td style="text-align:left;">
-MO012023
-</td>
-<td style="text-align:left;">
-107.1
-</td>
-</tr>
 <tr>
 <td style="text-align:left;">
 P0141
@@ -1073,6 +1064,9 @@ MO022023
 </td>
 <td style="text-align:left;">
 107.9
+</td>
+<td style="text-align:right;">
+7.044
 </td>
 </tr>
 <tr>
@@ -1088,6 +1082,9 @@ MO032023
 <td style="text-align:left;">
 109
 </td>
+<td style="text-align:right;">
+7.073
+</td>
 </tr>
 <tr>
 <td style="text-align:left;">
@@ -1102,6 +1099,9 @@ MO042023
 <td style="text-align:left;">
 109.4
 </td>
+<td style="text-align:right;">
+6.836
+</td>
 </tr>
 <tr>
 <td style="text-align:left;">
@@ -1115,6 +1115,26 @@ MO052023
 </td>
 <td style="text-align:left;">
 109.6
+</td>
+<td style="text-align:right;">
+6.305
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+P0141
+</td>
+<td style="text-align:left;">
+CPI Headline
+</td>
+<td style="text-align:left;">
+MO062023
+</td>
+<td style="text-align:left;">
+109.8
+</td>
+<td style="text-align:right;">
+5.374
 </td>
 </tr>
 </tbody>
@@ -1392,7 +1412,7 @@ system.time({
     mutate(Simulated_tax = pit(Taxable_income, Age, MTC, Tax_year))
 })
 #>    user  system elapsed 
-#>    0.14    0.04    0.59
+#>    0.09    0.04    0.31
 ```
 
 ## Examples
