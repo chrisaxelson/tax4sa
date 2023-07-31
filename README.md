@@ -239,26 +239,6 @@ Revenue
 Health promotion levy
 </td>
 <td style="text-align:left;">
-January
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:left;">
-2023
-</td>
-<td style="text-align:left;">
-2023
-</td>
-<td style="text-align:right;">
-220,373.0
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Health promotion levy
-</td>
-<td style="text-align:left;">
 February
 </td>
 <td style="text-align:right;">
@@ -332,6 +312,26 @@ May
 </td>
 <td style="text-align:right;">
 190,794.5
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Health promotion levy
+</td>
+<td style="text-align:left;">
+June
+</td>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:left;">
+2023
+</td>
+<td style="text-align:left;">
+2024
+</td>
+<td style="text-align:right;">
+113,085.2
 </td>
 </tr>
 </tbody>
@@ -1186,13 +1186,13 @@ General_fuel_levy
 Gauteng
 </td>
 <td style="text-align:left;">
-2023-06-07
+2023-07-05
 </td>
 <td style="text-align:right;">
-2230.000
+2206.000
 </td>
 <td style="text-align:right;">
-1225.97
+1208.97
 </td>
 <td style="text-align:right;">
 395
@@ -1206,13 +1206,13 @@ Gauteng
 Coastal
 </td>
 <td style="text-align:left;">
-2023-06-07
+2023-07-05
 </td>
 <td style="text-align:right;">
-2191.000
+2174.000
 </td>
 <td style="text-align:right;">
-1225.97
+1208.97
 </td>
 <td style="text-align:right;">
 395
@@ -1226,13 +1226,13 @@ Coastal
 Gauteng
 </td>
 <td style="text-align:left;">
-2023-06-07
+2023-07-05
 </td>
 <td style="text-align:right;">
-2263.000
+2246.000
 </td>
 <td style="text-align:right;">
-1225.97
+1208.97
 </td>
 <td style="text-align:right;">
 395
@@ -1246,13 +1246,13 @@ Diesel_0.005
 Coastal
 </td>
 <td style="text-align:left;">
-2023-06-07
+2023-07-05
 </td>
 <td style="text-align:right;">
-1897.490
+1909.490
 </td>
 <td style="text-align:right;">
-1161.03
+1173.03
 </td>
 <td style="text-align:right;">
 381
@@ -1266,13 +1266,13 @@ Diesel_0.005
 Gauteng
 </td>
 <td style="text-align:left;">
-2023-06-07
+2023-07-05
 </td>
 <td style="text-align:right;">
-1969.690
+1981.690
 </td>
 <td style="text-align:right;">
-1161.03
+1173.03
 </td>
 <td style="text-align:right;">
 381
@@ -1286,13 +1286,13 @@ Diesel_0.05
 Coastal
 </td>
 <td style="text-align:left;">
-2023-06-07
+2023-07-05
 </td>
 <td style="text-align:right;">
-1859.090
+1877.090
 </td>
 <td style="text-align:right;">
-1122.63
+1140.63
 </td>
 <td style="text-align:right;">
 381
@@ -1306,13 +1306,13 @@ Diesel_0.05
 Gauteng
 </td>
 <td style="text-align:left;">
-2023-06-07
+2023-07-05
 </td>
 <td style="text-align:right;">
-1931.290
+1949.290
 </td>
 <td style="text-align:right;">
-1122.63
+1140.63
 </td>
 <td style="text-align:right;">
 381
@@ -1326,10 +1326,10 @@ Illuminating_Paraffin
 Coastal
 </td>
 <td style="text-align:left;">
-2023-06-07
+2023-07-05
 </td>
 <td style="text-align:right;">
-1303.558
+1299.558
 </td>
 <td style="text-align:right;">
 NA
@@ -1346,10 +1346,10 @@ Illuminating_Paraffin
 Gauteng
 </td>
 <td style="text-align:left;">
-2023-06-07
+2023-07-05
 </td>
 <td style="text-align:right;">
-1396.058
+1392.058
 </td>
 <td style="text-align:right;">
 NA
@@ -1366,10 +1366,10 @@ Liquefied_Petroleum_Gas
 Coastal
 </td>
 <td style="text-align:left;">
-2023-06-07
+2023-07-05
 </td>
 <td style="text-align:right;">
-3148.000
+2853.000
 </td>
 <td style="text-align:right;">
 NA
@@ -1412,7 +1412,7 @@ system.time({
     mutate(Simulated_tax = pit(Taxable_income, Age, MTC, Tax_year))
 })
 #>    user  system elapsed 
-#>    0.09    0.04    0.31
+#>    0.07    0.06    0.26
 ```
 
 ## Examples
@@ -1495,8 +1495,8 @@ DMRE_fuel %>%
   ylab("Percentage of retail price") +
   ggtitle("Levies as a percentage of retail price",
           subtitle = c("Includes the general fuel levy, the Road Accident Fund levy, customs levy and DSML")) 
-#> Warning: Removed 3 rows containing missing values (`geom_line()`).
-#> Warning: Removed 3 rows containing missing values (`geom_point()`).
+#> Warning: Removed 4 rows containing missing values (`geom_line()`).
+#> Warning: Removed 4 rows containing missing values (`geom_point()`).
 ```
 
 <img src="man/figures/README-fuel-2.png" width="100%" />
