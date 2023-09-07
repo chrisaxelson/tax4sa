@@ -239,26 +239,6 @@ Revenue
 Health promotion levy
 </td>
 <td style="text-align:left;">
-February
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:left;">
-2023
-</td>
-<td style="text-align:left;">
-2023
-</td>
-<td style="text-align:right;">
-185,385.2
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Health promotion levy
-</td>
-<td style="text-align:left;">
 March
 </td>
 <td style="text-align:right;">
@@ -332,6 +312,26 @@ June
 </td>
 <td style="text-align:right;">
 113,085.2
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Health promotion levy
+</td>
+<td style="text-align:left;">
+July
+</td>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:left;">
+2023
+</td>
+<td style="text-align:left;">
+2024
+</td>
+<td style="text-align:right;">
+160,730.1
 </td>
 </tr>
 </tbody>
@@ -1060,23 +1060,6 @@ P0141
 CPI Headline
 </td>
 <td style="text-align:left;">
-MO022023
-</td>
-<td style="text-align:left;">
-107.9
-</td>
-<td style="text-align:right;">
-7.044
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-P0141
-</td>
-<td style="text-align:left;">
-CPI Headline
-</td>
-<td style="text-align:left;">
 MO032023
 </td>
 <td style="text-align:left;">
@@ -1135,6 +1118,23 @@ MO062023
 </td>
 <td style="text-align:right;">
 5.374
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+P0141
+</td>
+<td style="text-align:left;">
+CPI Headline
+</td>
+<td style="text-align:left;">
+MO072023
+</td>
+<td style="text-align:left;">
+110.8
+</td>
+<td style="text-align:right;">
+4.726
 </td>
 </tr>
 </tbody>
@@ -1412,7 +1412,7 @@ system.time({
     mutate(Simulated_tax = pit(Taxable_income, Age, MTC, Tax_year))
 })
 #>    user  system elapsed 
-#>    0.07    0.06    0.26
+#>    0.05    0.06    0.36
 ```
 
 ## Examples
