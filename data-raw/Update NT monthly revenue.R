@@ -2,8 +2,8 @@
 # Update NT monthly data ------------------------------------------------
 
 # Latest information - UPDATE THIS EACH MONTH
-Latest_link <- "https://www.treasury.gov.za/comm_media/press/monthly/2309/Hardcoded%20database%20July%202023.xlsx"
-Latest_month <- "July"
+Latest_link <- "https://www.treasury.gov.za/comm_media/press/monthly/2402/Hardcoded%20database%20December%202023.xlsx"
+Latest_month <- "December"
 Latest_year <- "2023"
 
 # This should run the same way each month ---------------------------------
@@ -105,5 +105,5 @@ saveWorkbook(wb2, file = "data-raw/NT/Revenue.xlsx", overwrite = TRUE)
 
 source("data-raw/NT/Importing original revenue data.R")
 # source("README.Rmd")
-devtools::document()
+# devtools::document()
 

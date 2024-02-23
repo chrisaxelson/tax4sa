@@ -82,117 +82,15 @@ NT_Budget_revenue %>%
         caption = "Annual tax revenue (R'000s)")
 ```
 
-<table>
-<caption>
+| T1                          | T2                      | T3                                                  | Year    |     Revenue |
+|:----------------------------|:------------------------|:----------------------------------------------------|:--------|------------:|
+| Taxes on income and profits | Personal income tax     | Personal income tax                                 | 2022/23 | 600,366,808 |
+| Taxes on income and profits | Tax on corporate income | Corporate income tax                                | 2022/23 | 344,659,912 |
+| Taxes on income and profits | Tax on corporate income | Secondary tax on companies/dividend withholding tax | 2022/23 |  38,118,709 |
+| Taxes on income and profits | Tax on corporate income | Interest withholding tax                            | 2022/23 |     725,925 |
+| Taxes on income and profits | Other                   | Interest on overdue income tax                      | 2022/23 |   4,633,907 |
+
 Annual tax revenue (R’000s)
-</caption>
-<thead>
-<tr>
-<th style="text-align:left;">
-T1
-</th>
-<th style="text-align:left;">
-T2
-</th>
-<th style="text-align:left;">
-T3
-</th>
-<th style="text-align:left;">
-Year
-</th>
-<th style="text-align:right;">
-Revenue
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:left;">
-Taxes on income and profits
-</td>
-<td style="text-align:left;">
-Personal income tax
-</td>
-<td style="text-align:left;">
-Personal income tax
-</td>
-<td style="text-align:left;">
-2022/23
-</td>
-<td style="text-align:right;">
-600,366,808
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Taxes on income and profits
-</td>
-<td style="text-align:left;">
-Tax on corporate income
-</td>
-<td style="text-align:left;">
-Corporate income tax
-</td>
-<td style="text-align:left;">
-2022/23
-</td>
-<td style="text-align:right;">
-344,659,912
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Taxes on income and profits
-</td>
-<td style="text-align:left;">
-Tax on corporate income
-</td>
-<td style="text-align:left;">
-Secondary tax on companies/dividend withholding tax
-</td>
-<td style="text-align:left;">
-2022/23
-</td>
-<td style="text-align:right;">
-38,118,709
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Taxes on income and profits
-</td>
-<td style="text-align:left;">
-Tax on corporate income
-</td>
-<td style="text-align:left;">
-Interest withholding tax
-</td>
-<td style="text-align:left;">
-2022/23
-</td>
-<td style="text-align:right;">
-725,925
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Taxes on income and profits
-</td>
-<td style="text-align:left;">
-Other
-</td>
-<td style="text-align:left;">
-Interest on overdue income tax
-</td>
-<td style="text-align:left;">
-2022/23
-</td>
-<td style="text-align:right;">
-4,633,907
-</td>
-</tr>
-</tbody>
-</table>
 
 ``` r
 
@@ -207,135 +105,15 @@ NT_S32_revenue %>%
         caption = "Monthly health promotion levy revenue (R'000s)") 
 ```
 
-<table>
-<caption>
+| Tax                   | Month     | Quarter | Year | Fiscal_year |   Revenue |
+|:----------------------|:----------|--------:|:-----|:------------|----------:|
+| Health promotion levy | August    |       3 | 2023 | 2024        | 154,241.0 |
+| Health promotion levy | September |       3 | 2023 | 2024        | 175,952.6 |
+| Health promotion levy | October   |       4 | 2023 | 2024        | 205,979.1 |
+| Health promotion levy | November  |       4 | 2023 | 2024        | 211,331.1 |
+| Health promotion levy | December  |       4 | 2023 | 2024        | 203,251.9 |
+
 Monthly health promotion levy revenue (R’000s)
-</caption>
-<thead>
-<tr>
-<th style="text-align:left;">
-Tax
-</th>
-<th style="text-align:left;">
-Month
-</th>
-<th style="text-align:right;">
-Quarter
-</th>
-<th style="text-align:left;">
-Year
-</th>
-<th style="text-align:left;">
-Fiscal_year
-</th>
-<th style="text-align:right;">
-Revenue
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:left;">
-Health promotion levy
-</td>
-<td style="text-align:left;">
-March
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:left;">
-2023
-</td>
-<td style="text-align:left;">
-2023
-</td>
-<td style="text-align:right;">
-197,807.8
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Health promotion levy
-</td>
-<td style="text-align:left;">
-April
-</td>
-<td style="text-align:right;">
-2
-</td>
-<td style="text-align:left;">
-2023
-</td>
-<td style="text-align:left;">
-2024
-</td>
-<td style="text-align:right;">
-218,081.5
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Health promotion levy
-</td>
-<td style="text-align:left;">
-May
-</td>
-<td style="text-align:right;">
-2
-</td>
-<td style="text-align:left;">
-2023
-</td>
-<td style="text-align:left;">
-2024
-</td>
-<td style="text-align:right;">
-190,794.5
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Health promotion levy
-</td>
-<td style="text-align:left;">
-June
-</td>
-<td style="text-align:right;">
-2
-</td>
-<td style="text-align:left;">
-2023
-</td>
-<td style="text-align:left;">
-2024
-</td>
-<td style="text-align:right;">
-113,085.2
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Health promotion levy
-</td>
-<td style="text-align:left;">
-July
-</td>
-<td style="text-align:right;">
-3
-</td>
-<td style="text-align:left;">
-2023
-</td>
-<td style="text-align:left;">
-2024
-</td>
-<td style="text-align:right;">
-160,730.1
-</td>
-</tr>
-</tbody>
-</table>
 
 Or you can download the annual and monthly data in one spreadsheet.
 
@@ -358,100 +136,14 @@ NT_Budget_forecasts %>%
         caption = "Tax revenue forecasts (R million)")
 ```
 
-<table>
-<caption>
+| Source | Publication_year | Category          | Forecast_year |  Forecast |
+|:-------|:-----------------|:------------------|:--------------|----------:|
+| Budget | 2023             | Gross tax revenue | 2022/23       | 1,692,177 |
+| Budget | 2023             | Gross tax revenue | 2023/24       | 1,787,456 |
+| Budget | 2023             | Gross tax revenue | 2024/25       | 1,907,727 |
+| Budget | 2023             | Gross tax revenue | 2025/26       | 2,043,456 |
+
 Tax revenue forecasts (R million)
-</caption>
-<thead>
-<tr>
-<th style="text-align:left;">
-Source
-</th>
-<th style="text-align:left;">
-Publication_year
-</th>
-<th style="text-align:left;">
-Category
-</th>
-<th style="text-align:left;">
-Forecast_year
-</th>
-<th style="text-align:right;">
-Forecast
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:left;">
-Budget
-</td>
-<td style="text-align:left;">
-2023
-</td>
-<td style="text-align:left;">
-Gross tax revenue
-</td>
-<td style="text-align:left;">
-2022/23
-</td>
-<td style="text-align:right;">
-1,692,177
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Budget
-</td>
-<td style="text-align:left;">
-2023
-</td>
-<td style="text-align:left;">
-Gross tax revenue
-</td>
-<td style="text-align:left;">
-2023/24
-</td>
-<td style="text-align:right;">
-1,787,456
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Budget
-</td>
-<td style="text-align:left;">
-2023
-</td>
-<td style="text-align:left;">
-Gross tax revenue
-</td>
-<td style="text-align:left;">
-2024/25
-</td>
-<td style="text-align:right;">
-1,907,727
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Budget
-</td>
-<td style="text-align:left;">
-2023
-</td>
-<td style="text-align:left;">
-Gross tax revenue
-</td>
-<td style="text-align:left;">
-2025/26
-</td>
-<td style="text-align:right;">
-2,043,456
-</td>
-</tr>
-</tbody>
-</table>
 
 Or you can download the forecasts in one spreadsheet.
 
@@ -507,189 +199,15 @@ tbl(con, "SARS_*.parquet") %>%
         caption = "Monthly trade data")
 ```
 
-<table>
-<caption>
+| TradeType | District    | Origin       | Destination | Unit | YearMonth | ChapterAndDescription                               | Quantity | Value_ZAR |
+|:----------|:------------|:-------------|:------------|:-----|:----------|:----------------------------------------------------|---------:|----------:|
+| Exports   | Beit Bridge | South Africa | Mozambique  | NO   | 202301    | 85 - Cellphones, Electrical Equipment and Machinery |     1.00 |   430,000 |
+| Exports   | Beit Bridge | South Africa | Tanzania    | KG   | 202303    | 68 - Stone, plaster, cement and Asbestos            |   522.77 |    10,888 |
+| Exports   | Beit Bridge | South Africa | Tanzania    | KG   | 202301    | 39 - Plastics and articles thereof                  | 1,593.60 |   254,518 |
+| Exports   | Beit Bridge | South Africa | Mozambique  | NO   | 202303    | 85 - Cellphones, Electrical Equipment and Machinery |     1.00 | 1,138,889 |
+| Exports   | Beit Bridge | South Africa | Mozambique  | NO   | 202302    | 90 - Medical and Photographic Equipment             |     2.00 |     3,859 |
+
 Monthly trade data
-</caption>
-<thead>
-<tr>
-<th style="text-align:left;">
-TradeType
-</th>
-<th style="text-align:left;">
-District
-</th>
-<th style="text-align:left;">
-Origin
-</th>
-<th style="text-align:left;">
-Destination
-</th>
-<th style="text-align:left;">
-Unit
-</th>
-<th style="text-align:left;">
-YearMonth
-</th>
-<th style="text-align:left;">
-ChapterAndDescription
-</th>
-<th style="text-align:right;">
-Quantity
-</th>
-<th style="text-align:right;">
-Value_ZAR
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:left;">
-Exports
-</td>
-<td style="text-align:left;">
-Beit Bridge
-</td>
-<td style="text-align:left;">
-South Africa
-</td>
-<td style="text-align:left;">
-Mozambique
-</td>
-<td style="text-align:left;">
-NO
-</td>
-<td style="text-align:left;">
-202301
-</td>
-<td style="text-align:left;">
-85 - Cellphones, Electrical Equipment and Machinery
-</td>
-<td style="text-align:right;">
-1.00
-</td>
-<td style="text-align:right;">
-430,000
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Exports
-</td>
-<td style="text-align:left;">
-Beit Bridge
-</td>
-<td style="text-align:left;">
-South Africa
-</td>
-<td style="text-align:left;">
-Tanzania
-</td>
-<td style="text-align:left;">
-KG
-</td>
-<td style="text-align:left;">
-202303
-</td>
-<td style="text-align:left;">
-68 - Stone, plaster, cement and Asbestos
-</td>
-<td style="text-align:right;">
-522.77
-</td>
-<td style="text-align:right;">
-10,888
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Exports
-</td>
-<td style="text-align:left;">
-Beit Bridge
-</td>
-<td style="text-align:left;">
-South Africa
-</td>
-<td style="text-align:left;">
-Tanzania
-</td>
-<td style="text-align:left;">
-KG
-</td>
-<td style="text-align:left;">
-202301
-</td>
-<td style="text-align:left;">
-39 - Plastics and articles thereof
-</td>
-<td style="text-align:right;">
-1,593.60
-</td>
-<td style="text-align:right;">
-254,518
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Exports
-</td>
-<td style="text-align:left;">
-Beit Bridge
-</td>
-<td style="text-align:left;">
-South Africa
-</td>
-<td style="text-align:left;">
-Mozambique
-</td>
-<td style="text-align:left;">
-NO
-</td>
-<td style="text-align:left;">
-202303
-</td>
-<td style="text-align:left;">
-85 - Cellphones, Electrical Equipment and Machinery
-</td>
-<td style="text-align:right;">
-1.00
-</td>
-<td style="text-align:right;">
-1,138,889
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Exports
-</td>
-<td style="text-align:left;">
-Beit Bridge
-</td>
-<td style="text-align:left;">
-South Africa
-</td>
-<td style="text-align:left;">
-Mozambique
-</td>
-<td style="text-align:left;">
-NO
-</td>
-<td style="text-align:left;">
-202302
-</td>
-<td style="text-align:left;">
-90 - Medical and Photographic Equipment
-</td>
-<td style="text-align:right;">
-2.00
-</td>
-<td style="text-align:right;">
-3,859
-</td>
-</tr>
-</tbody>
-</table>
 
 ## South African Reserve Bank
 
@@ -701,96 +219,13 @@ SARB_Quarterly_Bulletin_info %>%
   kable()
 ```
 
-<table>
-<thead>
-<tr>
-<th style="text-align:left;">
-Code
-</th>
-<th style="text-align:left;">
-Frequency_description
-</th>
-<th style="text-align:left;">
-Unit_of_measure
-</th>
-<th style="text-align:left;">
-Version_description
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:left;">
-KBP6006C
-</td>
-<td style="text-align:left;">
-Quarterly
-</td>
-<td style="text-align:left;">
-RMILL
-</td>
-<td style="text-align:left;">
-Constant 2010 prices
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-KBP6006D
-</td>
-<td style="text-align:left;">
-Quarterly
-</td>
-<td style="text-align:left;">
-RMILL
-</td>
-<td style="text-align:left;">
-Constant 2010 prices. Seasonally adjusted at annual rate
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-KBP6006K
-</td>
-<td style="text-align:left;">
-Quarterly
-</td>
-<td style="text-align:left;">
-RMILL
-</td>
-<td style="text-align:left;">
-Current prices
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-KBP6006L
-</td>
-<td style="text-align:left;">
-Quarterly
-</td>
-<td style="text-align:left;">
-RMILL
-</td>
-<td style="text-align:left;">
-Current prices. Seasonally adjusted at annual rate
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-KBP6006S
-</td>
-<td style="text-align:left;">
-Quarterly
-</td>
-<td style="text-align:left;">
-PERC
-</td>
-<td style="text-align:left;">
-1-Term % change
-</td>
-</tr>
-</tbody>
-</table>
+| Code     | Frequency_description | Unit_of_measure | Version_description                                      |
+|:---------|:----------------------|:----------------|:---------------------------------------------------------|
+| KBP6006C | Quarterly             | RMILL           | Constant 2010 prices                                     |
+| KBP6006D | Quarterly             | RMILL           | Constant 2010 prices. Seasonally adjusted at annual rate |
+| KBP6006K | Quarterly             | RMILL           | Current prices                                           |
+| KBP6006L | Quarterly             | RMILL           | Current prices. Seasonally adjusted at annual rate       |
+| KBP6006S | Quarterly             | PERC            | 1-Term % change                                          |
 
 ``` r
 
@@ -801,222 +236,13 @@ SARB_Quarterly_Bulletin %>%
   kable()
 ```
 
-<table>
-<thead>
-<tr>
-<th style="text-align:left;">
-Code
-</th>
-<th style="text-align:right;">
-Date
-</th>
-<th style="text-align:left;">
-Frequency
-</th>
-<th style="text-align:right;">
-Quarter
-</th>
-<th style="text-align:right;">
-Year
-</th>
-<th style="text-align:right;">
-Fiscal_year
-</th>
-<th style="text-align:right;">
-Value
-</th>
-<th style="text-align:left;">
-Description
-</th>
-<th style="text-align:left;">
-Frequency_description
-</th>
-<th style="text-align:left;">
-Unit_of_measure
-</th>
-<th style="text-align:left;">
-Version_description
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:left;">
-KBP6006K
-</td>
-<td style="text-align:right;">
-20210400
-</td>
-<td style="text-align:left;">
-K1
-</td>
-<td style="text-align:right;">
-4
-</td>
-<td style="text-align:right;">
-2021
-</td>
-<td style="text-align:right;">
-2022
-</td>
-<td style="text-align:right;">
-1596999
-</td>
-<td style="text-align:left;">
-Gross domestic product at market prices
-</td>
-<td style="text-align:left;">
-Quarterly
-</td>
-<td style="text-align:left;">
-RMILL
-</td>
-<td style="text-align:left;">
-Current prices
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-KBP6006K
-</td>
-<td style="text-align:right;">
-20220100
-</td>
-<td style="text-align:left;">
-K1
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:right;">
-2022
-</td>
-<td style="text-align:right;">
-2022
-</td>
-<td style="text-align:right;">
-1566140
-</td>
-<td style="text-align:left;">
-Gross domestic product at market prices
-</td>
-<td style="text-align:left;">
-Quarterly
-</td>
-<td style="text-align:left;">
-RMILL
-</td>
-<td style="text-align:left;">
-Current prices
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-KBP6006K
-</td>
-<td style="text-align:right;">
-20220200
-</td>
-<td style="text-align:left;">
-K1
-</td>
-<td style="text-align:right;">
-2
-</td>
-<td style="text-align:right;">
-2022
-</td>
-<td style="text-align:right;">
-2023
-</td>
-<td style="text-align:right;">
-1666304
-</td>
-<td style="text-align:left;">
-Gross domestic product at market prices
-</td>
-<td style="text-align:left;">
-Quarterly
-</td>
-<td style="text-align:left;">
-RMILL
-</td>
-<td style="text-align:left;">
-Current prices
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-KBP6006K
-</td>
-<td style="text-align:right;">
-20220300
-</td>
-<td style="text-align:left;">
-K1
-</td>
-<td style="text-align:right;">
-3
-</td>
-<td style="text-align:right;">
-2022
-</td>
-<td style="text-align:right;">
-2023
-</td>
-<td style="text-align:right;">
-1702461
-</td>
-<td style="text-align:left;">
-Gross domestic product at market prices
-</td>
-<td style="text-align:left;">
-Quarterly
-</td>
-<td style="text-align:left;">
-RMILL
-</td>
-<td style="text-align:left;">
-Current prices
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-KBP6006K
-</td>
-<td style="text-align:right;">
-20220400
-</td>
-<td style="text-align:left;">
-K1
-</td>
-<td style="text-align:right;">
-4
-</td>
-<td style="text-align:right;">
-2022
-</td>
-<td style="text-align:right;">
-2023
-</td>
-<td style="text-align:right;">
-1703441
-</td>
-<td style="text-align:left;">
-Gross domestic product at market prices
-</td>
-<td style="text-align:left;">
-Quarterly
-</td>
-<td style="text-align:left;">
-RMILL
-</td>
-<td style="text-align:left;">
-Current prices
-</td>
-</tr>
-</tbody>
-</table>
+| Code     |     Date | Frequency | Quarter | Year | Fiscal_year |   Value |
+|:---------|---------:|:----------|--------:|-----:|------------:|--------:|
+| KBP6006K | 20220300 | K1        |       3 | 2022 |        2023 | 1699053 |
+| KBP6006K | 20220400 | K1        |       4 | 2022 |        2023 | 1694095 |
+| KBP6006K | 20230100 | K1        |       1 | 2023 |        2023 | 1662125 |
+| KBP6006K | 20230200 | K1        |       2 | 2023 |        2024 | 1741713 |
+| KBP6006K | 20230300 | K1        |       3 | 2023 |        2024 | 1767282 |
 
 ## Statistics South Africa
 
@@ -1031,114 +257,13 @@ STATSSA_P0141_CPI_COICOP %>%
   kable()
 ```
 
-<table>
-<thead>
-<tr>
-<th style="text-align:left;">
-H01
-</th>
-<th style="text-align:left;">
-H04
-</th>
-<th style="text-align:left;">
-Date_original
-</th>
-<th style="text-align:left;">
-Value
-</th>
-<th style="text-align:right;">
-Annual_inflation
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:left;">
-P0141
-</td>
-<td style="text-align:left;">
-CPI Headline
-</td>
-<td style="text-align:left;">
-MO032023
-</td>
-<td style="text-align:left;">
-109
-</td>
-<td style="text-align:right;">
-7.073
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-P0141
-</td>
-<td style="text-align:left;">
-CPI Headline
-</td>
-<td style="text-align:left;">
-MO042023
-</td>
-<td style="text-align:left;">
-109.4
-</td>
-<td style="text-align:right;">
-6.836
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-P0141
-</td>
-<td style="text-align:left;">
-CPI Headline
-</td>
-<td style="text-align:left;">
-MO052023
-</td>
-<td style="text-align:left;">
-109.6
-</td>
-<td style="text-align:right;">
-6.305
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-P0141
-</td>
-<td style="text-align:left;">
-CPI Headline
-</td>
-<td style="text-align:left;">
-MO062023
-</td>
-<td style="text-align:left;">
-109.8
-</td>
-<td style="text-align:right;">
-5.374
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-P0141
-</td>
-<td style="text-align:left;">
-CPI Headline
-</td>
-<td style="text-align:left;">
-MO072023
-</td>
-<td style="text-align:left;">
-110.8
-</td>
-<td style="text-align:right;">
-4.726
-</td>
-</tr>
-</tbody>
-</table>
+| H01   | H04          | Date_original | Value | Annual_inflation |
+|:------|:-------------|:--------------|:------|-----------------:|
+| P0141 | CPI Headline | MO032023      | 109   |            7.073 |
+| P0141 | CPI Headline | MO042023      | 109.4 |            6.836 |
+| P0141 | CPI Headline | MO052023      | 109.6 |            6.305 |
+| P0141 | CPI Headline | MO062023      | 109.8 |            5.374 |
+| P0141 | CPI Headline | MO072023      | 110.8 |            4.726 |
 
 ## Department of Mineral Resources and Energy
 
@@ -1154,232 +279,18 @@ DMRE_fuel %>%
   kable()
 ```
 
-<table>
-<thead>
-<tr>
-<th style="text-align:left;">
-Fuel_type
-</th>
-<th style="text-align:left;">
-Region
-</th>
-<th style="text-align:left;">
-Date
-</th>
-<th style="text-align:right;">
-Price
-</th>
-<th style="text-align:right;">
-Basic_fuel_price
-</th>
-<th style="text-align:right;">
-General_fuel_levy
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:left;">
-93_ULP
-</td>
-<td style="text-align:left;">
-Gauteng
-</td>
-<td style="text-align:left;">
-2023-07-05
-</td>
-<td style="text-align:right;">
-2206.000
-</td>
-<td style="text-align:right;">
-1208.97
-</td>
-<td style="text-align:right;">
-395
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-95_ULP
-</td>
-<td style="text-align:left;">
-Coastal
-</td>
-<td style="text-align:left;">
-2023-07-05
-</td>
-<td style="text-align:right;">
-2174.000
-</td>
-<td style="text-align:right;">
-1208.97
-</td>
-<td style="text-align:right;">
-395
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-95_ULP
-</td>
-<td style="text-align:left;">
-Gauteng
-</td>
-<td style="text-align:left;">
-2023-07-05
-</td>
-<td style="text-align:right;">
-2246.000
-</td>
-<td style="text-align:right;">
-1208.97
-</td>
-<td style="text-align:right;">
-395
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Diesel_0.005
-</td>
-<td style="text-align:left;">
-Coastal
-</td>
-<td style="text-align:left;">
-2023-07-05
-</td>
-<td style="text-align:right;">
-1909.490
-</td>
-<td style="text-align:right;">
-1173.03
-</td>
-<td style="text-align:right;">
-381
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Diesel_0.005
-</td>
-<td style="text-align:left;">
-Gauteng
-</td>
-<td style="text-align:left;">
-2023-07-05
-</td>
-<td style="text-align:right;">
-1981.690
-</td>
-<td style="text-align:right;">
-1173.03
-</td>
-<td style="text-align:right;">
-381
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Diesel_0.05
-</td>
-<td style="text-align:left;">
-Coastal
-</td>
-<td style="text-align:left;">
-2023-07-05
-</td>
-<td style="text-align:right;">
-1877.090
-</td>
-<td style="text-align:right;">
-1140.63
-</td>
-<td style="text-align:right;">
-381
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Diesel_0.05
-</td>
-<td style="text-align:left;">
-Gauteng
-</td>
-<td style="text-align:left;">
-2023-07-05
-</td>
-<td style="text-align:right;">
-1949.290
-</td>
-<td style="text-align:right;">
-1140.63
-</td>
-<td style="text-align:right;">
-381
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Illuminating_Paraffin
-</td>
-<td style="text-align:left;">
-Coastal
-</td>
-<td style="text-align:left;">
-2023-07-05
-</td>
-<td style="text-align:right;">
-1299.558
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Illuminating_Paraffin
-</td>
-<td style="text-align:left;">
-Gauteng
-</td>
-<td style="text-align:left;">
-2023-07-05
-</td>
-<td style="text-align:right;">
-1392.058
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Liquefied_Petroleum_Gas
-</td>
-<td style="text-align:left;">
-Coastal
-</td>
-<td style="text-align:left;">
-2023-07-05
-</td>
-<td style="text-align:right;">
-2853.000
-</td>
-<td style="text-align:right;">
-NA
-</td>
-<td style="text-align:right;">
-NA
-</td>
-</tr>
-</tbody>
-</table>
+| Fuel_type               | Region  | Date       |    Price | Basic_fuel_price | General_fuel_levy |
+|:------------------------|:--------|:-----------|---------:|-----------------:|------------------:|
+| 93_ULP                  | Gauteng | 2023-07-05 | 2206.000 |          1208.97 |               395 |
+| 95_ULP                  | Coastal | 2023-07-05 | 2174.000 |          1208.97 |               395 |
+| 95_ULP                  | Gauteng | 2023-07-05 | 2246.000 |          1208.97 |               395 |
+| Diesel_0.005            | Coastal | 2023-07-05 | 1909.490 |          1173.03 |               381 |
+| Diesel_0.005            | Gauteng | 2023-07-05 | 1981.690 |          1173.03 |               381 |
+| Diesel_0.05             | Coastal | 2023-07-05 | 1877.090 |          1140.63 |               381 |
+| Diesel_0.05             | Gauteng | 2023-07-05 | 1949.290 |          1140.63 |               381 |
+| Illuminating_Paraffin   | Coastal | 2023-07-05 | 1299.558 |               NA |                NA |
+| Illuminating_Paraffin   | Gauteng | 2023-07-05 | 1392.058 |               NA |                NA |
+| Liquefied_Petroleum_Gas | Coastal | 2023-07-05 | 2853.000 |               NA |                NA |
 
 ## Functions
 
@@ -1412,7 +323,7 @@ system.time({
     mutate(Simulated_tax = pit(Taxable_income, Age, MTC, Tax_year))
 })
 #>    user  system elapsed 
-#>    0.05    0.06    0.36
+#>    0.40    0.11    0.52
 ```
 
 ## Examples
