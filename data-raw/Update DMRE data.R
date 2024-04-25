@@ -10,7 +10,7 @@ library(fuzzyjoin)
 
 # Scraping from SAPIA -----------------------------------------------------
 
-content <- read_html("https://www.sapia.org.za/fuel-prices")
+content <- read_html("https://www.sapia.org.za/fuel-prices/")
 
 tables <- content %>% html_table(fill = TRUE)
 
@@ -27,14 +27,14 @@ colnames(Coastal) <- c("Fuel_type", colnames(Coastal)[-1])
 Coastal <- Coastal %>%
   mutate(Region = "Coastal") %>%
   pivot_longer(contains(" "), names_to = "Date", values_to = "Price") %>%
-  mutate(Date = paste(Date, table_year))
+  mutate(Date = paste(str_sub(Date,1,6), table_year))
 
 Gauteng <- table_i[c(9:15), ]
 colnames(Gauteng) <- c("Fuel_type", colnames(Gauteng)[-1])
 Gauteng <- Gauteng %>%
   mutate(Region = "Gauteng") %>%
   pivot_longer(contains(" "), names_to = "Date", values_to = "Price") %>%
-  mutate(Date = paste(Date, table_year))
+  mutate(Date = paste(str_sub(Date, 1, 6), table_year))
 
 Fuel_prices <- bind_rows(Coastal, Gauteng) %>%
   mutate(Date = dmy(Date)) %>%
@@ -51,14 +51,14 @@ Fuel_prices <- Fuel_prices %>%
 
 # Scraping petrol taxes from DMRE -----------------------------------------
 
-Month_latest <- "Jul "
-year_i <- 2023
+Month_latest <- "Apr "
+year_i <- 2024
 
-download.file("https://www.energy.gov.za/files/esources/petroleum/July2023/Petrol-margins.pdf",
-              "data-raw/DMRE/DMRE_levies_2023.pdf", mode = "wb")
+download.file("https://www.energy.gov.za/files/esources/petroleum/April2024/Petrol-margins.pdf",
+              "data-raw/DMRE/DMRE_levies_2024.pdf", mode = "wb")
 
 # Actual pdf data
-raw_text <- pdf_text("data-raw/DMRE/DMRE_levies_2023.pdf")
+raw_text <- pdf_text("data-raw/DMRE/DMRE_levies_2024.pdf")
 
 clean_table <- str_split(raw_text[[1]], "\n", simplify = TRUE)
 
@@ -103,11 +103,11 @@ Fuel_prices_petrol <- fuzzy_left_join(Fuel_prices %>%
 
 # Scraping diesel taxes from DMRE  ----------------------------------------
 
-download.file("https://www.energy.gov.za/files/esources/petroleum/July2023/Diesel-margins.pdf",
-              "data-raw/DMRE/DMRE_diesel_levies_2023.pdf", mode = "wb")
+download.file("https://www.energy.gov.za/files/esources/petroleum/April2024/Diesel-margins.pdf",
+              "data-raw/DMRE/DMRE_diesel_levies_2024.pdf", mode = "wb")
 
 # Actual pdf data
-raw_text <- pdf_text("data-raw/DMRE/DMRE_diesel_levies_2023.pdf")
+raw_text <- pdf_text("data-raw/DMRE/DMRE_diesel_levies_2024.pdf")
 
 clean_table <- str_split(raw_text, "\n")
 

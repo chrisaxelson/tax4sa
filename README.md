@@ -9,7 +9,7 @@
 This is a minimal package to help with the compilation and analysis of
 tax and economic data in South Africa. The package only contains seven
 main sets of data, three functions and the personal income tax tables
-from 1995/96 to 2023/24.
+from 1995/96 to 2024/25.
 
 The data includes:
 
@@ -105,13 +105,13 @@ NT_S32_revenue %>%
         caption = "Monthly health promotion levy revenue (R'000s)") 
 ```
 
-| Tax                   | Month     | Quarter | Year | Fiscal_year |   Revenue |
-|:----------------------|:----------|--------:|:-----|:------------|----------:|
-| Health promotion levy | August    |       3 | 2023 | 2024        | 154,241.0 |
-| Health promotion levy | September |       3 | 2023 | 2024        | 175,952.6 |
-| Health promotion levy | October   |       4 | 2023 | 2024        | 205,979.1 |
-| Health promotion levy | November  |       4 | 2023 | 2024        | 211,331.1 |
-| Health promotion levy | December  |       4 | 2023 | 2024        | 203,251.9 |
+| Tax                   | Month    | Quarter | Year | Fiscal_year |   Revenue |
+|:----------------------|:---------|--------:|:-----|:------------|----------:|
+| Health promotion levy | October  |       4 | 2023 | 2024        | 205,979.1 |
+| Health promotion levy | November |       4 | 2023 | 2024        | 211,331.1 |
+| Health promotion levy | December |       4 | 2023 | 2024        | 203,251.9 |
+| Health promotion levy | January  |       1 | 2024 | 2024        | 220,330.8 |
+| Health promotion levy | February |       1 | 2024 | 2024        | 176,129.5 |
 
 Monthly health promotion levy revenue (R’000s)
 
@@ -238,11 +238,11 @@ SARB_Quarterly_Bulletin %>%
 
 | Code     |     Date | Frequency | Quarter | Year | Fiscal_year |   Value |
 |:---------|---------:|:----------|--------:|-----:|------------:|--------:|
-| KBP6006K | 20220300 | K1        |       3 | 2022 |        2023 | 1699053 |
 | KBP6006K | 20220400 | K1        |       4 | 2022 |        2023 | 1694095 |
-| KBP6006K | 20230100 | K1        |       1 | 2023 |        2023 | 1662125 |
-| KBP6006K | 20230200 | K1        |       2 | 2023 |        2024 | 1741713 |
-| KBP6006K | 20230300 | K1        |       3 | 2023 |        2024 | 1767282 |
+| KBP6006K | 20230100 | K1        |       1 | 2023 |        2023 | 1662363 |
+| KBP6006K | 20230200 | K1        |       2 | 2023 |        2024 | 1745206 |
+| KBP6006K | 20230300 | K1        |       3 | 2023 |        2024 | 1761770 |
+| KBP6006K | 20230400 | K1        |       4 | 2023 |        2024 | 1800824 |
 
 ## Statistics South Africa
 
@@ -279,18 +279,18 @@ DMRE_fuel %>%
   kable()
 ```
 
-| Fuel_type               | Region  | Date       |    Price | Basic_fuel_price | General_fuel_levy |
-|:------------------------|:--------|:-----------|---------:|-----------------:|------------------:|
-| 93_ULP                  | Gauteng | 2023-07-05 | 2206.000 |          1208.97 |               395 |
-| 95_ULP                  | Coastal | 2023-07-05 | 2174.000 |          1208.97 |               395 |
-| 95_ULP                  | Gauteng | 2023-07-05 | 2246.000 |          1208.97 |               395 |
-| Diesel_0.005            | Coastal | 2023-07-05 | 1909.490 |          1173.03 |               381 |
-| Diesel_0.005            | Gauteng | 2023-07-05 | 1981.690 |          1173.03 |               381 |
-| Diesel_0.05             | Coastal | 2023-07-05 | 1877.090 |          1140.63 |               381 |
-| Diesel_0.05             | Gauteng | 2023-07-05 | 1949.290 |          1140.63 |               381 |
-| Illuminating_Paraffin   | Coastal | 2023-07-05 | 1299.558 |               NA |                NA |
-| Illuminating_Paraffin   | Gauteng | 2023-07-05 | 1392.058 |               NA |                NA |
-| Liquefied_Petroleum_Gas | Coastal | 2023-07-05 | 2853.000 |               NA |                NA |
+| Fuel_type               | Region  | Date       |   Price | Basic_fuel_price | General_fuel_levy |
+|:------------------------|:--------|:-----------|--------:|-----------------:|------------------:|
+| 93_ULP                  | Gauteng | 2024-04-03 | 2478.00 |          1379.65 |               396 |
+| 95_ULP                  | Coastal | 2024-04-03 | 2433.00 |          1379.65 |               396 |
+| 95_ULP                  | Gauteng | 2024-04-03 | 2512.00 |          1379.65 |               396 |
+| Diesel_0.005            | Coastal | 2024-04-03 | 2180.49 |          1404.03 |               384 |
+| Diesel_0.005            | Gauteng | 2024-04-03 | 2259.49 |          1404.03 |               384 |
+| Diesel_0.05             | Coastal | 2024-04-03 | 2166.09 |          1389.63 |               384 |
+| Diesel_0.05             | Gauteng | 2024-04-03 | 2245.09 |          1389.63 |               384 |
+| Illuminating_Paraffin   | Coastal | 2024-04-03 | 1519.74 |               NA |                NA |
+| Illuminating_Paraffin   | Gauteng | 2024-04-03 | 1618.94 |               NA |                NA |
+| Liquefied_Petroleum_Gas | Coastal | 2024-04-03 | 3516.00 |               NA |                NA |
 
 ## Functions
 
@@ -323,7 +323,7 @@ system.time({
     mutate(Simulated_tax = pit(Taxable_income, Age, MTC, Tax_year))
 })
 #>    user  system elapsed 
-#>    0.40    0.11    0.52
+#>    0.14    0.04    0.18
 ```
 
 ## Examples
@@ -406,8 +406,8 @@ DMRE_fuel %>%
   ylab("Percentage of retail price") +
   ggtitle("Levies as a percentage of retail price",
           subtitle = c("Includes the general fuel levy, the Road Accident Fund levy, customs levy and DSML")) 
-#> Warning: Removed 4 rows containing missing values (`geom_line()`).
-#> Warning: Removed 4 rows containing missing values (`geom_point()`).
+#> Warning: Removed 13 rows containing missing values (`geom_line()`).
+#> Warning: Removed 13 rows containing missing values (`geom_point()`).
 ```
 
 <img src="man/figures/README-fuel-2.png" width="100%" />

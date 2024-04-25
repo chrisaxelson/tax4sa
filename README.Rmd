@@ -20,7 +20,7 @@ knitr::opts_chunk$set(
 
 <!-- badges: end -->
 
-This is a minimal package to help with the compilation and analysis of tax and economic data in South Africa. The package only contains seven main sets of data, three functions and the personal income tax tables from 1995/96 to 2023/24.
+This is a minimal package to help with the compilation and analysis of tax and economic data in South Africa. The package only contains seven main sets of data, three functions and the personal income tax tables from 1995/96 to 2024/25.
 
 The data includes:
 
