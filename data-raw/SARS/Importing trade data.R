@@ -29,8 +29,10 @@ SARS_imports_2023 <- SARS_imports_2023 %>% mutate(CustomsValue = as.numeric(Cust
 write_parquet(SARS_imports_2023, "data-raw/SARS/Trade_data/SARS_imports_2023.parquet")
 
 # Check
+read_parquet("data-raw/SARS/Trade_data/SARS_imports_2023.parquet")
+
 con <- dbConnect(duckdb())
-tbl(con, "data-raw/SARS/Trade_data/SARS_imports_2023.parquet")
+tbl(con, "'data-raw/SARS/Trade_data/SARS_imports_2023.parquet'")
 
 pb_upload("data-raw/SARS/Trade_data/SARS_imports_2023.parquet",
           repo = "chrisaxelson/tax4sa",
@@ -52,7 +54,7 @@ SARS_exports_2023 <- SARS_exports_2023 %>% mutate(CustomsValue = as.numeric(Cust
 write_parquet(SARS_exports_2023, "data-raw/SARS/Trade_data/SARS_exports_2023.parquet")
 
 # Check
-tbl(con, "data-raw/SARS/Trade_data/SARS_exports_2023.parquet")
+tbl(con, "'data-raw/SARS/Trade_data/SARS_exports_2023.parquet'")
 
 pb_upload("data-raw/SARS/Trade_data/SARS_exports_2023.parquet",
           repo = "chrisaxelson/tax4sa",

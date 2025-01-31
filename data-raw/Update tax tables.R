@@ -117,6 +117,10 @@ Tax_tables <- list(PIT_brackets_1996 = matrix(c(0,5000,10000,15000,20000,30000,4
                    PIT_brackets_2024 = matrix(c(0,237100, 370500, 512800, 673000, 857900, 1817000,
                                                 0.18, 0.26, 0.31, 0.36, 0.39, 0.41, 0.45), ncol =2),
                    PIT_rebates_2024 = matrix(c(0,65,75,
+                                               17235, 9444, 3145), ncol = 2),
+                   PIT_brackets_2025 = matrix(c(0,237100, 370500, 512800, 673000, 857900, 1817000,
+                                                0.18, 0.26, 0.31, 0.36, 0.39, 0.41, 0.45), ncol =2),
+                   PIT_rebates_2025 = matrix(c(0,65,75,
                                                17235, 9444, 3145), ncol = 2))
 
 save(Tax_tables, file = "data-raw/SARS/Tax_tables.rda", version = 2)
@@ -152,7 +156,8 @@ PIT_brackets <- data.frame(rbind(cbind(1996, Tax_tables$PIT_brackets_1996),
                                  cbind(2021, Tax_tables$PIT_brackets_2021),
                                  cbind(2022, Tax_tables$PIT_brackets_2022),
                                  cbind(2023, Tax_tables$PIT_brackets_2023),
-                                 cbind(2024, Tax_tables$PIT_brackets_2024)))
+                                 cbind(2024, Tax_tables$PIT_brackets_2024),
+                                 cbind(2025, Tax_tables$PIT_brackets_2025)))
 
 colnames(PIT_brackets) <- c("Tax_year", "Bracket", "Tax_rate")
 
@@ -185,7 +190,8 @@ PIT_rebates <- data.frame(rbind(cbind(1996, Tax_tables$PIT_rebates_1996),
                                 cbind(2021, Tax_tables$PIT_rebates_2021),
                                 cbind(2022, Tax_tables$PIT_rebates_2022),
                                 cbind(2023, Tax_tables$PIT_rebates_2023),
-                                cbind(2024, Tax_tables$PIT_rebates_2024)))
+                                cbind(2024, Tax_tables$PIT_rebates_2024),
+                                cbind(2025, Tax_tables$PIT_rebates_2025)))
 
 colnames(PIT_rebates) <- c("Tax_year", "Age", "Rebate")
 
