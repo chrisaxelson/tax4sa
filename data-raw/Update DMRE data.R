@@ -10,7 +10,7 @@ library(fuzzyjoin)
 
 # Scraping from SAPIA -----------------------------------------------------
 
-content <- read_html("https://www.sapia.org.za/fuel-prices/")
+content <- read_html("https://fuelsindustry.org.za/fuel-prices/")
 
 tables <- content %>% html_table(fill = TRUE)
 
@@ -51,11 +51,13 @@ Fuel_prices <- Fuel_prices %>%
 
 # Scraping petrol taxes from DMRE -----------------------------------------
 
-Month_latest <- "Apr "
-year_i <- 2024
+# Go to DMRE website, historical petrol prices, look for PDF with Levies, taxes and margins
 
-download.file("https://www.energy.gov.za/files/esources/petroleum/April2024/Petrol-margins.pdf",
-              "data-raw/DMRE/DMRE_levies_2024.pdf", mode = "wb")
+Month_latest <- "Jan "
+year_i <- 2025
+
+download.file("https://www.dmre.gov.za/Portals/0/Resources/Fuel%20Prices%20Adjustments/Fuel%20Prices%20Per%20Zone/2025/January%202025/Petrol-margins.pdf?ver=Z9JVW4uyyswdh_r83jo8qw%3d%3d",
+              "data-raw/DMRE/DMRE_levies_2025.pdf", mode = "wb")
 
 # Actual pdf data
 raw_text <- pdf_text("data-raw/DMRE/DMRE_levies_2024.pdf")
@@ -103,8 +105,8 @@ Fuel_prices_petrol <- fuzzy_left_join(Fuel_prices %>%
 
 # Scraping diesel taxes from DMRE  ----------------------------------------
 
-download.file("https://www.energy.gov.za/files/esources/petroleum/April2024/Diesel-margins.pdf",
-              "data-raw/DMRE/DMRE_diesel_levies_2024.pdf", mode = "wb")
+download.file("https://www.dmre.gov.za/Portals/0/Resources/Fuel%20Prices%20Adjustments/Fuel%20Prices%20Per%20Zone/2025/January%202025/Diesel-margins.pdf?ver=Z9JVW4uyyswdh_r83jo8qw%3d%3d",
+              "data-raw/DMRE/DMRE_diesel_levies_2025.pdf", mode = "wb")
 
 # Actual pdf data
 raw_text <- pdf_text("data-raw/DMRE/DMRE_diesel_levies_2024.pdf")
