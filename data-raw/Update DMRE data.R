@@ -60,7 +60,7 @@ download.file("https://www.dmre.gov.za/Portals/0/Resources/Fuel%20Prices%20Adjus
               "data-raw/DMRE/DMRE_levies_2025.pdf", mode = "wb")
 
 # Actual pdf data
-raw_text <- pdf_text("data-raw/DMRE/DMRE_levies_2024.pdf")
+raw_text <- pdf_text("data-raw/DMRE/DMRE_levies_2025.pdf")
 
 clean_table <- str_split(raw_text[[1]], "\n", simplify = TRUE)
 
@@ -109,7 +109,7 @@ download.file("https://www.dmre.gov.za/Portals/0/Resources/Fuel%20Prices%20Adjus
               "data-raw/DMRE/DMRE_diesel_levies_2025.pdf", mode = "wb")
 
 # Actual pdf data
-raw_text <- pdf_text("data-raw/DMRE/DMRE_diesel_levies_2024.pdf")
+raw_text <- pdf_text("data-raw/DMRE/DMRE_diesel_levies_2025.pdf")
 
 clean_table <- str_split(raw_text, "\n")
 
