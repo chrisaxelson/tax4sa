@@ -41,5 +41,5 @@ devtools::build()
 
 ## Install, either directly or through tar.gz file
 devtools::install("../tax4sa")
-install.packages("../tax4sa_0.0.1.tar.gz", repos = NULL, type = "source")
+install.packages("../tax4sa_0.1.0.tar.gz", repos = NULL, type = "source")
 

@@ -216,6 +216,10 @@ DMRE_fuel_data_to_add <- DMRE_fuel_update %>%
 
 DMRE_fuel <- bind_rows(DMRE_fuel, DMRE_fuel_data_to_add)
 
+DMRE_fuel <- DMRE_fuel %>%
+  mutate(Demand_side_management_levy = ifelse(is.na(Demand_side_management_levy), 0,
+                                              Demand_side_management_levy))
+
 # Save data
 save(DMRE_fuel, file = "data-raw/DMRE/DMRE_fuel.rda", version = 2)
 load(file = "data-raw/DMRE/DMRE_fuel.rda")

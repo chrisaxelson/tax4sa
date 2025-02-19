@@ -74,7 +74,7 @@ library(kableExtra)
 
 # Check revenue data
 NT_Budget_revenue %>% 
-  filter(Fiscal_year == 2023) %>%  
+  filter(Fiscal_year == 2024) %>%  
   select(T1:T3, Year, Revenue) %>% 
   mutate(Revenue = round(Revenue,0)) %>% 
   head(5) %>% 
@@ -84,11 +84,11 @@ NT_Budget_revenue %>%
 
 | T1                          | T2                      | T3                                                  | Year    |     Revenue |
 |:----------------------------|:------------------------|:----------------------------------------------------|:--------|------------:|
-| Taxes on income and profits | Personal income tax     | Personal income tax                                 | 2022/23 | 600,366,808 |
-| Taxes on income and profits | Tax on corporate income | Corporate income tax                                | 2022/23 | 344,659,912 |
-| Taxes on income and profits | Tax on corporate income | Secondary tax on companies/dividend withholding tax | 2022/23 |  38,118,709 |
-| Taxes on income and profits | Tax on corporate income | Interest withholding tax                            | 2022/23 |     725,925 |
-| Taxes on income and profits | Other                   | Interest on overdue income tax                      | 2022/23 |   4,633,907 |
+| Taxes on income and profits | Personal income tax     | Personal income tax                                 | 2023/24 | 648,911,081 |
+| Taxes on income and profits | Tax on corporate income | Corporate income tax                                | 2023/24 | 313,097,151 |
+| Taxes on income and profits | Tax on corporate income | Secondary tax on companies/dividend withholding tax | 2023/24 |      70,597 |
+| Taxes on income and profits | Tax on corporate income | Withholding tax on dividends                        | 2023/24 |  39,102,230 |
+| Taxes on income and profits | Tax on corporate income | Interest withholding tax                            | 2023/24 |   1,136,500 |
 
 Annual tax revenue (R’000s)
 
@@ -105,13 +105,13 @@ NT_S32_revenue %>%
         caption = "Monthly health promotion levy revenue (R'000s)") 
 ```
 
-| Tax                   | Month    | Quarter | Year | Fiscal_year |   Revenue |
-|:----------------------|:---------|--------:|:-----|:------------|----------:|
-| Health promotion levy | October  |       4 | 2023 | 2024        | 205,979.1 |
-| Health promotion levy | November |       4 | 2023 | 2024        | 211,331.1 |
-| Health promotion levy | December |       4 | 2023 | 2024        | 203,251.9 |
-| Health promotion levy | January  |       1 | 2024 | 2024        | 220,330.8 |
-| Health promotion levy | February |       1 | 2024 | 2024        | 176,129.5 |
+| Tax                   | Month     | Quarter | Year | Fiscal_year |   Revenue |
+|:----------------------|:----------|--------:|:-----|:------------|----------:|
+| Health promotion levy | August    |       3 | 2024 | 2025        | 152,749.0 |
+| Health promotion levy | September |       3 | 2024 | 2025        | 162,429.4 |
+| Health promotion levy | October   |       4 | 2024 | 2025        | 191,844.1 |
+| Health promotion levy | November  |       4 | 2024 | 2025        | 215,219.0 |
+| Health promotion levy | December  |       4 | 2024 | 2025        | 225,163.1 |
 
 Monthly health promotion levy revenue (R’000s)
 
@@ -238,11 +238,11 @@ SARB_Quarterly_Bulletin %>%
 
 | Code     |     Date | Frequency | Quarter | Year | Fiscal_year |   Value |
 |:---------|---------:|:----------|--------:|-----:|------------:|--------:|
-| KBP6006K | 20220400 | K1        |       4 | 2022 |        2023 | 1694095 |
-| KBP6006K | 20230100 | K1        |       1 | 2023 |        2023 | 1662363 |
-| KBP6006K | 20230200 | K1        |       2 | 2023 |        2024 | 1745206 |
-| KBP6006K | 20230300 | K1        |       3 | 2023 |        2024 | 1761770 |
-| KBP6006K | 20230400 | K1        |       4 | 2023 |        2024 | 1800824 |
+| KBP6006K | 20230300 | K1        |       3 | 2023 |        2024 | 1767815 |
+| KBP6006K | 20230400 | K1        |       4 | 2023 |        2024 | 1815108 |
+| KBP6006K | 20240100 | K1        |       1 | 2024 |        2024 | 1752166 |
+| KBP6006K | 20240200 | K1        |       2 | 2024 |        2025 | 1847748 |
+| KBP6006K | 20240300 | K1        |       3 | 2024 |        2025 | 1840617 |
 
 ## Statistics South Africa
 
@@ -279,18 +279,18 @@ DMRE_fuel %>%
   kable()
 ```
 
-| Fuel_type               | Region  | Date       |   Price | Basic_fuel_price | General_fuel_levy |
-|:------------------------|:--------|:-----------|--------:|-----------------:|------------------:|
-| 93_ULP                  | Gauteng | 2024-04-03 | 2478.00 |          1379.65 |               396 |
-| 95_ULP                  | Coastal | 2024-04-03 | 2433.00 |          1379.65 |               396 |
-| 95_ULP                  | Gauteng | 2024-04-03 | 2512.00 |          1379.65 |               396 |
-| Diesel_0.005            | Coastal | 2024-04-03 | 2180.49 |          1404.03 |               384 |
-| Diesel_0.005            | Gauteng | 2024-04-03 | 2259.49 |          1404.03 |               384 |
-| Diesel_0.05             | Coastal | 2024-04-03 | 2166.09 |          1389.63 |               384 |
-| Diesel_0.05             | Gauteng | 2024-04-03 | 2245.09 |          1389.63 |               384 |
-| Illuminating_Paraffin   | Coastal | 2024-04-03 | 1519.74 |               NA |                NA |
-| Illuminating_Paraffin   | Gauteng | 2024-04-03 | 1618.94 |               NA |                NA |
-| Liquefied_Petroleum_Gas | Coastal | 2024-04-03 | 3516.00 |               NA |                NA |
+| Fuel_type               | Region  | Date       |    Price | Basic_fuel_price | General_fuel_levy |
+|:------------------------|:--------|:-----------|---------:|-----------------:|------------------:|
+| 93_ULP                  | Gauteng | 2025-01-01 | 2134.000 |          1146.87 |               395 |
+| 95_ULP                  | Coastal | 2025-01-01 | 2028.000 |          1146.87 |               395 |
+| 95_ULP                  | Gauteng | 2025-01-01 | 2159.000 |          1146.87 |               395 |
+| Diesel_0.005            | Coastal | 2025-01-01 | 1863.950 |          1250.03 |               381 |
+| Diesel_0.005            | Gauteng | 2025-01-01 | 1942.950 |          1250.03 |               381 |
+| Diesel_0.05             | Coastal | 2025-01-01 | 1849.550 |          1240.63 |               381 |
+| Diesel_0.05             | Gauteng | 2025-01-01 | 1928.550 |          1240.63 |               381 |
+| Illuminating_Paraffin   | Coastal | 2025-01-01 | 1227.118 |               NA |                NA |
+| Illuminating_Paraffin   | Gauteng | 2025-01-01 | 1326.318 |               NA |                NA |
+| Liquefied_Petroleum_Gas | Coastal | 2025-01-01 | 3514.000 |               NA |                NA |
 
 ## Functions
 
@@ -323,7 +323,7 @@ system.time({
     mutate(Simulated_tax = pit(Taxable_income, Age, MTC, Tax_year))
 })
 #>    user  system elapsed 
-#>    0.14    0.04    0.18
+#>    0.19    0.08    0.27
 ```
 
 ## Examples
@@ -344,7 +344,7 @@ GDP_fiscal <- STATSSA_P0441_GDP %>%
   filter(H03 == "QNU1000") %>% 
   group_by(Fiscal_year) %>% 
   summarise(GDP = sum(Value)) %>% 
-  filter(Fiscal_year < 2024, Fiscal_year > 1993)
+  filter(Fiscal_year < 2025, Fiscal_year > 1993)
 
 # Join together and create tax to GDP
 Tax_to_GDP <- GDP_fiscal %>% 
@@ -356,8 +356,8 @@ Tax_to_GDP <- GDP_fiscal %>%
 ggplot(Tax_to_GDP, aes(x = Fiscal_year, y = Tax_to_GDP)) +
   geom_line() + 
   geom_point() +
-  geom_text(aes(label = ifelse(Fiscal_year == 2023, paste0(round(Tax_to_GDP,4) * 100, "%"),'')),
-            hjust=0.5, vjust=-0.5, show.legend = FALSE) +
+  geom_text(aes(label = ifelse(Fiscal_year == 2024, paste0(round(Tax_to_GDP,4) * 100, "%"),'')),
+            hjust=0.5, vjust=1.5, show.legend = FALSE) +
   scale_y_continuous(labels = scales::percent_format(accuracy = 1L)) +
   theme_classic() +
   ylab("Tax to GDP") +
@@ -406,8 +406,6 @@ DMRE_fuel %>%
   ylab("Percentage of retail price") +
   ggtitle("Levies as a percentage of retail price",
           subtitle = c("Includes the general fuel levy, the Road Accident Fund levy, customs levy and DSML")) 
-#> Warning: Removed 13 rows containing missing values (`geom_line()`).
-#> Warning: Removed 13 rows containing missing values (`geom_point()`).
 ```
 
 <img src="man/figures/README-fuel-2.png" width="100%" />
