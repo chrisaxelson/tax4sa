@@ -82,13 +82,13 @@ NT_Budget_revenue %>%
         caption = "Annual tax revenue (R'000s)")
 ```
 
-| T1                          | T2                      | T3                                                  | Year    |     Revenue |
-|:----------------------------|:------------------------|:----------------------------------------------------|:--------|------------:|
-| Taxes on income and profits | Personal income tax     | Personal income tax                                 | 2023/24 | 648,911,081 |
-| Taxes on income and profits | Tax on corporate income | Corporate income tax                                | 2023/24 | 313,097,151 |
-| Taxes on income and profits | Tax on corporate income | Secondary tax on companies/dividend withholding tax | 2023/24 |      70,597 |
-| Taxes on income and profits | Tax on corporate income | Withholding tax on dividends                        | 2023/24 |  39,102,230 |
-| Taxes on income and profits | Tax on corporate income | Interest withholding tax                            | 2023/24 |   1,136,500 |
+| T1 | T2 | T3 | Year | Revenue |
+|:---|:---|:---|:---|---:|
+| Taxes on income and profits | Personal income tax | Personal income tax | 2023/24 | 648,911,081 |
+| Taxes on income and profits | Tax on corporate income | Corporate income tax | 2023/24 | 313,097,151 |
+| Taxes on income and profits | Tax on corporate income | Secondary tax on companies/dividend withholding tax | 2023/24 | 70,597 |
+| Taxes on income and profits | Tax on corporate income | Withholding tax on dividends | 2023/24 | 39,102,230 |
+| Taxes on income and profits | Tax on corporate income | Interest withholding tax | 2023/24 | 1,136,500 |
 
 Annual tax revenue (R’000s)
 
@@ -199,13 +199,13 @@ tbl(con, "SARS_*.parquet") %>%
         caption = "Monthly trade data")
 ```
 
-| TradeType | District    | Origin       | Destination | Unit | YearMonth | ChapterAndDescription                               | Quantity | Value_ZAR |
-|:----------|:------------|:-------------|:------------|:-----|:----------|:----------------------------------------------------|---------:|----------:|
-| Exports   | Beit Bridge | South Africa | Mozambique  | NO   | 202301    | 85 - Cellphones, Electrical Equipment and Machinery |     1.00 |   430,000 |
-| Exports   | Beit Bridge | South Africa | Tanzania    | KG   | 202303    | 68 - Stone, plaster, cement and Asbestos            |   522.77 |    10,888 |
-| Exports   | Beit Bridge | South Africa | Tanzania    | KG   | 202301    | 39 - Plastics and articles thereof                  | 1,593.60 |   254,518 |
-| Exports   | Beit Bridge | South Africa | Mozambique  | NO   | 202303    | 85 - Cellphones, Electrical Equipment and Machinery |     1.00 | 1,138,889 |
-| Exports   | Beit Bridge | South Africa | Mozambique  | NO   | 202302    | 90 - Medical and Photographic Equipment             |     2.00 |     3,859 |
+| TradeType | District | Origin | Destination | Unit | YearMonth | ChapterAndDescription | Quantity | Value_ZAR |
+|:---|:---|:---|:---|:---|:---|:---|---:|---:|
+| Exports | Beit Bridge | South Africa | Mozambique | NO | 202301 | 85 - Cellphones, Electrical Equipment and Machinery | 1.00 | 430,000 |
+| Exports | Beit Bridge | South Africa | Tanzania | KG | 202303 | 68 - Stone, plaster, cement and Asbestos | 522.77 | 10,888 |
+| Exports | Beit Bridge | South Africa | Tanzania | KG | 202301 | 39 - Plastics and articles thereof | 1,593.60 | 254,518 |
+| Exports | Beit Bridge | South Africa | Mozambique | NO | 202303 | 85 - Cellphones, Electrical Equipment and Machinery | 1.00 | 1,138,889 |
+| Exports | Beit Bridge | South Africa | Mozambique | NO | 202302 | 90 - Medical and Photographic Equipment | 2.00 | 3,859 |
 
 Monthly trade data
 
@@ -219,13 +219,13 @@ SARB_Quarterly_Bulletin_info %>%
   kable()
 ```
 
-| Code     | Frequency_description | Unit_of_measure | Version_description                                      |
-|:---------|:----------------------|:----------------|:---------------------------------------------------------|
-| KBP6006C | Quarterly             | RMILL           | Constant 2010 prices                                     |
-| KBP6006D | Quarterly             | RMILL           | Constant 2010 prices. Seasonally adjusted at annual rate |
-| KBP6006K | Quarterly             | RMILL           | Current prices                                           |
-| KBP6006L | Quarterly             | RMILL           | Current prices. Seasonally adjusted at annual rate       |
-| KBP6006S | Quarterly             | PERC            | 1-Term % change                                          |
+| Code | Frequency_description | Unit_of_measure | Version_description |
+|:---|:---|:---|:---|
+| KBP6006C | Quarterly | RMILL | Constant 2010 prices |
+| KBP6006D | Quarterly | RMILL | Constant 2010 prices. Seasonally adjusted at annual rate |
+| KBP6006K | Quarterly | RMILL | Current prices |
+| KBP6006L | Quarterly | RMILL | Current prices. Seasonally adjusted at annual rate |
+| KBP6006S | Quarterly | PERC | 1-Term % change |
 
 ``` r
 
@@ -259,11 +259,11 @@ STATSSA_P0141_CPI_COICOP %>%
 
 | H01   | H04          | Date_original | Value | Annual_inflation |
 |:------|:-------------|:--------------|:------|-----------------:|
-| P0141 | CPI Headline | MO032023      | 109   |            7.073 |
-| P0141 | CPI Headline | MO042023      | 109.4 |            6.836 |
-| P0141 | CPI Headline | MO052023      | 109.6 |            6.305 |
-| P0141 | CPI Headline | MO062023      | 109.8 |            5.374 |
-| P0141 | CPI Headline | MO072023      | 110.8 |            4.726 |
+| P0141 | CPI Headline | MO082024      | 116   |            4.410 |
+| P0141 | CPI Headline | MO092024      | 116.1 |            3.846 |
+| P0141 | CPI Headline | MO102024      | 116   |            2.837 |
+| P0141 | CPI Headline | MO112024      | 116   |            2.928 |
+| P0141 | CPI Headline | MO122024      | 116.1 |            3.017 |
 
 ## Department of Mineral Resources and Energy
 
@@ -279,18 +279,18 @@ DMRE_fuel %>%
   kable()
 ```
 
-| Fuel_type               | Region  | Date       |    Price | Basic_fuel_price | General_fuel_levy |
-|:------------------------|:--------|:-----------|---------:|-----------------:|------------------:|
-| 93_ULP                  | Gauteng | 2025-01-01 | 2134.000 |          1146.87 |               395 |
-| 95_ULP                  | Coastal | 2025-01-01 | 2028.000 |          1146.87 |               395 |
-| 95_ULP                  | Gauteng | 2025-01-01 | 2159.000 |          1146.87 |               395 |
-| Diesel_0.005            | Coastal | 2025-01-01 | 1863.950 |          1250.03 |               381 |
-| Diesel_0.005            | Gauteng | 2025-01-01 | 1942.950 |          1250.03 |               381 |
-| Diesel_0.05             | Coastal | 2025-01-01 | 1849.550 |          1240.63 |               381 |
-| Diesel_0.05             | Gauteng | 2025-01-01 | 1928.550 |          1240.63 |               381 |
-| Illuminating_Paraffin   | Coastal | 2025-01-01 | 1227.118 |               NA |                NA |
-| Illuminating_Paraffin   | Gauteng | 2025-01-01 | 1326.318 |               NA |                NA |
-| Liquefied_Petroleum_Gas | Coastal | 2025-01-01 | 3514.000 |               NA |                NA |
+| Fuel_type | Region | Date | Price | Basic_fuel_price | General_fuel_levy |
+|:---|:---|:---|---:|---:|---:|
+| 93_ULP | Gauteng | 2025-01-01 | 2134.000 | 1146.87 | 395 |
+| 95_ULP | Coastal | 2025-01-01 | 2028.000 | 1146.87 | 395 |
+| 95_ULP | Gauteng | 2025-01-01 | 2159.000 | 1146.87 | 395 |
+| Diesel_0.005 | Coastal | 2025-01-01 | 1863.950 | 1250.03 | 381 |
+| Diesel_0.005 | Gauteng | 2025-01-01 | 1942.950 | 1250.03 | 381 |
+| Diesel_0.05 | Coastal | 2025-01-01 | 1849.550 | 1240.63 | 381 |
+| Diesel_0.05 | Gauteng | 2025-01-01 | 1928.550 | 1240.63 | 381 |
+| Illuminating_Paraffin | Coastal | 2025-01-01 | 1227.118 | NA | NA |
+| Illuminating_Paraffin | Gauteng | 2025-01-01 | 1326.318 | NA | NA |
+| Liquefied_Petroleum_Gas | Coastal | 2025-01-01 | 3514.000 | NA | NA |
 
 ## Functions
 
@@ -323,7 +323,7 @@ system.time({
     mutate(Simulated_tax = pit(Taxable_income, Age, MTC, Tax_year))
 })
 #>    user  system elapsed 
-#>    0.19    0.08    0.27
+#>    0.47    0.04    0.53
 ```
 
 ## Examples

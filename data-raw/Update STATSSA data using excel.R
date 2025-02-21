@@ -13,7 +13,7 @@ library(reticulate)
 
 py_run_string("
 from seleniumbase import Driver
-driver = Driver(uc=True)
+driver = Driver(uc = True)
 driver.open('http://www.statssa.gov.za/?page_id=1847')")
 
 py_run_string("x = driver.get_page_source()")
@@ -105,12 +105,12 @@ if (nrow(Links_to_download) == 0) {
   unlink("data-raw/STATSSA/Downloads/*")
   unlink("data-raw/STATSSA/Unzipped/*")
   unlink("data-raw/STATSSA/Unzipped/Excel/*")
+  unlink("downloaded_files/*")
 
-  # Click on link to download
+  # Click on links to download
   for (i in Links_to_download$Link) {
-    webElem <- remDr$findElement("xpath", paste0("//a[contains(@href, '", i,"')]"))
-    Sys.sleep(1)
-    webElem$clickElement()
+    link_py <- r_to_py(i)
+    py_run_string("driver.click(f'a[href*=\"{r.link_py}\"]')")
     Sys.sleep(2)
     print(i)
   }
@@ -118,7 +118,11 @@ if (nrow(Links_to_download) == 0) {
   # Wait for downloads to finish
   Sys.sleep(10)
 
-  system(paste0("docker cp ",container_id,":/home/seluser/Downloads data-raw/STATSSA"))
+  # Define source and destination directories
+  source_files <- list.files("downloaded_files", full.names = TRUE)
+  destination_files <- file.path("data-raw/STATSSA/Downloads", basename(source_files))
+  # Move files
+  file.rename(source_files, destination_files)
 
   downloaded_files <- list.files(path = "data-raw/STATSSA/Downloads",
                                  pattern = ".zip",
