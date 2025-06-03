@@ -10,7 +10,7 @@ library(fuzzyjoin)
 
 # Scraping from SAPIA -----------------------------------------------------
 
-content <- read_html("https://fuelsindustry.org.za/fuel-prices/")
+content <- read_html("https://fuelsindustry.org.za/consumer-information/fuel-prices-current-past/")
 
 tables <- content %>% html_table(fill = TRUE)
 

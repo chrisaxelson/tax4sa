@@ -1,7 +1,7 @@
 
 # Downloading SARB monthly data ----------------------------------------------
 
-library(RSelenium)
+library(reticulate)
 library(tidyverse)
 library(tidyxl)
 library(unpivotr)
@@ -11,41 +11,10 @@ library(lubridate)
 library(usethis)
 library(tax4sa)
 
-# Check if there are any docker containers running and remove them
-con <- pipe("docker ps")
-docker_df <- read.fwf(file = con, widths = c(12, 300))
-rm(con)
-
-container_id <- docker_df %>%
-  filter(grepl("4448", V2)) %>%
-  head(1) %>%
-  pull(V1)
-
-system(paste0("docker kill ", container_id))
-system(paste0("docker rm ", container_id))
-
-docker_check <- system("docker ps", intern = TRUE)
-
-# Start new container
-if (!any(str_detect(docker_check, "0:4448"))) {
-  system("docker run -d -p 4448:4444 -p 7909:7900 -e SE_NODE_SESSION_TIMEOUT=57868143 --shm-size 2g selenium/standalone-chrome:4.2.2")
-  Sys.sleep(10)
-}
-
-con <- pipe("docker ps")
-docker_df <- read.fwf(file = con, widths = c(12, 300))
-rm(con)
-
-container_id <- docker_df %>%
-  filter(grepl("4448", V2)) %>%
-  head(1) %>%
-  pull(V1)
-
-# Open site
-remDr <-  remoteDriver(port = 4448L, browserName = "chrome")
-remDr$open(silent = TRUE)
-remDr$maxWindowSize()
-remDr$navigate("https://www.resbank.co.za/en/home/what-we-do/statistics/releases/selected-statistics")
+py_run_string("
+from seleniumbase import Driver
+driver = Driver(uc = True)
+driver.open('https://www.resbank.co.za/en/home/what-we-do/statistics/releases/selected-statistics')")
 
 Data_info <- tribble(
   ~name, ~abbr,
@@ -62,9 +31,22 @@ Data_info <- tribble(
   "Counterparts_of_M3", "CDACM3"
 )
 
+unlink("downloaded_files/*")
+unlink("data-raw/SARB/Monthly/*")
+
 # Click on link to download
 for (i in seq_len(nrow(Data_info))) {
+
   print(paste0("Trying to download ", Data_info$name[i]))
+
+
+
+
+  link_py <- r_to_py(i)
+  py_run_string("driver.click(f'a[href*=\"{r.link_py}\"]')")
+  Sys.sleep(2)
+  print(i)
+
   webElem <- remDr$findElement("xpath", paste0("//*/div[@class='mb-5']//*/div/a[@value='",Data_info$abbr[i],"']"))
   webElem$clickElement()
   Sys.sleep(1)
