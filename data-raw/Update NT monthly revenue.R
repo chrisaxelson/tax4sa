@@ -2,8 +2,8 @@
 # Update NT monthly data ------------------------------------------------
 
 # Latest information - UPDATE THIS EACH MONTH
-Latest_link <- "https://www.treasury.gov.za/comm_media/press/monthly/2505/Hardcoded%20March%202025.xlsx"
-Latest_month <- "March"
+Latest_link <- "https://www.treasury.gov.za/comm_media/press/monthly/2506/Hardcoded%20April%202025.xlsx"
+Latest_month <- "April"
 Latest_year <- "2025"
 
 # This should run the same way each month ---------------------------------
@@ -20,7 +20,7 @@ library(openxlsx)
 # Download and import data - NB CHANGE THE EXTENSION IF CHANGES TO XLSX or vice versa
 GET(Latest_link, write_disk(S32 <- tempfile(fileext = sub('.*\\.', '', Latest_link))))
 
-NT_temp <- read_excel(S32, sheet = "Table 1", range = "A4:T148")
+NT_temp <- read_excel(S32, sheet = "Table1", range = "A4:T148")
 
 # If xls and doesn't parse, then can save as xlsx and bring in manually
 # NT_temp <- read_excel("Hardcoded database August 2022.xlsx", sheet = "Table1", range = "A4:T148")

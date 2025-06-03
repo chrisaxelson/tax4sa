@@ -66,7 +66,7 @@ library(kableExtra)
 
 # Check revenue data
 NT_Budget_revenue %>% 
-  filter(Fiscal_year == 2024) %>%  
+  filter(Fiscal_year == 2025) %>%  
   select(T1:T3, Year, Revenue) %>% 
   mutate(Revenue = round(Revenue,0)) %>% 
   head(5) %>% 

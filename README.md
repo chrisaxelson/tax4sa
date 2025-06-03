@@ -74,7 +74,7 @@ library(kableExtra)
 
 # Check revenue data
 NT_Budget_revenue %>% 
-  filter(Fiscal_year == 2024) %>%  
+  filter(Fiscal_year == 2025) %>%  
   select(T1:T3, Year, Revenue) %>% 
   mutate(Revenue = round(Revenue,0)) %>% 
   head(5) %>% 
@@ -82,13 +82,13 @@ NT_Budget_revenue %>%
         caption = "Annual tax revenue (R'000s)")
 ```
 
-| T1 | T2 | T3 | Year | Revenue |
-|:---|:---|:---|:---|---:|
-| Taxes on income and profits | Personal income tax | Personal income tax | 2023/24 | 648,911,081 |
-| Taxes on income and profits | Tax on corporate income | Corporate income tax | 2023/24 | 313,097,151 |
-| Taxes on income and profits | Tax on corporate income | Secondary tax on companies/dividend withholding tax | 2023/24 | 70,597 |
-| Taxes on income and profits | Tax on corporate income | Withholding tax on dividends | 2023/24 | 39,102,230 |
-| Taxes on income and profits | Tax on corporate income | Interest withholding tax | 2023/24 | 1,136,500 |
+| T1                          | T2                      | T3                                                  | Year    |     Revenue |
+|:----------------------------|:------------------------|:----------------------------------------------------|:--------|------------:|
+| Taxes on income and profits | Personal income tax     | Personal income tax                                 | 2024/25 | 729,910,987 |
+| Taxes on income and profits | Tax on corporate income | Corporate income tax                                | 2024/25 | 318,739,344 |
+| Taxes on income and profits | Tax on corporate income | Secondary tax on companies/dividend withholding tax | 2024/25 |      14,841 |
+| Taxes on income and profits | Tax on corporate income | Withholding tax on dividends                        | 2024/25 |  42,973,231 |
+| Taxes on income and profits | Tax on corporate income | Interest withholding tax                            | 2024/25 |   1,143,916 |
 
 Annual tax revenue (R’000s)
 
@@ -105,13 +105,13 @@ NT_S32_revenue %>%
         caption = "Monthly health promotion levy revenue (R'000s)") 
 ```
 
-| Tax                   | Month     | Quarter | Year | Fiscal_year |   Revenue |
-|:----------------------|:----------|--------:|:-----|:------------|----------:|
-| Health promotion levy | August    |       3 | 2024 | 2025        | 152,749.0 |
-| Health promotion levy | September |       3 | 2024 | 2025        | 162,429.4 |
-| Health promotion levy | October   |       4 | 2024 | 2025        | 191,844.1 |
-| Health promotion levy | November  |       4 | 2024 | 2025        | 215,219.0 |
-| Health promotion levy | December  |       4 | 2024 | 2025        | 225,163.1 |
+| Tax                   | Month    | Quarter | Year | Fiscal_year |   Revenue |
+|:----------------------|:---------|--------:|:-----|:------------|----------:|
+| Health promotion levy | December |       4 | 2024 | 2025        | 225,163.1 |
+| Health promotion levy | January  |       1 | 2025 | 2025        | 250,692.3 |
+| Health promotion levy | February |       1 | 2025 | 2025        | 184,083.2 |
+| Health promotion levy | March    |       1 | 2025 | 2025        | 200,531.2 |
+| Health promotion levy | April    |       2 | 2025 | 2026        | 216,642.1 |
 
 Monthly health promotion levy revenue (R’000s)
 
@@ -199,13 +199,13 @@ tbl(con, "SARS_*.parquet") %>%
         caption = "Monthly trade data")
 ```
 
-| TradeType | District | Origin | Destination | Unit | YearMonth | ChapterAndDescription | Quantity | Value_ZAR |
-|:---|:---|:---|:---|:---|:---|:---|---:|---:|
-| Exports | Beit Bridge | South Africa | Mozambique | NO | 202301 | 85 - Cellphones, Electrical Equipment and Machinery | 1.00 | 430,000 |
-| Exports | Beit Bridge | South Africa | Tanzania | KG | 202303 | 68 - Stone, plaster, cement and Asbestos | 522.77 | 10,888 |
-| Exports | Beit Bridge | South Africa | Tanzania | KG | 202301 | 39 - Plastics and articles thereof | 1,593.60 | 254,518 |
-| Exports | Beit Bridge | South Africa | Mozambique | NO | 202303 | 85 - Cellphones, Electrical Equipment and Machinery | 1.00 | 1,138,889 |
-| Exports | Beit Bridge | South Africa | Mozambique | NO | 202302 | 90 - Medical and Photographic Equipment | 2.00 | 3,859 |
+| TradeType | District    | Origin       | Destination | Unit | YearMonth | ChapterAndDescription                               | Quantity | Value_ZAR |
+|:----------|:------------|:-------------|:------------|:-----|:----------|:----------------------------------------------------|---------:|----------:|
+| Exports   | Beit Bridge | South Africa | Mozambique  | NO   | 202301    | 85 - Cellphones, Electrical Equipment and Machinery |     1.00 |   430,000 |
+| Exports   | Beit Bridge | South Africa | Tanzania    | KG   | 202303    | 68 - Stone, plaster, cement and Asbestos            |   522.77 |    10,888 |
+| Exports   | Beit Bridge | South Africa | Tanzania    | KG   | 202301    | 39 - Plastics and articles thereof                  | 1,593.60 |   254,518 |
+| Exports   | Beit Bridge | South Africa | Mozambique  | NO   | 202303    | 85 - Cellphones, Electrical Equipment and Machinery |     1.00 | 1,138,889 |
+| Exports   | Beit Bridge | South Africa | Mozambique  | NO   | 202302    | 90 - Medical and Photographic Equipment             |     2.00 |     3,859 |
 
 Monthly trade data
 
@@ -219,13 +219,13 @@ SARB_Quarterly_Bulletin_info %>%
   kable()
 ```
 
-| Code | Frequency_description | Unit_of_measure | Version_description |
-|:---|:---|:---|:---|
-| KBP6006C | Quarterly | RMILL | Constant 2010 prices |
-| KBP6006D | Quarterly | RMILL | Constant 2010 prices. Seasonally adjusted at annual rate |
-| KBP6006K | Quarterly | RMILL | Current prices |
-| KBP6006L | Quarterly | RMILL | Current prices. Seasonally adjusted at annual rate |
-| KBP6006S | Quarterly | PERC | 1-Term % change |
+| Code     | Frequency_description | Unit_of_measure | Version_description                                      |
+|:---------|:----------------------|:----------------|:---------------------------------------------------------|
+| KBP6006C | Quarterly             | RMILL           | Constant 2010 prices                                     |
+| KBP6006D | Quarterly             | RMILL           | Constant 2010 prices. Seasonally adjusted at annual rate |
+| KBP6006K | Quarterly             | RMILL           | Current prices                                           |
+| KBP6006L | Quarterly             | RMILL           | Current prices. Seasonally adjusted at annual rate       |
+| KBP6006S | Quarterly             | PERC            | 1-Term % change                                          |
 
 ``` r
 
@@ -279,18 +279,18 @@ DMRE_fuel %>%
   kable()
 ```
 
-| Fuel_type | Region | Date | Price | Basic_fuel_price | General_fuel_levy |
-|:---|:---|:---|---:|---:|---:|
-| 93_ULP | Gauteng | 2025-01-01 | 2134.000 | 1146.87 | 395 |
-| 95_ULP | Coastal | 2025-01-01 | 2028.000 | 1146.87 | 395 |
-| 95_ULP | Gauteng | 2025-01-01 | 2159.000 | 1146.87 | 395 |
-| Diesel_0.005 | Coastal | 2025-01-01 | 1863.950 | 1250.03 | 381 |
-| Diesel_0.005 | Gauteng | 2025-01-01 | 1942.950 | 1250.03 | 381 |
-| Diesel_0.05 | Coastal | 2025-01-01 | 1849.550 | 1240.63 | 381 |
-| Diesel_0.05 | Gauteng | 2025-01-01 | 1928.550 | 1240.63 | 381 |
-| Illuminating_Paraffin | Coastal | 2025-01-01 | 1227.118 | NA | NA |
-| Illuminating_Paraffin | Gauteng | 2025-01-01 | 1326.318 | NA | NA |
-| Liquefied_Petroleum_Gas | Coastal | 2025-01-01 | 3514.000 | NA | NA |
+| Fuel_type               | Region  | Date       |    Price | Basic_fuel_price | General_fuel_levy |
+|:------------------------|:--------|:-----------|---------:|-----------------:|------------------:|
+| 93_ULP                  | Gauteng | 2025-01-01 | 2134.000 |          1146.87 |               395 |
+| 95_ULP                  | Coastal | 2025-01-01 | 2028.000 |          1146.87 |               395 |
+| 95_ULP                  | Gauteng | 2025-01-01 | 2159.000 |          1146.87 |               395 |
+| Diesel_0.005            | Coastal | 2025-01-01 | 1863.950 |          1250.03 |               381 |
+| Diesel_0.005            | Gauteng | 2025-01-01 | 1942.950 |          1250.03 |               381 |
+| Diesel_0.05             | Coastal | 2025-01-01 | 1849.550 |          1240.63 |               381 |
+| Diesel_0.05             | Gauteng | 2025-01-01 | 1928.550 |          1240.63 |               381 |
+| Illuminating_Paraffin   | Coastal | 2025-01-01 | 1227.118 |               NA |                NA |
+| Illuminating_Paraffin   | Gauteng | 2025-01-01 | 1326.318 |               NA |                NA |
+| Liquefied_Petroleum_Gas | Coastal | 2025-01-01 | 3514.000 |               NA |                NA |
 
 ## Functions
 
@@ -323,7 +323,7 @@ system.time({
     mutate(Simulated_tax = pit(Taxable_income, Age, MTC, Tax_year))
 })
 #>    user  system elapsed 
-#>    0.47    0.04    0.53
+#>    0.33    0.15    0.48
 ```
 
 ## Examples
