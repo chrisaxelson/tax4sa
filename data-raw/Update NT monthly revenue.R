@@ -2,9 +2,9 @@
 # Update NT monthly data ------------------------------------------------
 
 # Latest information - UPDATE THIS EACH MONTH
-Latest_link <- "https://www.treasury.gov.za/comm_media/press/monthly/2506/Hardcoded%20April%202025.xlsx"
-Latest_month <- "April"
-Latest_year <- "2025"
+Latest_link <- "https://www.treasury.gov.za/comm_media/press/monthly/2610/Hardcoded%20August%202026.xlsx"
+Latest_month <- "August"
+Latest_year <- "2026"
 
 # This should run the same way each month ---------------------------------
 
@@ -20,7 +20,7 @@ library(openxlsx)
 # Download and import data - NB CHANGE THE EXTENSION IF CHANGES TO XLSX or vice versa
 GET(Latest_link, write_disk(S32 <- tempfile(fileext = sub('.*\\.', '', Latest_link))))
 
-NT_temp <- read_excel(S32, sheet = "Table1", range = "A4:T148")
+NT_temp <- read_excel(S32, sheet = "Table 1", range = "A4:T148")
 
 # If xls and doesn't parse, then can save as xlsx and bring in manually
 # NT_temp <- read_excel("Hardcoded database August 2022.xlsx", sheet = "Table1", range = "A4:T148")
@@ -40,7 +40,8 @@ New_column_name <- paste0(Latest_month, "_", Latest_year)
 
 # Create T1, T2 and T3 columns
 NT_temp <- NT_temp %>%
-  mutate(Revenue = if_else(Revenue == "Taxes on goods and services", "Domestic taxes on goods and services", Revenue)) %>%
+  mutate(Revenue = if_else(Revenue == "Taxes on goods and services",
+                           "Domestic taxes on goods and services", Revenue)) %>%
   filter(Tax_category != 0) %>%
   mutate(T1 = if_else(Tax_category == 1, Revenue, NA_character_)) %>%
   fill(T1) %>%
@@ -49,16 +50,20 @@ NT_temp <- NT_temp %>%
   mutate(T3 = if_else(Tax_category == 1, T1,
                       if_else(Tax_category == 2, T2,
                               if_else(Tax_category == 3, Revenue, NA_character_)))) %>%
-  select(T1, T2, T3, Amount)
+  select(T1, T2, T3, Amount) |>
+  mutate(Amount = as.numeric(Amount))
 
 # Sum up per group
 Group_sum <- NT_temp %>%
-  filter(T2 == T3, is.na(Amount)) %>%
+  filter(T2 == T3,
+         is.na(Amount),
+         !str_detect(T1, "Eskom")) %>%
   pull(T3)
 
 Group_sum_results <- NT_temp %>%
   filter(T2 %in% Group_sum) %>%
   group_by(T2) %>%
+  mutate(Amount = as.numeric(Amount)) |>
   summarise(Amount = sum(Amount, na.rm = TRUE)) %>%
   rename(T3 = T2)
 
@@ -105,5 +110,5 @@ saveWorkbook(wb2, file = "data-raw/NT/Revenue.xlsx", overwrite = TRUE)
 
 source("data-raw/NT/Importing original revenue data.R")
 # source("README.Rmd")
-# devtools::document()
+devtools::document()
 

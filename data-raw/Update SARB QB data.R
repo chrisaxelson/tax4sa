@@ -13,7 +13,7 @@ load(file = "data-raw/SARB/SARB.rda")
 
 
 # URL of page to download xlsx data
-SARB_download_url <- "https://www.resbank.co.za/en/home/publications/publication-detail-pages/quarterly-bulletins/download-information-from-xlsx-data-files/2024/Downloadinformationfromxlsxdatafiles0"
+SARB_download_url <- "https://www.resbank.co.za/en/home/publications/publication-detail-pages/quarterly-bulletins/download-information-from-xlsx-data-files/2026/-download-information-from-xlsx-data-files"
 
 # Packages
 library(rvest)

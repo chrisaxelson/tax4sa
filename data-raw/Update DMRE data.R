@@ -22,19 +22,19 @@ table_i_rows <- nrow(table_i)
 table_year <- colnames(table_i)[1]
 
 # Only keep rows with data
-Coastal <- table_i[c(3:7),]
+Coastal <- tables[[1]]
 colnames(Coastal) <- c("Fuel_type", colnames(Coastal)[-1])
 Coastal <- Coastal %>%
   mutate(Region = "Coastal") %>%
-  pivot_longer(contains(" "), names_to = "Date", values_to = "Price") %>%
-  mutate(Date = paste(str_sub(Date,1,6), table_year))
+  pivot_longer(contains("-"), names_to = "Date", values_to = "Price")%>%
+  mutate(Date = str_replace_all(Date, fixed("-26"), "-2026"))
 
-Gauteng <- table_i[c(9:15), ]
+Gauteng <- tables[[2]]
 colnames(Gauteng) <- c("Fuel_type", colnames(Gauteng)[-1])
 Gauteng <- Gauteng %>%
   mutate(Region = "Gauteng") %>%
-  pivot_longer(contains(" "), names_to = "Date", values_to = "Price") %>%
-  mutate(Date = paste(str_sub(Date, 1, 6), table_year))
+  pivot_longer(contains("-"), names_to = "Date", values_to = "Price") %>%
+  mutate(Date = str_replace_all(Date, fixed("-26"), "-2026"))
 
 Fuel_prices <- bind_rows(Coastal, Gauteng) %>%
   mutate(Date = dmy(Date)) %>%
@@ -53,14 +53,14 @@ Fuel_prices <- Fuel_prices %>%
 
 # Go to DMRE website, historical petrol prices, look for PDF with Levies, taxes and margins
 
-Month_latest <- "Jan "
-year_i <- 2025
+Month_latest <- "Oct "
+year_i <- 2026
 
-download.file("https://www.dmre.gov.za/Portals/0/Resources/Fuel%20Prices%20Adjustments/Fuel%20Prices%20Per%20Zone/2025/January%202025/Petrol-margins.pdf?ver=Z9JVW4uyyswdh_r83jo8qw%3d%3d",
+download.file("https://www.dmpr.gov.za/Portals/0/Resources/Fuel%20Prices%20Adjustments/Fuel%20Prices%20Per%20Zone/2025/November%202025/Petrol-margins.pdf",
               "data-raw/DMRE/DMRE_levies_2025.pdf", mode = "wb")
 
 # Actual pdf data
-raw_text <- pdf_text("data-raw/DMRE/DMRE_levies_2025.pdf")
+raw_text <- pdf_text("data-raw/DMRE/DMRE_levies_2026.pdf")
 
 clean_table <- str_split(raw_text[[1]], "\n", simplify = TRUE)
 
@@ -109,7 +109,7 @@ download.file("https://www.dmre.gov.za/Portals/0/Resources/Fuel%20Prices%20Adjus
               "data-raw/DMRE/DMRE_diesel_levies_2025.pdf", mode = "wb")
 
 # Actual pdf data
-raw_text <- pdf_text("data-raw/DMRE/DMRE_diesel_levies_2025.pdf")
+raw_text <- pdf_text("data-raw/DMRE/DMRE_diesel_levies_2026.pdf")
 
 clean_table <- str_split(raw_text, "\n")
 

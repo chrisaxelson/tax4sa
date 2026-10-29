@@ -14,48 +14,54 @@ library(dplyr)
 library(duckdb)
 
 # Imports
-files_to_import <- list.files(path = "data-raw/SARS/Trade_data", pattern = "SARS_imports_2023.*.csv")
+files_to_import <- list.files(path = "data-raw/SARS/Trade_data", pattern = "SARS_imports_2026.*.csv")
 files_to_import <- paste0("data-raw/SARS/Trade_data/", files_to_import)
-SARS_imports_2023 <- rbindlist(lapply(files_to_import, fread))
+SARS_imports_2026 <- rbindlist(lapply(files_to_import, fread))
 
-SARS_imports_2023 <- SARS_imports_2023 %>%
+SARS_imports_2026 <- SARS_imports_2026 %>%
   mutate(CountryOfOriginName = iconv(CountryOfOriginName, to = 'ASCII//TRANSLIT'),
          CountryOfDestinationName = iconv(CountryOfDestinationName, to = 'ASCII//TRANSLIT'),
          TariffAndDescription = iconv(CountryOfDestinationName, to = 'ASCII//TRANSLIT'))
 
-SARS_imports_2023 <- SARS_imports_2023 %>% mutate_if(is.character, as.factor)
-SARS_imports_2023 <- SARS_imports_2023 %>% mutate(CustomsValue = as.numeric(CustomsValue))
+SARS_imports_2026 <- SARS_imports_2026 %>% mutate_if(is.character, as.factor)
+SARS_imports_2026 <- SARS_imports_2026 %>% mutate(CustomsValue = as.numeric(CustomsValue))
 
-write_parquet(SARS_imports_2023, "data-raw/SARS/Trade_data/SARS_imports_2023.parquet")
+write_parquet(SARS_imports_2026, "data-raw/SARS/Trade_data/SARS_imports_2026.parquet")
 
 # Check
-read_parquet("data-raw/SARS/Trade_data/SARS_imports_2023.parquet")
+read_parquet("data-raw/SARS/Trade_data/SARS_imports_2026.parquet") |>
+  group_by(YearMonth) |>
+  summarise(Customs_value = sum(CustomsValue))
 
 con <- dbConnect(duckdb())
-tbl(con, "'data-raw/SARS/Trade_data/SARS_imports_2023.parquet'")
+tbl(con, "'data-raw/SARS/Trade_data/SARS_imports_2026.parquet'")
 
-pb_upload("data-raw/SARS/Trade_data/SARS_imports_2023.parquet",
+pb_upload("data-raw/SARS/Trade_data/SARS_imports_2026.parquet",
           repo = "chrisaxelson/tax4sa",
           tag = "v0.0.1")
 
 # Exports
-files_to_import <- list.files(path = "data-raw/SARS/Trade_data", pattern = "SARS_exports_2023.*.csv")
+files_to_import <- list.files(path = "data-raw/SARS/Trade_data", pattern = "SARS_exports_2026.*.csv")
 files_to_import <- paste0("data-raw/SARS/Trade_data/", files_to_import)
-SARS_exports_2023 <- rbindlist(lapply(files_to_import, fread))
+SARS_exports_2026 <- rbindlist(lapply(files_to_import, fread))
 
-SARS_exports_2023 <- SARS_exports_2023 %>%
+SARS_exports_2026 <- SARS_exports_2026 %>%
   mutate(CountryOfOriginName = iconv(CountryOfOriginName, to = 'ASCII//TRANSLIT'),
          CountryOfDestinationName = iconv(CountryOfDestinationName, to = 'ASCII//TRANSLIT'),
          TariffAndDescription = iconv(CountryOfDestinationName, to = 'ASCII//TRANSLIT'))
 
-SARS_exports_2023 <- SARS_exports_2023 %>% mutate_if(is.character, as.factor)
-SARS_exports_2023 <- SARS_exports_2023 %>% mutate(CustomsValue = as.numeric(CustomsValue))
+SARS_exports_2026 <- SARS_exports_2026 %>% mutate_if(is.character, as.factor)
+SARS_exports_2026 <- SARS_exports_2026 %>% mutate(CustomsValue = as.numeric(CustomsValue))
 
-write_parquet(SARS_exports_2023, "data-raw/SARS/Trade_data/SARS_exports_2023.parquet")
+write_parquet(SARS_exports_2026, "data-raw/SARS/Trade_data/SARS_exports_2026.parquet")
 
 # Check
-tbl(con, "'data-raw/SARS/Trade_data/SARS_exports_2023.parquet'")
+tbl(con, "'data-raw/SARS/Trade_data/SARS_exports_2026.parquet'")
 
-pb_upload("data-raw/SARS/Trade_data/SARS_exports_2023.parquet",
+read_parquet("data-raw/SARS/Trade_data/SARS_exports_2026.parquet") |>
+  group_by(YearMonth) |>
+  summarise(Customs_value = sum(CustomsValue))
+
+pb_upload("data-raw/SARS/Trade_data/SARS_exports_2026.parquet",
           repo = "chrisaxelson/tax4sa",
           tag = "v0.0.1")

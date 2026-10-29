@@ -20,17 +20,102 @@ knitr::opts_chunk$set(
 
 <!-- badges: end -->
 
-This is a minimal package to help with the compilation and analysis of tax and economic data in South Africa. The package only contains seven main sets of data, three functions and the personal income tax tables from 1995/96 to 2024/25.
+This is a minimal package to help with the compilation and analysis of tax and economic data in South Africa. The package contains numerous sets of data, three functions and the personal income tax tables.
+
+```{r, echo=FALSE, message=FALSE}
+library(tax4sa)
+load_tax4sa_data()
+library(duckdb)
+library(dplyr)
+library(stringr)
+library(lubridate)
+con <- dbConnect(duckdb())
+
+Latest_trade <- tbl(con, "SARS_exports_2026.parquet") %>% 
+  mutate(row_num = row_number()) %>%
+  arrange(desc(row_num)) %>%
+  head(n = 1) %>%
+  collect() |> 
+  select(YearMonth) |> 
+  as.character()
+
+Latest_trade <- paste(month.name[as.numeric(str_sub(Latest_trade, -2))], 
+                      str_sub(Latest_trade, 1, 4))
+
+Latest_trade_rows <- tbl(con, "SARS_*.parquet") |> 
+  summarise(n = n()) %>% collect() |> as.numeric()
+
+Latest_tax_table <- NT_Budget_PIT_brackets |> 
+  tail(1) |> 
+  select(Tax_year) |> 
+  as.numeric()
+
+Latest_tax_table <- paste0(Latest_tax_table, "/", as.numeric(str_sub(Latest_tax_table, -2)) + 1)
+
+Latest_SARB_quarter <- SARB_Quarterly_Bulletin %>% 
+  filter(Code == "KBP6006K") |> 
+  select(Quarter) |> 
+  tail(1) |> 
+  mutate(Publication = case_when(
+    Quarter == 1 ~ "June",
+    Quarter == 2 ~ "September",
+    Quarter == 3 ~ "December",
+    Quarter == 4 ~ "March"
+  )) |> 
+  select(Publication) |> 
+  as.character()
+
+Latest_SARB_year <- SARB_Quarterly_Bulletin %>% 
+  filter(Code == "KBP6006K") |> 
+  select(Year) |> 
+  tail(1) |> 
+  as.numeric()
+
+Latest_SARB <- paste(Latest_SARB_quarter, Latest_SARB_year)
+
+```
 
 The data includes:
 
--   Annual tax revenue collections from 1983/84, as published in the [Budget Reviews of the National Treasury](http://www.treasury.gov.za/documents/national%20budget/default.aspx)
--   Monthly tax revenue collections from April 2002, as published in the [monthly financing statements of the National Treasury](http://www.treasury.gov.za/comm_media/press/monthly/default.aspx)
--   Forecasts of the main tax instruments and GDP from 2005, as published in the [Budget Reviews of the National Treasury](http://www.treasury.gov.za/documents/national%20budget/default.aspx)
--   Monthly trade data on imports and exports from January 2010 from the [South African Revenue Service](https://tools.sars.gov.za/tradestatsportal/data_download.aspx)
--   Quarterly Bulletin data from the [South African Reserve Bank](https://www.resbank.co.za/en/home/publications/quarterly-bulletin1/download-information-from-xlsx-data-files)
--   Montly releases of economic statistics from [Statistics South Africa](http://www.statssa.gov.za/?page_id=1847)
--   Fuel pricing and levies from the [Department of Mineral Resources and Energy](http://www.energy.gov.za/files/esources/petroleum/petroleum_arch.html)
+-   **Monthly tax revenue collections** as published in the [monthly financing statements of the National Treasury](http://www.treasury.gov.za/comm_media/press/monthly/default.aspx) 
+      - `NT_S32_revenue`: From April 2002 to `r paste(tail(NT_S32_revenue,1)$Month, tail(NT_S32_revenue,1)$Year)` with `r format(nrow(NT_S32_revenue), big.mark = ",")` rows
+-   **Annual tax revenue collections** as published in the [Budget Reviews of the National Treasury](http://www.treasury.gov.za/documents/national%20budget/default.aspx) 
+      - `NT_Budget_revenue`: From 1983/84 to `r tail(NT_Budget_revenue, 1)$Year` with `r format(nrow(NT_Budget_revenue), big.mark = ",")` rows
+-   **Personal income tax tables** from the [Budget Reviews of the National Treasury](http://www.treasury.gov.za/documents/national%20budget/default.aspx) 
+      - `NT_Budget_PIT_brackets`: From 1995/96 to `r tail(NT_Budget_PIT_brackets,1)$Tax_year`
+      - `NT_Budget_PIT_rebates`
+-   **Forecasts of the main tax instruments and GDP** as published in the [Budget Reviews of the National Treasury](http://www.treasury.gov.za/documents/national%20budget/default.aspx) 
+      - `NT_Budget_forecasts`: From 2005 to the `r paste(tail(NT_Budget_forecasts,1)$Publication_year, tail(NT_Budget_forecasts,1)$Source)` with `r format(nrow(NT_Budget_forecasts), big.mark = ",")` rows
+-   **Monthly trade data on imports and exports** from the [South African Revenue Service](https://tools.sars.gov.za/tradestatsportal/data_download.aspx) 
+      - `tbl(dbConnect(duckdb()), "SARS_*.parquet")`: Need to download locally using code below. From January 2010 to `r Latest_trade` with `r format(Latest_trade_rows, big.mark = ",")` rows
+-   **Quarterly Bulletin data** from the [South African Reserve Bank](https://www.resbank.co.za/en/home/publications/quarterly-bulletin1/download-information-from-xlsx-data-files)
+      - `SARB_Quarterly_Bulletin`: Up to the `r Latest_SARB` Quarterly Bulletin with `r format(nrow(SARB_Quarterly_Bulletin), big.mark = ",")` rows
+      - `SARB_Quarterly_Bulletin_info`: Detailed descriptions of variables
+-   **Petrol and diesel prices and levies** from the [Department of Mineral Resources and Energy](http://www.energy.gov.za/files/esources/petroleum/petroleum_arch.html)
+      - `DMRE_fuel`: From January 2012 to `r paste(month.name[month(tail(DMRE_fuel, 1)$Date)], year(tail(DMRE_fuel, 1)$Date))`
+-   **Monthly releases of economic statistics** from [Statistics South Africa](http://www.statssa.gov.za/?page_id=1847)
+      - `STATSSA_P0043_insolvencies`: Up to `r paste(tail(STATSSA_P0043_insolvencies,1)$Month, tail(STATSSA_P0043_insolvencies,1)$Year)` with `r format(nrow(STATSSA_P0043_insolvencies), big.mark = ",")` rows
+      - `STATSSA_P0043.1_liquidations`: Up to `r paste(tail(STATSSA_P0043.1_liquidations,1)$Month, tail(STATSSA_P0043.1_liquidations,1)$Year)` with `r format(nrow(STATSSA_P0043.1_liquidations), big.mark = ",")` rows
+      - `STATSSA_P0141_CPI_COICOP`: Up to `r paste(tail(STATSSA_P0141_CPI_COICOP,1)$Month, tail(STATSSA_P0141_CPI_COICOP,1)$Year)` with `r format(nrow(STATSSA_P0141_CPI_COICOP), big.mark = ",")` rows
+      - `STATSSA_P0141_CPI_province`: Up to `r paste(tail(STATSSA_P0141_CPI_province,1)$Month, tail(STATSSA_P0141_CPI_province,1)$Year)` with `r format(nrow(STATSSA_P0141_CPI_province), big.mark = ",")` rows 
+      - `STATSSA_P0141_CPI_digits`: Up to `r paste(tail(STATSSA_P0141_CPI_digit,1)$Month, tail(STATSSA_P0141_CPI_digit,1)$Year)` with `r format(nrow(STATSSA_P0141_CPI_digit), big.mark = ",")` rows
+      - `STATSSA_P0141_CPI_urban`: Up to `r paste(tail(STATSSA_P0141_CPI_urban,1)$Month, tail(STATSSA_P0141_CPI_urban,1)$Year)` with `r format(nrow(STATSSA_P0141_CPI_urban), big.mark = ",")` rows
+      - `STATSSA_P0142.1_PPI`: Up to `r paste(tail(STATSSA_P0142.1_PPI,1)$Month, tail(STATSSA_P0142.1_PPI,1)$Year)` with `r format(nrow(STATSSA_P0142.1_PPI), big.mark = ",")` rows
+      - `STATSSA_P0142.7_trade`: Up to `r paste(tail(STATSSA_P0142.7_trade,1)$Month, tail(STATSSA_P0142.7_trade,1)$Year)` with `r format(nrow(STATSSA_P0142.7_trade), big.mark = ",")` rows
+      - `STATSSA_P0151.1_construction`: Up to `r paste(tail(STATSSA_P0151.1_construction,1)$Month, tail(STATSSA_P0151.1_construction,1)$Year)` with `r format(nrow(STATSSA_P0151.1_construction), big.mark = ",")` rows
+      - `STATSSA_P0441_GDP`: Up to `r paste0("Q", tail(STATSSA_P0441_GDP |> filter(H25 == "Quarterly"),1)$Quarter, " ", tail(STATSSA_P0441_GDP,1)$Year)` with `r format(nrow(STATSSA_P0441_GDP), big.mark = ",")` rows
+      - `STATSSA_P0441_GDP_base_2015`: Up to `r paste0("Q", tail(STATSSA_P0441_GDP_base_2015 |> filter(H25 == "Quarterly"),1)$Quarter, " ", tail(STATSSA_P0441_GDP_base_2015,1)$Year)` with `r format(nrow(STATSSA_P0441_GDP_base_2015), big.mark = ",")` rows
+      - `STATSSA_P2041_mining`: Up to `r paste(tail(STATSSA_P2041_mining,1)$Month, tail(STATSSA_P2041_mining,1)$Year)` with `r format(nrow(STATSSA_P2041_mining), big.mark = ",")` rows
+      - `STATSSA_P3041.2_manufacturing`: Up to `r paste(tail(STATSSA_P3041.2_manufacturing,1)$Month, tail(STATSSA_P3041.2_manufacturing,1)$Year)` with `r format(nrow(STATSSA_P2041_mining), big.mark = ",")` rows
+      - `STATSSA_P4141_electricity`: Up to `r paste(tail(STATSSA_P4141_electricity,1)$Month, tail(STATSSA_P4141_electricity,1)$Year)` with `r format(nrow(STATSSA_P4141_electricity), big.mark = ",")` rows
+      - `STATSSA_P5041.1_building`: Up to `r paste(tail(STATSSA_P5041.1_building,1)$Month, tail(STATSSA_P5041.1_building,1)$Year)` with `r format(nrow(STATSSA_P5041.1_building), big.mark = ",")` rows
+      - `STATSSA_P6141.2_wholesale`: Up to `r paste(tail(STATSSA_P6141.2_wholesale,1)$Month, tail(STATSSA_P6141.2_wholesale,1)$Year)` with `r format(nrow(STATSSA_P6141.2_wholesale), big.mark = ",")` rows
+      - `STATSSA_P6242.1_retail`: Up to `r paste(tail(STATSSA_P6242.1_retail,1)$Month, tail(STATSSA_P6141.2_wholesale,1)$Year)` with `r format(nrow(STATSSA_P6141.2_wholesale), big.mark = ",")` rows
+      - `STATSSA_P6343.2_vehicles`: Up to `r paste(tail(STATSSA_P6343.2_vehicles,1)$Month, tail(STATSSA_P6343.2_vehicles,1)$Year)` with `r format(nrow(STATSSA_P6343.2_vehicles), big.mark = ",")` rows
+      - `STATSSA_P6410_tourists`: Up to `r paste(tail(STATSSA_P6410_tourists,1)$Month, tail(STATSSA_P6410_tourists,1)$Year)` with `r format(nrow(STATSSA_P6410_tourists), big.mark = ",")` rows
+      - `STATSSA_P6420_food`: Up to `r paste(tail(STATSSA_P6420_food,1)$Month, tail(STATSSA_P6420_food,1)$Year)` with `r format(nrow(STATSSA_P6420_food), big.mark = ",")` rows
+      - `STATSSA_P7162_transport`: Up to `r paste(tail(STATSSA_P7162_transport,1)$Month, tail(STATSSA_P7162_transport,1)$Year)` with `r format(nrow(STATSSA_P7162_transport), big.mark = ",")` rows
+
 
 The three functions and the personal income tax tables are intended to help with calculating tax liabilities, particularly when used with the [administrative data from SARS](https://sa-tied.wider.unu.edu/sites/default/files/pdf/SATIED_WP36_Ebrahim_Axelson_March_2019.pdf).
 
@@ -66,7 +151,7 @@ library(kableExtra)
 
 # Check revenue data
 NT_Budget_revenue %>% 
-  filter(Fiscal_year == 2025) %>%  
+  filter(Fiscal_year == 2026) %>%  
   select(T1:T3, Year, Revenue) %>% 
   mutate(Revenue = round(Revenue,0)) %>% 
   head(5) %>% 
@@ -97,7 +182,7 @@ Similarly, you can access the forecasts that were made in the annual Budget Revi
 ```{r forecasts, message = FALSE}
 # Check revenue data
 NT_Budget_forecasts %>% 
-  filter(Publication_year == 2023,
+  filter(Publication_year == 2026,
          Category == "Gross tax revenue") %>% 
    mutate(Publication_year = as.character(Publication_year)) %>% 
   kable(format.args = list(big.mark = ","), 
@@ -126,12 +211,12 @@ The following code downloads the data into your working directory using the [pig
 library(piggyback)
 
 # # Download individual files - can adjust imports to exports and the year
-# pb_download("SARS_imports_2022.parquet", 
-#             repo = "chrisaxelson/tax4sa")
+pb_download("SARS_imports_2022.parquet",
+            repo = "chrisaxelson/tax4sa")
 
 # # Or download ALL the trade data from Github - about 600MB
 # # If run again, will only download updated data
-# pb_download(repo = "chrisaxelson/tax4sa")
+pb_download(repo = "chrisaxelson/tax4sa")
 
 # Quick example of how to access the data
 library(duckdb)
@@ -235,7 +320,7 @@ GDP_fiscal <- STATSSA_P0441_GDP %>%
   filter(H03 == "QNU1000") %>% 
   group_by(Fiscal_year) %>% 
   summarise(GDP = sum(Value)) %>% 
-  filter(Fiscal_year < 2025, Fiscal_year > 1993)
+  filter(Fiscal_year < 2027, Fiscal_year > 2018)
 
 # Join together and create tax to GDP
 Tax_to_GDP <- GDP_fiscal %>% 
@@ -247,7 +332,8 @@ Tax_to_GDP <- GDP_fiscal %>%
 ggplot(Tax_to_GDP, aes(x = Fiscal_year, y = Tax_to_GDP)) +
   geom_line() + 
   geom_point() +
-  geom_text(aes(label = ifelse(Fiscal_year == 2024, paste0(round(Tax_to_GDP,4) * 100, "%"),'')),
+  geom_text(aes(label = ifelse(Fiscal_year == 2024,
+                               paste0(round(Tax_to_GDP,4) * 100, "%"),'')),
             hjust=0.5, vjust=1.5, show.legend = FALSE) +
   scale_y_continuous(labels = scales::percent_format(accuracy = 1L)) +
   theme_classic() +

@@ -7,7 +7,9 @@ library(stringr)
 library(openxlsx)
 
 # GDP link
-GDP_url <- "https://www.statssa.gov.za/publications/P0441/GDP%20P0441%20-%20GDP%20Time%20series%20Q3%202024.xlsx"
+GDP_url <- "https://www.statssa.gov.za/publications/P0441/GDP%20P0441%20-%20GDP%20Time%20series%20Q2%202026.xlsx"
+
+# GDP_url <- "data-raw/STATSSA/GDP P0441 - GDP Time series  Historical 2026.xlsx"
 
 Annual <- read.xlsx(GDP_url, sheet = "Annual") %>% pivot_longer(cols = -c(H01:H25))
 AnnualP <- read.xlsx(GDP_url, sheet = "AnnualP") %>% pivot_longer(cols = -c(H01:H25))

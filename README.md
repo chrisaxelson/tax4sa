@@ -4,33 +4,70 @@
 # tax4sa
 
 <!-- badges: start -->
+
 <!-- badges: end -->
 
 This is a minimal package to help with the compilation and analysis of
-tax and economic data in South Africa. The package only contains seven
-main sets of data, three functions and the personal income tax tables
-from 1995/96 to 2024/25.
+tax and economic data in South Africa. The package contains numerous
+sets of data, three functions and the personal income tax tables.
 
 The data includes:
 
-- Annual tax revenue collections from 1983/84, as published in the
+- **Monthly tax revenue collections** as published in the [monthly
+  financing statements of the National
+  Treasury](http://www.treasury.gov.za/comm_media/press/monthly/default.aspx)
+  - `NT_S32_revenue`: From April 2002 to August 2026 with 11,147 rows
+- **Annual tax revenue collections** as published in the [Budget Reviews
+  of the National
+  Treasury](http://www.treasury.gov.za/documents/national%20budget/default.aspx)
+  - `NT_Budget_revenue`: From 1983/84 to 2025/26 with 1,591 rows
+- **Personal income tax tables** from the [Budget Reviews of the
+  National
+  Treasury](http://www.treasury.gov.za/documents/national%20budget/default.aspx)
+  - `NT_Budget_PIT_brackets`: From 1995/96 to 2026
+  - `NT_Budget_PIT_rebates`
+- **Forecasts of the main tax instruments and GDP** as published in the
   [Budget Reviews of the National
   Treasury](http://www.treasury.gov.za/documents/national%20budget/default.aspx)
-- Monthly tax revenue collections from April 2002, as published in the
-  [monthly financing statements of the National
-  Treasury](http://www.treasury.gov.za/comm_media/press/monthly/default.aspx)
-- Forecasts of the main tax instruments and GDP from 2005, as published
-  in the [Budget Reviews of the National
-  Treasury](http://www.treasury.gov.za/documents/national%20budget/default.aspx)
-- Monthly trade data on imports and exports from January 2010 from the
-  [South African Revenue
+  - `NT_Budget_forecasts`: From 2005 to the 2026 Budget with 1,308 rows
+- **Monthly trade data on imports and exports** from the [South African
+  Revenue
   Service](https://tools.sars.gov.za/tradestatsportal/data_download.aspx)
-- Quarterly Bulletin data from the [South African Reserve
+  - `tbl(dbConnect(duckdb()), "SARS_*.parquet")`: Need to download
+    locally using code below. From January 2010 to August 2026 with
+    47,330,150 rows
+- **Quarterly Bulletin data** from the [South African Reserve
   Bank](https://www.resbank.co.za/en/home/publications/quarterly-bulletin1/download-information-from-xlsx-data-files)
-- Montly releases of economic statistics from [Statistics South
-  Africa](http://www.statssa.gov.za/?page_id=1847)
-- Fuel pricing and levies from the [Department of Mineral Resources and
+  - `SARB_Quarterly_Bulletin`: Up to the September 2026 Quarterly
+    Bulletin with 734,390 rows
+  - `SARB_Quarterly_Bulletin_info`: Detailed descriptions of variables
+- **Petrol and diesel prices and levies** from the [Department of
+  Mineral Resources and
   Energy](http://www.energy.gov.za/files/esources/petroleum/petroleum_arch.html)
+  - `DMRE_fuel`: From January 2012 to October 2026
+- **Monthly releases of economic statistics** from [Statistics South
+  Africa](http://www.statssa.gov.za/?page_id=1847)
+  - `STATSSA_P0043_insolvencies`: Up to September 2026 with 450 rows
+  - `STATSSA_P0043.1_liquidations`: Up to August 2026 with 15,040 rows
+  - `STATSSA_P0141_CPI_COICOP`: Up to September 2026 with 177,525 rows
+  - `STATSSA_P0141_CPI_province`: Up to September 2026 with 287,235 rows
+  - `STATSSA_P0141_CPI_digits`: Up to September 2026 with 87,975 rows
+  - `STATSSA_P0141_CPI_urban`: Up to September 2026 with 45,747 rows
+  - `STATSSA_P0142.1_PPI`: Up to August 2026 with 13,376 rows
+  - `STATSSA_P0142.7_trade`: Up to August 2026 with 8,704 rows
+  - `STATSSA_P0151.1_construction`: Up to August 2026 with 24,400 rows
+  - `STATSSA_P0441_GDP`: Up to Q2 2025 with 20,016 rows
+  - `STATSSA_P0441_GDP_base_2015`: Up to Q2 2025 with 79,435 rows
+  - `STATSSA_P2041_mining`: Up to December 2002 with 11,316 rows
+  - `STATSSA_P3041.2_manufacturing`: Up to August 2026 with 11,316 rows
+  - `STATSSA_P4141_electricity`: Up to August 2026 with 9,280 rows
+  - `STATSSA_P5041.1_building`: Up to August 2026 with 180,480 rows
+  - `STATSSA_P6141.2_wholesale`: Up to August 2026 with 5,120 rows
+  - `STATSSA_P6242.1_retail`: Up to August 2026 with 5,120 rows
+  - `STATSSA_P6343.2_vehicles`: Up to July 2026 with 8,932 rows
+  - `STATSSA_P6410_tourists`: Up to August 2026 with 17,775 rows
+  - `STATSSA_P6420_food`: Up to July 2026 with 16,128 rows
+  - `STATSSA_P7162_transport`: Up to July 2026 with 8,697 rows
 
 The three functions and the personal income tax tables are intended to
 help with calculating tax liabilities, particularly when used with the
@@ -74,7 +111,7 @@ library(kableExtra)
 
 # Check revenue data
 NT_Budget_revenue %>% 
-  filter(Fiscal_year == 2025) %>%  
+  filter(Fiscal_year == 2026) %>%  
   select(T1:T3, Year, Revenue) %>% 
   mutate(Revenue = round(Revenue,0)) %>% 
   head(5) %>% 
@@ -82,13 +119,13 @@ NT_Budget_revenue %>%
         caption = "Annual tax revenue (R'000s)")
 ```
 
-| T1                          | T2                      | T3                                                  | Year    |     Revenue |
-|:----------------------------|:------------------------|:----------------------------------------------------|:--------|------------:|
-| Taxes on income and profits | Personal income tax     | Personal income tax                                 | 2024/25 | 729,910,987 |
-| Taxes on income and profits | Tax on corporate income | Corporate income tax                                | 2024/25 | 318,739,344 |
-| Taxes on income and profits | Tax on corporate income | Secondary tax on companies/dividend withholding tax | 2024/25 |      14,841 |
-| Taxes on income and profits | Tax on corporate income | Withholding tax on dividends                        | 2024/25 |  42,973,231 |
-| Taxes on income and profits | Tax on corporate income | Interest withholding tax                            | 2024/25 |   1,143,916 |
+| T1 | T2 | T3 | Year | Revenue |
+|:---|:---|:---|:---|---:|
+| Taxes on income and profits | Personal income tax | Personal income tax | 2025/26 | 790,619,211 |
+| Taxes on income and profits | Tax on corporate income | Corporate income tax | 2025/26 | 345,432,054 |
+| Taxes on income and profits | Tax on corporate income | Secondary tax on companies/dividend withholding tax | 2025/26 | 7,983 |
+| Taxes on income and profits | Tax on corporate income | Withholding tax on dividends | 2025/26 | 45,876,462 |
+| Taxes on income and profits | Tax on corporate income | Interest withholding tax | 2025/26 | 1,063,927 |
 
 Annual tax revenue (R’000s)
 
@@ -105,13 +142,13 @@ NT_S32_revenue %>%
         caption = "Monthly health promotion levy revenue (R'000s)") 
 ```
 
-| Tax                   | Month    | Quarter | Year | Fiscal_year |   Revenue |
-|:----------------------|:---------|--------:|:-----|:------------|----------:|
-| Health promotion levy | December |       4 | 2024 | 2025        | 225,163.1 |
-| Health promotion levy | January  |       1 | 2025 | 2025        | 250,692.3 |
-| Health promotion levy | February |       1 | 2025 | 2025        | 184,083.2 |
-| Health promotion levy | March    |       1 | 2025 | 2025        | 200,531.2 |
-| Health promotion levy | April    |       2 | 2025 | 2026        | 216,642.1 |
+| Tax                   | Month  | Quarter | Year | Fiscal_year |   Revenue |
+|:----------------------|:-------|--------:|:-----|:------------|----------:|
+| Health promotion levy | April  |       2 | 2026 | 2027        | 244,223.8 |
+| Health promotion levy | May    |       2 | 2026 | 2027        | 175,945.4 |
+| Health promotion levy | June   |       2 | 2026 | 2027        | 142,776.1 |
+| Health promotion levy | July   |       3 | 2026 | 2027        | 144,374.0 |
+| Health promotion levy | August |       3 | 2026 | 2027        | 179,242.3 |
 
 Monthly health promotion levy revenue (R’000s)
 
@@ -129,7 +166,7 @@ Budget Reviews below.
 ``` r
 # Check revenue data
 NT_Budget_forecasts %>% 
-  filter(Publication_year == 2023,
+  filter(Publication_year == 2026,
          Category == "Gross tax revenue") %>% 
    mutate(Publication_year = as.character(Publication_year)) %>% 
   kable(format.args = list(big.mark = ","), 
@@ -138,10 +175,10 @@ NT_Budget_forecasts %>%
 
 | Source | Publication_year | Category          | Forecast_year |  Forecast |
 |:-------|:-----------------|:------------------|:--------------|----------:|
-| Budget | 2023             | Gross tax revenue | 2022/23       | 1,692,177 |
-| Budget | 2023             | Gross tax revenue | 2023/24       | 1,787,456 |
-| Budget | 2023             | Gross tax revenue | 2024/25       | 1,907,727 |
-| Budget | 2023             | Gross tax revenue | 2025/26       | 2,043,456 |
+| Budget | 2026             | Gross tax revenue | 2025/26       | 2,006,947 |
+| Budget | 2026             | Gross tax revenue | 2026/27       | 2,126,962 |
+| Budget | 2026             | Gross tax revenue | 2027/28       | 2,248,628 |
+| Budget | 2026             | Gross tax revenue | 2028/29       | 2,376,153 |
 
 Tax revenue forecasts (R million)
 
@@ -176,12 +213,12 @@ download updated data files.
 library(piggyback)
 
 # # Download individual files - can adjust imports to exports and the year
-# pb_download("SARS_imports_2022.parquet", 
-#             repo = "chrisaxelson/tax4sa")
+pb_download("SARS_imports_2022.parquet",
+            repo = "chrisaxelson/tax4sa")
 
 # # Or download ALL the trade data from Github - about 600MB
 # # If run again, will only download updated data
-# pb_download(repo = "chrisaxelson/tax4sa")
+pb_download(repo = "chrisaxelson/tax4sa")
 
 # Quick example of how to access the data
 library(duckdb)
@@ -199,13 +236,13 @@ tbl(con, "SARS_*.parquet") %>%
         caption = "Monthly trade data")
 ```
 
-| TradeType | District    | Origin       | Destination | Unit | YearMonth | ChapterAndDescription                               | Quantity | Value_ZAR |
-|:----------|:------------|:-------------|:------------|:-----|:----------|:----------------------------------------------------|---------:|----------:|
-| Exports   | Beit Bridge | South Africa | Mozambique  | NO   | 202301    | 85 - Cellphones, Electrical Equipment and Machinery |     1.00 |   430,000 |
-| Exports   | Beit Bridge | South Africa | Tanzania    | KG   | 202303    | 68 - Stone, plaster, cement and Asbestos            |   522.77 |    10,888 |
-| Exports   | Beit Bridge | South Africa | Tanzania    | KG   | 202301    | 39 - Plastics and articles thereof                  | 1,593.60 |   254,518 |
-| Exports   | Beit Bridge | South Africa | Mozambique  | NO   | 202303    | 85 - Cellphones, Electrical Equipment and Machinery |     1.00 | 1,138,889 |
-| Exports   | Beit Bridge | South Africa | Mozambique  | NO   | 202302    | 90 - Medical and Photographic Equipment             |     2.00 |     3,859 |
+| TradeType | District | Origin | Destination | Unit | YearMonth | ChapterAndDescription | Quantity | Value_ZAR |
+|:---|:---|:---|:---|:---|:---|:---|---:|---:|
+| Exports | Alexanderbay | China | Namibia | KG | 201001 | 61 - Clothing and accessories, knitted or crocheted | 57 | 930 |
+| Exports | Alexanderbay | China | Namibia | NO | 201001 | 61 - Clothing and accessories, knitted or crocheted | 7 | 634 |
+| Exports | Alexanderbay | Bangladesh | Namibia | NO | 201001 | 61 - Clothing and accessories, knitted or crocheted | 8 | 288 |
+| Exports | Alexanderbay | China | Namibia | NO | 201001 | 62 - Clothing and accessories, not knitted or crocheted | 51 | 7,979 |
+| Exports | Alexanderbay | China | Namibia | NO | 201001 | 62 - Clothing and accessories, not knitted or crocheted | 96 | 7,930 |
 
 Monthly trade data
 
@@ -219,13 +256,13 @@ SARB_Quarterly_Bulletin_info %>%
   kable()
 ```
 
-| Code     | Frequency_description | Unit_of_measure | Version_description                                      |
-|:---------|:----------------------|:----------------|:---------------------------------------------------------|
-| KBP6006C | Quarterly             | RMILL           | Constant 2010 prices                                     |
-| KBP6006D | Quarterly             | RMILL           | Constant 2010 prices. Seasonally adjusted at annual rate |
-| KBP6006K | Quarterly             | RMILL           | Current prices                                           |
-| KBP6006L | Quarterly             | RMILL           | Current prices. Seasonally adjusted at annual rate       |
-| KBP6006S | Quarterly             | PERC            | 1-Term % change                                          |
+| Code | Frequency_description | Unit_of_measure | Version_description |
+|:---|:---|:---|:---|
+| KBP6006C | Quarterly | RMILL | Constant 2010 prices |
+| KBP6006D | Quarterly | RMILL | Constant 2010 prices. Seasonally adjusted at annual rate |
+| KBP6006K | Quarterly | RMILL | Current prices |
+| KBP6006L | Quarterly | RMILL | Current prices. Seasonally adjusted at annual rate |
+| KBP6006S | Quarterly | PERC | 1-Term % change |
 
 ``` r
 
@@ -238,11 +275,11 @@ SARB_Quarterly_Bulletin %>%
 
 | Code     |     Date | Frequency | Quarter | Year | Fiscal_year |   Value |
 |:---------|---------:|:----------|--------:|-----:|------------:|--------:|
-| KBP6006K | 20230300 | K1        |       3 | 2023 |        2024 | 1767815 |
-| KBP6006K | 20230400 | K1        |       4 | 2023 |        2024 | 1815108 |
-| KBP6006K | 20240100 | K1        |       1 | 2024 |        2024 | 1752166 |
-| KBP6006K | 20240200 | K1        |       2 | 2024 |        2025 | 1847748 |
-| KBP6006K | 20240300 | K1        |       3 | 2024 |        2025 | 1840617 |
+| KBP6006K | 20250200 | K1        |       2 | 2025 |        2026 | 1900275 |
+| KBP6006K | 20250300 | K1        |       3 | 2025 |        2026 | 1938471 |
+| KBP6006K | 20250400 | K1        |       4 | 2025 |        2026 | 2003972 |
+| KBP6006K | 20260100 | K1        |       1 | 2026 |        2026 | 1944611 |
+| KBP6006K | 20260200 | K1        |       2 | 2026 |        2027 | 1986162 |
 
 ## Statistics South Africa
 
@@ -259,11 +296,11 @@ STATSSA_P0141_CPI_COICOP %>%
 
 | H01   | H04          | Date_original | Value | Annual_inflation |
 |:------|:-------------|:--------------|:------|-----------------:|
-| P0141 | CPI Headline | MO082024      | 116   |            4.410 |
-| P0141 | CPI Headline | MO092024      | 116.1 |            3.846 |
-| P0141 | CPI Headline | MO102024      | 116   |            2.837 |
-| P0141 | CPI Headline | MO112024      | 116   |            2.928 |
-| P0141 | CPI Headline | MO122024      | 116.1 |            3.017 |
+| P0141 | CPI Headline | MO052026      | 106.7 |            4.505 |
+| P0141 | CPI Headline | MO062026      | 107.5 |            4.980 |
+| P0141 | CPI Headline | MO072026      | 107.7 |            4.259 |
+| P0141 | CPI Headline | MO082026      | 107.7 |            4.360 |
+| P0141 | CPI Headline | MO092026      | 108.1 |            4.545 |
 
 ## Department of Mineral Resources and Energy
 
@@ -279,18 +316,18 @@ DMRE_fuel %>%
   kable()
 ```
 
-| Fuel_type               | Region  | Date       |    Price | Basic_fuel_price | General_fuel_levy |
-|:------------------------|:--------|:-----------|---------:|-----------------:|------------------:|
-| 93_ULP                  | Gauteng | 2025-01-01 | 2134.000 |          1146.87 |               395 |
-| 95_ULP                  | Coastal | 2025-01-01 | 2028.000 |          1146.87 |               395 |
-| 95_ULP                  | Gauteng | 2025-01-01 | 2159.000 |          1146.87 |               395 |
-| Diesel_0.005            | Coastal | 2025-01-01 | 1863.950 |          1250.03 |               381 |
-| Diesel_0.005            | Gauteng | 2025-01-01 | 1942.950 |          1250.03 |               381 |
-| Diesel_0.05             | Coastal | 2025-01-01 | 1849.550 |          1240.63 |               381 |
-| Diesel_0.05             | Gauteng | 2025-01-01 | 1928.550 |          1240.63 |               381 |
-| Illuminating_Paraffin   | Coastal | 2025-01-01 | 1227.118 |               NA |                NA |
-| Illuminating_Paraffin   | Gauteng | 2025-01-01 | 1326.318 |               NA |                NA |
-| Liquefied_Petroleum_Gas | Coastal | 2025-01-01 | 3514.000 |               NA |                NA |
+| Fuel_type | Region | Date | Price | Basic_fuel_price | General_fuel_levy |
+|:---|:---|:---|---:|---:|---:|
+| 95_ULP | Coastal | 2026-10-07 | 2938.00 | 1743.51 | 429 |
+| 95_ULP | Gauteng | 2026-10-07 | 3025.00 | 1743.51 | 429 |
+| Diesel_0.005 | Coastal | 2026-10-07 | 3192.69 | 2298.03 | 416 |
+| Diesel_0.005 | Gauteng | 2026-10-07 | 3279.89 | 2298.03 | 416 |
+| Diesel_0.05 | Coastal | 2026-10-07 | 3108.29 | 2213.63 | 416 |
+| Diesel_0.05 | Gauteng | 2026-10-07 | 3195.49 | 2213.63 | 416 |
+| Illuminating_Paraffin | Coastal | 2026-10-07 | 2341.70 | NA | NA |
+| Illuminating_Paraffin | Gauteng | 2026-10-07 | 2447.10 | NA | NA |
+| Liquefied_Petroleum_Gas | Coastal | 2026-10-07 | 3456.00 | NA | NA |
+| Liquefied_Petroleum_Gas | Gauteng | 2026-10-07 | 3781.00 | NA | NA |
 
 ## Functions
 
@@ -323,7 +360,7 @@ system.time({
     mutate(Simulated_tax = pit(Taxable_income, Age, MTC, Tax_year))
 })
 #>    user  system elapsed 
-#>    0.33    0.15    0.48
+#>    0.38    0.03    0.39
 ```
 
 ## Examples
@@ -344,7 +381,7 @@ GDP_fiscal <- STATSSA_P0441_GDP %>%
   filter(H03 == "QNU1000") %>% 
   group_by(Fiscal_year) %>% 
   summarise(GDP = sum(Value)) %>% 
-  filter(Fiscal_year < 2025, Fiscal_year > 1993)
+  filter(Fiscal_year < 2027, Fiscal_year > 2018)
 
 # Join together and create tax to GDP
 Tax_to_GDP <- GDP_fiscal %>% 
@@ -356,7 +393,8 @@ Tax_to_GDP <- GDP_fiscal %>%
 ggplot(Tax_to_GDP, aes(x = Fiscal_year, y = Tax_to_GDP)) +
   geom_line() + 
   geom_point() +
-  geom_text(aes(label = ifelse(Fiscal_year == 2024, paste0(round(Tax_to_GDP,4) * 100, "%"),'')),
+  geom_text(aes(label = ifelse(Fiscal_year == 2024,
+                               paste0(round(Tax_to_GDP,4) * 100, "%"),'')),
             hjust=0.5, vjust=1.5, show.legend = FALSE) +
   scale_y_continuous(labels = scales::percent_format(accuracy = 1L)) +
   theme_classic() +
@@ -365,7 +403,7 @@ ggplot(Tax_to_GDP, aes(x = Fiscal_year, y = Tax_to_GDP)) +
   ggtitle("Gross tax revenue to GDP")
 ```
 
-<img src="man/figures/README-revenue-1.png" width="100%" />
+<img src="man/figures/README-revenue-1.png" alt="" width="100%" />
 
 ``` r
 library(lubridate)
@@ -385,7 +423,7 @@ DMRE_fuel %>%
             hjust=1.2, vjust=0.5, show.legend = FALSE)
 ```
 
-<img src="man/figures/README-fuel-1.png" width="100%" />
+<img src="man/figures/README-fuel-1.png" alt="" width="100%" />
 
 ``` r
 
@@ -408,21 +446,36 @@ DMRE_fuel %>%
           subtitle = c("Includes the general fuel levy, the Road Accident Fund levy, customs levy and DSML")) 
 ```
 
-<img src="man/figures/README-fuel-2.png" width="100%" />
+<img src="man/figures/README-fuel-2.png" alt="" width="100%" />
 
 <!-- ```{r cpi, message = FALSE} -->
+
 <!-- # Get headline CPI index and check growth -->
+
 <!-- CPI <- STATSSA %>%  -->
+
 <!--   filter(Code == "CPS00000") %>%  -->
+
 <!--   mutate(Value = as.numeric(Value),  -->
+
 <!--          Change = Value / lag(Value, n = 12) - 1) -->
+
 <!-- # Chart -->
+
 <!-- ggplot(CPI, aes(x = Fiscal_year, y = Tax_to_GDP)) + -->
+
 <!--   geom_line(color = "darkblue") +  -->
+
 <!--   geom_point(color = "darkblue") + -->
+
 <!--   scale_y_continuous(labels = scales::percent_format(accuracy = 1L)) + -->
+
 <!--   theme_minimal() + -->
+
 <!--   theme(axis.title.x = element_blank()) + -->
+
 <!--   ylab("Tax to GDP") + -->
+
 <!--   ggtitle("Total tax revenue to GDP") -->
+
 <!-- ``` -->
